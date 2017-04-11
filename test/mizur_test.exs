@@ -65,5 +65,54 @@ defmodule MizurTest do
     fn ->  _ = Mizur.map2(a, b, fn(x, y) -> x + y end) end
   end
 
+  test "for fold" do 
+    result = 
+      [Length.cm(100), Length.km(1), Length.m(13)]
+      |> Mizur.fold(
+        Length.m(0), 
+        fn(x, acc) -> 
+          Mizur.map2(x, acc, fn(a, b) -> a+b end) 
+        end,
+        to: Length.m
+        )
+      |> Mizur.unwrap
+      assert result == 1014.0
+
+  end
+
+  test "for Sum" do 
+    result = 
+      [Length.m(12), Length.km(1), Length.cm(14)]
+      |> Mizur.sum(to: Length.cm)
+      |> Mizur.unwrap()
+
+    assert result == (100000 + 1200 + 14)*1.0
+    
+  end
+
+  test "for comparison :eq 1" do 
+    x = Length.m(1)
+    y = Length.cm(100)
+    assert (Mizur.compare(x, with: y)) == :eq
+    assert (Mizur.compare(x, with: x)) == :eq
+    assert (Mizur.compare(y, with: y)) == :eq
+    assert (Mizur.compare(y, with: x)) == :eq
+  end
+
+  test "for comparison :lt/gt 1" do 
+    x = Length.m(23)
+    y = Length.cm(100)
+    assert (Mizur.compare(x, with: y)) == :gt
+    assert (Mizur.compare(y, with: x)) == :lt
+  end
+
+  test "failure of comparison" do 
+    x = Length.m(23)
+    y = Money.euro(100)
+    assert_raise RuntimeError, "#{Length} is not compatible with #{Money}", fn -> 
+      _ = Mizur.compare(y, with: x)
+    end
+  end
+
 
 end
