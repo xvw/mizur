@@ -6,7 +6,7 @@ defmodule Mizur do
   """
 
   @typedoc """
-  This type represents a unit of measure (defined with using Abacus.SystemMetric)
+  This type represents a unit of measure (defined with using Mizur)
   """
   @type metric_type :: { module, atom, number}
 
@@ -147,7 +147,32 @@ defmodule Mizur do
   def elt ~> output_type do 
     from(elt, to: output_type)
   end
+
+  @doc """
+  Applies a function to the numeric value of a typed value and re-packs
+  the result of the function in the same subtype.
+  For example:
+      iex> MizurTest.Length.km(120)
+      ...> |> Mizur.map(fn(x) -> x * 2 end)
+      {MizurTest.Length.km, 240.0}
+  """
+  @spec map(typed_value, (float -> float)) :: typed_value
+  def map({type, elt}, f), do: {type, f.(elt)}
+
+  @doc """
+  Applies a function to the two numeric values of two `typed_values()` in 
+  the same metric system, and re-packages the result 
+  of the function in a `typed_value()` of the subtype of the left `typed_values()`.
+  For example: 
+      iex> a = MizurTest.Length.m(100)
+      ...> b = MizurTest.Length.cm(200)
+      ...> Mizur.map2(a, b, &(&1 * &2))
+      {MizurTest.Length.m, 200.0}
+  """
+  @spec map2(typed_value, typed_value, (float, float -> float)) :: typed_value
+  def map2({{module, _, _} = t, elt}, {{module, _, _}, _} = elt2, f) do 
+    {t, f.(elt, unwrap(elt2 ~> t))}
+  end
+
   
-
-
 end
