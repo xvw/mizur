@@ -1,5 +1,25 @@
 defmodule Mizur do
 
+  @moduledoc """
+  Mizur is a tool to simplify the handling of units.
+  > Mizur is the new version of [Abacus](https://github.com/xvw/abacus)
+  """
+
+  @typedoc """
+  This type represents a unit of measure (defined with using Abacus.SystemMetric)
+  """
+  @type metric_type :: { module, atom, number}
+
+  @typedoc """
+  This type represents a value wrapped in a metric system
+  """
+  @type typed_value :: { metric_type, float }
+
+  @typedoc """
+  This type represents a results of a comparison
+  """
+  @type comparison  :: :eq | :lt | :gt
+
   @doc false
   defmacro __using__(_opts) do 
     quote do 
@@ -24,14 +44,23 @@ defmodule Mizur do
     quote do 
       @operators (
         Map.put_new(
-          @operators, unquote(name), unquote(value) * 1.0
+          @operators, 
+          unquote(name), 
+          nquote(value) * 1.0
         )
       )
       def unquote(name)() do
-        {__MODULE__, unquote(name), unquote(value) * 1.0}
+        {
+          __MODULE__, 
+          unquote(name), 
+          unquote(value) * 1.0
+        }
       end
       def unquote(name)(to_be_typed) do 
-        {apply(__MODULE__, unquote(name), []), to_be_typed * 1.0}
+        {
+          apply(__MODULE__, unquote(name), []), 
+          to_be_typed * 1.0
+        }
       end
     end
   end
@@ -47,8 +76,8 @@ defmodule Mizur do
             _ -> 
               define_internal_type(
                 unquote(name), 
-                Map.get(@operators, unquote(basis)) 
-                * unquote(coeff)
+                Map.get(@operators, 
+                unquote(basis)) * unquote(coeff)
               )
           end
         end
@@ -71,6 +100,16 @@ defmodule Mizur do
     end
 
   end
+
+  @doc """
+  Retrieves the wrapped numeric value in a `typed_value()`.
+  For example: 
+      iex> x = MizurTest.Length.cm(12)
+      ...> Mizur.unwrap(x)
+      12.0
+  """
+  @spec unwrap(typed_value) :: float
+  def unwrap({_, value}), do: value
 
 
 end
