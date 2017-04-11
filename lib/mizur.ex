@@ -65,9 +65,7 @@ defmodule Mizur do
     end
   end
 
-  @doc """
-  TO BE DONE
-  """
+  @doc false
   defmacro type(value) do
     case value do 
       {:=, _, [name, {basis, _, [coeff]}]} -> 
