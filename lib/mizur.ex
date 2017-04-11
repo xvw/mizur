@@ -168,7 +168,7 @@ defmodule Mizur do
       {MizurTest.Length.m, 200.0}
   """
   @spec map2(typed_value, typed_value, (float, float -> float)) :: typed_value
-  def map2({{module, _, _} = t, elt}, {{module, _, _}, _} = elt2, f) do 
+  def map2({t, elt}, elt2, f) do 
     {t, f.(elt, unwrap(elt2 ~> t))}
   end
 
@@ -215,6 +215,30 @@ defmodule Mizur do
     )
   end
 
+
+  @doc """
+  Comparison between two `typed_value()` of the same metric system.
+  The function returns:
+  -  `:eq` for `equals` 
+  -  `:lt` if the left-values is **lower than** the right-values
+  -  `:gt` if the left-values is **greater than** the right-values
+  For example:
+      iex> x = MizurTest.Length.m(1)
+      ...> y = MizurTest.Length.cm(100)
+      ...> Mizur.compare(x, with: y)
+      :eq
+  """
+  @spec compare(typed_value, [with: typed_value]) :: comparison
+  def compare({t, _} = left, with: right) do 
+    a = unwrap(left)
+    b = unwrap(from(right, to: t))
+    cond do 
+      a > b -> :gt 
+      b > a -> :lt
+      true  -> :eq
+    end
+  end
+
   @doc """
   Makes the addition between two `typed_value()` of the same metric system. 
   The return value will have the subtype of the left `typed_value()`.
@@ -228,5 +252,42 @@ defmodule Mizur do
     map2(a, b, &(&1 + &2))
   end
 
-  
+
+  @doc """
+  Makes the subtraction between two `typed_value()` of the same metric system. 
+  The return value will have the subtype of the left `typed_value()`.
+      iex> a = MizurTest.Length.cm(12)
+      ...> b = MizurTest.Length.m(2)
+      ...> Mizur.sub(b, a)
+      {MizurTest.Length.m, 1.88}
+  """
+  @spec sub(typed_value, typed_value) :: typed_value
+  def sub(a, b) do 
+    map2(a, b, &(&1 - &2))
+  end
+
+  @doc """
+  Multiplies a `typed_value()` by a `number()`. The subtype of the return value 
+  will be the subtype of the left `typed_value()`.
+      iex> a = MizurTest.Length.cm(12)
+      ...> Mizur.mult(a, 10)
+      {MizurTest.Length.cm, 120.0}
+  """
+  @spec mult(typed_value, number) :: typed_value
+  def mult(a, b) do 
+    map(a, fn(x) -> x * b end)
+  end
+
+  @doc """
+  Divides a `typed_value()` by a `number()`. The subtype of the return value 
+  will be the subtype of the left `typed_value()`.
+      iex> a = MizurTest.Length.cm(12)
+      ...> Mizur.div(a, 2)
+      {MizurTest.Length.cm, 6.0}
+  """
+  @spec div(typed_value, number) :: typed_value
+  def div(a, b) do 
+    mult(a, 1/b)
+  end
+
 end
