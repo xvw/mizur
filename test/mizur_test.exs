@@ -5,11 +5,12 @@ defmodule MizurTest do
   defmodule Length do 
     use Mizur
     type :cm
-    type :m  = cm 100
+    type :dm = cm 10
+    type :m  = dm 10
     type :km = m 1000
   end
 
-  test "the truth" do
+  test "infix usage of from/2" do
     import Mizur
     elt = (Length.m(1) ~> Length.cm) |> unwrap
     assert elt == 100.0

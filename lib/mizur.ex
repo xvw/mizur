@@ -172,5 +172,25 @@ defmodule Mizur do
     {t, f.(elt, unwrap(elt2 ~> t))}
   end
 
+  @doc """
+  `List.foldl` for a list of `typed_value()` from the same metric system.
+
+  For example:
+      iex> 
+      ...> Mizur.fold(
+      ...>   [ MizurTest.Length.cm(10),  MizurTest.Length.dm(1),  MizurTest.Length.m(12)], 
+      ...>   MizurTest.Length.cm(12),
+      ...>   fn(x, acc) -> Mizur.map2(x, acc, &(&1+&2)) end,
+      ...>   to:  MizurTest.Length.cm
+      ...>)
+      {MizurTest.Length.cm, 1232.0}
+  """
+  @spec fold([typed_value], any, ((typed_value, any) -> any), [to: metric_type]) :: typed_value
+  def fold(list, default, f, to: basis) do 
+    List.foldl(list, default, fn(elt, acc) ->
+      f.(elt ~> basis, acc)
+    end)
+  end
+
   
 end
