@@ -54,7 +54,7 @@ defmodule Mizur.Mixfile do
 
   defp package do
     [
-     name: :abacus_sm,
+     name: :mizur,
      files: ["lib", "mix.exs", "README*", "LICENSE*"],
      maintainers: ["Xavier Van de Woestyne"],
      licenses: ["MIT"],
