@@ -192,5 +192,41 @@ defmodule Mizur do
     end)
   end
 
+  @doc """
+  Calculates the sum of a list of `typed_value()` of the same 
+  metric system, projected into a specific subtype.
+  For example: 
+      iex> Mizur.sum(
+      ...>   [
+      ...>       MizurTest.Length.cm(10), 
+      ...>       MizurTest.Length.dm(1), 
+      ...>       MizurTest.Length.m(12)
+      ...>   ], 
+      ...>   to: MizurTest.Length.dm
+      ...> )
+      {MizurTest.Length.dm, 122.0}
+  """
+  @spec sum([typed_value], [to: metric_type]) :: typed_value
+  def sum(list, to: {module, basis_name, _coeff} = basis) do 
+    fold(
+      list, apply(module, basis_name, [0]),
+      &add/2,
+      to: basis
+    )
+  end
+
+  @doc """
+  Makes the addition between two `typed_value()` of the same metric system. 
+  The return value will have the subtype of the left `typed_value()`.
+      iex> a = MizurTest.Length.cm(12)
+      ...> b = MizurTest.Length.m(2)
+      ...> Mizur.add(a, b)
+      {MizurTest.Length.cm, 212.0}
+  """
+  @spec add(typed_value, typed_value) :: typed_value
+  def add(a, b) do 
+    map2(a, b, &(&1 + &2))
+  end
+
   
 end
