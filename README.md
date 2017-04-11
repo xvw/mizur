@@ -1,4 +1,5 @@
 # Mizur
+Pronounced `/'meʒə/`
 
 **TODO: Add description**
 
