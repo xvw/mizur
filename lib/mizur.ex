@@ -46,7 +46,7 @@ defmodule Mizur do
         Map.put_new(
           @operators, 
           unquote(name), 
-          nquote(value) * 1.0
+          unquote(value) * 1.0
         )
       )
       def unquote(name)() do
@@ -65,6 +65,9 @@ defmodule Mizur do
     end
   end
 
+  @doc """
+  TO BE DONE
+  """
   defmacro type(value) do
     case value do 
       {:=, _, [name, {basis, _, [coeff]}]} -> 
@@ -110,6 +113,36 @@ defmodule Mizur do
   """
   @spec unwrap(typed_value) :: float
   def unwrap({_, value}), do: value
+
+ @doc """
+ Converts a `typed_value()` to another subtype of its metric system.
+
+ For example: 
+      iex> x = MizurTest.Length.cm(120)
+      ...> Mizur.from(x, to: MizurTest.Length.m)
+      {MizurTest.Length.m, 1.2}
+  """
+  @spec from(typed_value, [to: metric_type]) :: typed_value
+  def from({{module, _, coeff}, elt}, to: {module, _, coeff_basis} = basis) do 
+    divider = 1 / coeff_basis
+    basis_elt = (elt * coeff) * divider
+    {basis, basis_elt}
+  end
+
+  @doc """
+  Converts a `typed_value()` to another subtype of its metric system.
+  An infix version for `from/2`
+
+  For example:
+      iex> import Mizur
+      ...> MizurTest.Length.m(1) ~> MizurTest.Length.cm
+      {MizurTest.Length.cm, 100.0}
+  """
+  @spec typed_value ~> metric_type :: typed_value
+  def elt ~> output_type do 
+    from(elt, to: output_type)
+  end
+  
 
 
 end

@@ -10,8 +10,8 @@ defmodule MizurTest do
   end
 
   test "the truth" do
-    IO.inspect Test.system_metric
-    IO.inspect Mizur.unwrap Test.km(12)
-    assert 1 + 1 == 2
+    import Mizur
+    elt = (Length.m(1) ~> Length.cm) |> unwrap
+    assert elt == 100.0
   end
 end
