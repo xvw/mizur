@@ -128,6 +128,11 @@ defmodule Mizur do
     basis_elt = (elt * coeff) * divider
     {basis, basis_elt}
   end
+  def from({{module, _, _}, _}, to: {other_module, _, _}) do 
+    message = "#{module} is not compatible with #{other_module}"
+    raise RuntimeError, message: message
+  end
+  
 
   @doc """
   Converts a `typed_value()` to another subtype of its metric system.
