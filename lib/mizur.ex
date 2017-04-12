@@ -48,8 +48,19 @@ defmodule Mizur do
     }
   end
 
+  def 
+
+  def to_lambda({a, b}) do 
+    {
+
+    }
+  end
+
   @doc false
-  def pp({a, b}), do: {Macro.to_string a, Macro.to_string b}
+  def pp({a, b}) do 
+    {Macro.to_string(a) , Macro.to_string(b)}
+  end
+  
 
 
   @doc false
