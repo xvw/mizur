@@ -114,5 +114,24 @@ defmodule MizurTest do
     end
   end
 
+  test "for min" do 
+    a = Length.cm(10000)
+    b = Length.m(2)
+    assert (Mizur.min(a, b)) == b
+  end
 
+  test "for max" do 
+    a = Length.cm(10000)
+    b = Length.m(2)
+    assert (Mizur.max(a, b)) == a
+  end
+
+  test "for equals" do 
+    a = Length.m(1)
+    b = Length.cm(100)
+    assert (Mizur.max(a, b)) == a
+    assert (Mizur.min(a, b)) == a
+  end
+  
+  
 end

@@ -252,7 +252,6 @@ defmodule Mizur do
     map2(a, b, &(&1 + &2))
   end
 
-
   @doc """
   Makes the subtraction between two `typed_value()` of the same metric system. 
   The return value will have the subtype of the left `typed_value()`.
@@ -289,5 +288,40 @@ defmodule Mizur do
   def div(a, b) do 
     mult(a, 1/b)
   end
+
+  @doc """
+  Returns the smallest of the two given terms according to the compare/2 function.
+  If the terms compare equal, the first one is returned.
+      iex> a = MizurTest.Length.cm(10000)
+      ...> b = MizurTest.Length.m(2)
+      ...> Mizur.min(a, b)
+      {MizurTest.Length.m, 2.0}
+  """
+  @spec min(typed_value, typed_value) :: typed_value 
+  def min(a, b) do 
+    case compare(a, with: b) do 
+      :lt -> a
+      :eq -> a
+      _   -> b
+    end
+  end
+
+  @doc """
+  Returns the biggest of the two given terms according to the compare/2 function.
+  If the terms compare equal, the first one is returned.
+      iex> a = MizurTest.Length.cm(10000)
+      ...> b = MizurTest.Length.m(2)
+      ...> Mizur.max(a, b)
+      {MizurTest.Length.cm, 10000.0}
+  """
+  @spec max(typed_value, typed_value) :: typed_value 
+  def max(a, b) do 
+    case compare(a, with: b) do 
+      :gt -> a 
+      :eq -> a
+      _   -> b
+    end
+  end
+  
 
 end
