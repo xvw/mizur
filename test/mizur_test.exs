@@ -5,16 +5,16 @@ defmodule MizurTest do
   defmodule Length do 
     use Mizur
     type :cm
-    type :mm = cm 1/10
-    type :dm = cm 10
-    type :m  = dm 10
-    type :km = m 1000
+    type :mm = :cm / 10
+    type :dm = 10 * :cm
+    type :m  = :dm * 10
+    type :km = :m * 1000
   end
 
   defmodule Money do 
     use Mizur
     type :euro
-    type :dollar = euro 1.06665
+    type :dollar = :euro * 1.06665
   end
 
   
@@ -29,6 +29,13 @@ defmodule MizurTest do
     |> unwrap
     assert elt == 100.0
   end
+
+  test "new syntax" do 
+    a = Length.m(1)
+    b = Mizur.from(a, to: Length.mm)
+    assert (Mizur.unwrap b) == 1000.0
+  end
+  
 
   test "for difftyped data" do 
     k = Money.euro(12)
@@ -132,6 +139,5 @@ defmodule MizurTest do
     assert (Mizur.max(a, b)) == a
     assert (Mizur.min(a, b)) == a
   end
-  
   
 end

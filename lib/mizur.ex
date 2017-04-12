@@ -68,7 +68,15 @@ defmodule Mizur do
   @doc false
   defmacro type(value) do
     case value do 
-      {:=, _, [name, {basis, _, [coeff]}]} -> 
+      {:=, [line: nl], [name, {operator, _, tl}]} ->
+        {basis, coeff} = case tl do 
+          [a, b] when is_atom(a) -> {a, b}
+          [a, b] when is_atom(b) -> {b, a}
+          _ -> 
+            module_line = "#{__MODULE__}:#{nl}"
+            raise RuntimeError, 
+              message: "line #{module_line} is not parsable"
+        end
         quote do
           case Map.has_key?(@operators, unquote(basis)) do 
             false -> 
@@ -77,8 +85,14 @@ defmodule Mizur do
             _ -> 
               define_internal_type(
                 unquote(name), 
-                Map.get(@operators, 
-                unquote(basis)) * unquote(coeff)
+                apply(
+                  :erlang, 
+                  unquote(operator), 
+                  [
+                    Map.get(@operators, unquote(basis)),
+                    unquote(coeff)
+                  ]
+                )
               )
           end
         end
