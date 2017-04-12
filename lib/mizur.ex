@@ -48,7 +48,6 @@ defmodule Mizur do
     }
   end
 
-  def 
 
   def to_lambda({a, b}) do 
     {
@@ -67,7 +66,7 @@ defmodule Mizur do
   def revert_expression(value) do 
     IO.inspect value
     case value do
-      [_, next] when is_atom(next) -> value
+      [_, next] when is_atom(next)-> value
       [a, next] -> 
         {{op, ctx, b}, right} = revert_member(next)
         new_value = [{op, ctx, [a, b]}, right]
@@ -96,6 +95,8 @@ defmodule Mizur do
   @doc false
   def revert_member(expr) do 
     case expr do 
+      {operator, ctx, [left, right]} when is_number(left) ->
+        {{revert_operator(operator), ctx, left}, right}
       {operator, ctx, [left, right]} ->
         {{revert_operator(operator), ctx, right}, left}
     end
