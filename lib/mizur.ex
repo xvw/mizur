@@ -39,6 +39,43 @@ defmodule Mizur do
     end
   end
 
+
+  @doc false
+  def revert_expression(value) do 
+    IO.inspect value
+    case value do
+      [_, next] when is_atom(next) -> value
+      [a, next] -> 
+        {{op, ctx, b}, right} = revert_expr(next)
+        new_value = [{op, ctx, [a, b]}, right]
+        build_equation(new_value)
+    end
+  end
+
+  @doc false
+  def revert_operator(op) do 
+    case op do 
+      :+ -> :- 
+      :- -> :+ 
+      :* -> :/
+      :/ -> :*
+      _  -> 
+        raise RuntimeError, 
+          message: "Unknown operator #{op}"
+    end
+  end
+
+  @doc false
+  def revert_expr(expr) do 
+    case expr do 
+      {operator, ctx, [left, right]} ->
+        {{revert_operator(operator), ctx, right}, left}
+    end
+  end
+  
+
+
+
   @doc false
   defmacro define_internal_type(name, value) do 
     quote do 
