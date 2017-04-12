@@ -39,6 +39,18 @@ defmodule Mizur do
     end
   end
 
+  @doc false 
+  def revert(in_expr) do 
+    {_, _, expr} = in_expr
+    {
+      expr, 
+      revert_expression(expr)
+    }
+  end
+
+  @doc false
+  def pp({a, b}), do: {Macro.to_string a, Macro.to_string b}
+
 
   @doc false
   def revert_expression(value) do 
@@ -46,10 +58,15 @@ defmodule Mizur do
     case value do
       [_, next] when is_atom(next) -> value
       [a, next] -> 
-        {{op, ctx, b}, right} = revert_expr(next)
+        {{op, ctx, b}, right} = revert_member(next)
         new_value = [{op, ctx, [a, b]}, right]
-        build_equation(new_value)
+        revert_expression(new_value)
     end
+  end
+
+  @doc false 
+  def create_lambda do 
+
   end
 
   @doc false
@@ -66,7 +83,7 @@ defmodule Mizur do
   end
 
   @doc false
-  def revert_expr(expr) do 
+  def revert_member(expr) do 
     case expr do 
       {operator, ctx, [left, right]} ->
         {{revert_operator(operator), ctx, right}, left}
