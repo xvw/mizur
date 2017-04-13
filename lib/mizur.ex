@@ -48,34 +48,43 @@ defmodule Mizur do
     module_line = "#{__MODULE__}:#{nl}"
     raise RuntimeError, message: "line #{module_line} #{msg}"
   end
+
+  defmacro lambda(expr) do 
+    quote do: (fn(x) -> unquote(expr) end)
+  end
   
 
   @doc false 
-  defmacro define_type(nl, name, expr) do 
+  defmacro define_type(nl, name, f_expr) do
     quote do 
       cond do 
         Enum.member?(@metrics, unquote(name)) -> 
           fail_at(unquote(nl), "#{unquote(name)} already exists")
         true -> 
-          @metrics [ unquote(name) | @metrics ]
-          0
-      end  
+          @metrics [unquote(name) | @metrics ]
+          def unquote(name)() do 
+            {
+              __MODULE__, 
+              unquote(name), 
+              lambda(unquote(f_expr)), 
+              revert_lambda(unquote(f_expr))
+            }
+          end
+      end
     end
   end
   
 
   @doc false
   defmacro type(value) do 
-
     IO.inspect value
-
     case value do 
 
-      value when is_atom(value) -> 
-        quote do: define_basis(unquote(value))
-
-      {:=, [line: nl], [value, expr]} ->
+      {:=, [line: nl], [{value, _, _}, expr]} ->
         quote do: define_type(unquote(nl), unquote(value), unquote(expr))
+
+      {value, _, _} when is_atom(value) -> 
+        quote do: define_basis(unquote(value))
 
       {_, [line: nl], _} -> fail_at(nl, "is not parsable")
         
