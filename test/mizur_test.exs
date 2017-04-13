@@ -19,8 +19,8 @@ defmodule MizurTest do
 
   defmodule Test do 
     use Mizur 
-    v_type :celsius
-    v_type :farenheit = :celsius * 1.8 + 32.0
+    type :celsius
+    type :farenheit = :celsius * 1.8 + 32.0
   end
 
   IO.inspect Test.celsius(12)
