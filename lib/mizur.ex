@@ -19,8 +19,17 @@ defmodule Mizur do
     end
   end
 
+  defp prepend_atom(atom, with: particule) do 
+    String.to_atom(
+      particule 
+      <> Atom.to_string(atom)
+    )
+  end
+  
+
   @doc false
   defmacro define_basis(name) do 
+    private_name = prepend_atom(name, with: "__")
     quote do
       case @base do 
         nil ->
@@ -33,6 +42,10 @@ defmodule Mizur do
 
           def unquote(name)(value) do 
             {apply(__MODULE__, unquote(name), []), value * 1.0}
+          end
+
+          def unquote(private_name)(value) do 
+            12.0
           end
           
           @base unquote(name)
@@ -49,7 +62,21 @@ defmodule Mizur do
     raise RuntimeError, message: "line #{module_line} #{msg}"
   end
 
+  def fix_variant_in_lambda(expr) do 
+    Macro.postwalk(expr, fn(sym) ->
+      case sym do 
+        {k, e, nil} -> 
+          r = {prepend_atom(k, with: "__"), e, [1]}
+          IO.inspect [fooooo: r] 
+          r
+        _ -> sym
+      end
+    end)
+  end
+  
+
   defmacro lambda(expr) do 
+    e = fix_variant_in_lambda(expr)
     quote do: (fn(x) -> unquote(expr) end)
   end
   
@@ -67,7 +94,7 @@ defmodule Mizur do
               __MODULE__, 
               unquote(name), 
               lambda(unquote(f_expr)), 
-              revert_lambda(unquote(f_expr))
+              lambda(unquote(f_expr)) # Must be changed
             }
           end
       end
@@ -77,7 +104,6 @@ defmodule Mizur do
 
   @doc false
   defmacro type(value) do 
-    IO.inspect value
     case value do 
 
       {:=, [line: nl], [{value, _, _}, expr]} ->
