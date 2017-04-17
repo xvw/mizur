@@ -67,7 +67,6 @@ defmodule Mizur do
       case sym do 
         {k, e, nil} -> 
           r = {prepend_atom(k, with: "__"), e, [1]}
-          IO.inspect [fooooo: r] 
           r
         _ -> sym
       end
