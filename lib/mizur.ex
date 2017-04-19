@@ -296,6 +296,7 @@ defmodule Mizur do
     new_value = from.(to.(base))
     {t, new_value}
   end
+
   def from({{m, _, _, _, _},_}, to: {other_m, _, _, _, _}) do 
     message = "#{m} is not compatible with #{other_m}"
     raise RuntimeError, message: message
@@ -325,6 +326,22 @@ defmodule Mizur do
   @spec map(typed_value, (number -> number)) :: typed_value 
   def map({type, elt}, f) do 
     {type, f.(elt)}
+  end
+
+  @doc """
+  Applies a function to the two numeric values of two `typed_values()` in 
+  the same metric system, and re-packages the result 
+  of the function in a `typed_value()` of the subtype of the left `typed_values()`.
+  For example: 
+      iex> a = MizurTest.Distance.m(100)
+      ...> b = MizurTest.Distance.km(2)
+      ...> Mizur.map2(a, b, &(&1 * &2))
+      {MizurTest.Distance.m, 200000.0}
+  """
+  @spec map2(typed_value, typed_value, (number, number -> number)) :: typed_value
+  def map2({t, a}, elt2, f) do 
+    {_, b } = elt2 ~> t 
+    {t, f.(a, b)}
   end
   
 
