@@ -8,6 +8,11 @@ defmodule Mizur do
   to be typesafe.
   """
 
+
+  @typedoc """
+  This type represents a unit of measure 
+  (defined with using Mizur.System)
+  """
   @type metric_type :: {
     module, 
     atom, 
@@ -16,6 +21,9 @@ defmodule Mizur do
     (number -> float)
   }
 
+  @typedoc """
+  This type represents a value wrapped in a metric system
+  """
   @type typed_value :: {
     metric_type, 
     float
