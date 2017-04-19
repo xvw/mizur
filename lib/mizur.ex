@@ -1,15 +1,27 @@
 defmodule Mizur do
 
+  @moduledoc """
+  **Mizur** is a tool to simplify the management, conversions  
+  and mapping of units. 
+
+  The manipulation of units of measurement try (at best) 
+  to be typesafe
+  """
 
   defmodule System do 
 
+    @moduledoc """
+    Sets up a metric system.
+    """
+
     @doc false
-    defmacro __using__(_opts) do 
+    defmacro __using__(opts) do 
       quote do 
         import Mizur.System
         @basis nil
         @metrics []
         @before_compile Mizur.System
+        @intensive !!unquote(opts)[:intensive]
       end
     end
 
@@ -18,7 +30,10 @@ defmodule Mizur do
     defmacro __before_compile__(_env) do
       quote do
         def system_metric do
-          @metrics
+          %{
+            units: @metrics,
+            intensive?: @intensive
+          }
         end
       end
     end
