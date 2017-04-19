@@ -195,7 +195,25 @@ defmodule Mizur do
     
     @doc """
     Defines the metric system reference unit. For example, 
-    `m` in the distance system.
+    `m` in the distance system :
+
+    ```
+    defmodule Distance do 
+      use Mizur.System
+
+      type m # m is used as a reference
+      type cm = m / 100 
+      type mm = m / 1000 
+      type km = m * 1000
+
+    end
+    ```
+
+    - You can only use one reference unit.
+    - In the expression to define the ratio between a unit 
+      and its reference, only the reference can be used as variable 
+      and the operators: `+`, `*`, `-` and `/`.
+
     """
     defmacro type({basis, _, nil}) do
       quote do
@@ -229,8 +247,6 @@ defmodule Mizur do
       end
     end
     
-
-    @doc false
     defmacro type(_value) do 
       raise RuntimeError, 
         message: "The line is unparsable"
@@ -240,6 +256,14 @@ defmodule Mizur do
   end
   
 
+
+  @doc """
+  Retrieves the wrapped numeric value in a `typed_value`.
+  For example: 
+      iex> x = MizurTest.Distance.cm(12)
+      ...> Mizur.unwrap(x)
+      12.0
+  """
   def unwrap({_, value}), do: value
 
   def from({{module, _, _, _, to}, base}, to: {module, _, _, from, _} = t) do

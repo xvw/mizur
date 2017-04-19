@@ -25,7 +25,5 @@ defmodule MizurTest do
     type oth = 32 + (celsius * 1.8)
   end
 
-
-  IO.inspect Distance.system_metric.intensive?
   
 end
