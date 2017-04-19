@@ -18,7 +18,7 @@ defmodule MizurTest do
 
     type sec
     type min  = sec * 60 
-    type hour = (60 * 60) * sec
+    type hour = 60 * 60 * sec
     type day  = 60 * sec * (60 * 24)
 
   end
@@ -27,13 +27,14 @@ defmodule MizurTest do
     use Mizur.System
 
     type celsius
-    type farenheit = celsius * 1.8 + 32.0
+    type farenheit = (celsius * 1.8) + 32.0
     type oth = 32 + (celsius * 1.8)
 
   end
 
-  {_, _, b, a} = Temperature.farenheit
-  IO.inspect (b.(1))
+  {_, _, b, a} = Temperature.oth
+  IO.inspect (b.(12456))
+  IO.inspect (a.(6902.2222222))
 
   
 end

@@ -24,11 +24,47 @@ defmodule Mizur do
     end
 
     @doc false 
-    def revert_expr(acc, expr) do 
-      IO.inspect expr
+    def rev_operator(op) do 
+      case op do 
+        :+ -> :- 
+        :- -> :+ 
+        :* -> :/
+        :/ -> :*
+        _  -> 
+          raise RuntimeError, 
+            message: "#{op} is an unknown operator"
+      end
+    end
+    
+
+    @doc false 
+    def revert_expr(acc, f_expr) do 
+      expr = Macro.postwalk(
+        f_expr, 
+        fn(elt) -> 
+          case elt do 
+            {op, _, [a, b]} when is_number(a) and is_number(b) ->
+              apply(Kernel, op, [a, b])
+            _ -> elt
+          end
+        end
+      )
       case expr do 
         {_, _, nil} -> acc
-        _ -> acc
+        {op, _, [left, right]} 
+          when is_number(left) ->
+            new_acc = {rev_operator(op), [], [acc, left]}
+            revert_expr(new_acc, right)
+        {op, _, [right, left]} 
+          when is_number(left) ->
+            new_acc = {rev_operator(op), [], [acc, left]}
+            revert_expr(new_acc, right)
+        {op, _, [left, {_, _, nil}]} ->
+            {rev_operator(op), [], [acc, left]}
+        {op, _, [{_, _, nil}, left]} ->
+            {rev_operator(op), [], [acc, left]}
+        _ -> 
+          acc
       end
     end
 
@@ -38,16 +74,29 @@ defmodule Mizur do
       formatted = Macro.postwalk(expr, fn(elt) -> 
         case elt do 
           {x, _, nil} when is_atom(x) -> {:basis, [], __MODULE__}
+          {x, _, t_elt} -> {x, [], t_elt}
           _ -> elt
         end
       end)
+      IO.inspect [from: formatted]
       quote do: (fn(basis) -> unquote(formatted) end)
     end
 
     @doc false 
     defmacro revert_lambda(expr) do 
-      formatted = revert_expr({:target, [], __MODULE__}, expr)
-      quote do: (fn(target) -> unquote(formatted) end)
+      fexpr = revert_expr({:target, [], __MODULE__}, expr)
+      formatted = Macro.postwalk(
+        fexpr, 
+        fn(elt) -> 
+          case elt do 
+            {x, _, nil} when is_atom(x) -> {:target, [], __MODULE__}
+            {x, _, t_elt} -> {x, [], t_elt}
+            _ -> elt
+          end
+        end
+      )
+      IO.inspect [to: formatted]
+      quote do: fn(target) -> unquote(formatted) end
     end
     
 
@@ -89,7 +138,7 @@ defmodule Mizur do
             __MODULE__, 
             unquote(name), 
             revert_lambda(unquote(expr)),  # to_basis 
-            create_lambda(unquote(expr))   # from_basis
+            create_lambda(unquote(expr))    # from_basis
           }
         end
 
