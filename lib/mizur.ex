@@ -5,13 +5,35 @@ defmodule Mizur do
   and mapping of units. 
 
   The manipulation of units of measurement try (at best) 
-  to be typesafe
+  to be typesafe.
   """
 
   defmodule System do 
 
     @moduledoc """
     Sets up a metric system.
+
+    This module must be used in another module to define a metric system.
+
+    When used, it accepts the following options:
+
+    - `:intensive` : defined a metric system as using intensive measurements.
+       An intensive system prohibits arithmetic operations between units. 
+       It only allows conversions.
+
+    ## Example 
+
+    ```
+    defmodule Distance do 
+      use Mizur.System
+
+      type m # m is used as a reference
+      type cm = m / 100 
+      type mm = m / 1000 
+      type km = m * 1000
+
+    end
+    ```
     """
 
     @doc false
@@ -171,7 +193,10 @@ defmodule Mizur do
     end
 
     
-    @doc false
+    @doc """
+    Defines the metric system reference unit. For example, 
+    `m` in the distance system.
+    """
     defmacro type({basis, _, nil}) do
       quote do
         case @basis do 
@@ -183,7 +208,6 @@ defmodule Mizur do
       end
     end
 
-    @doc false
     defmacro type({:=, _, [{name, _, nil}, rest]}) do 
       quote do 
         case @basis do 
