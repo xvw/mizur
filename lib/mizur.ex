@@ -35,6 +35,14 @@ defmodule Mizur do
             message: "#{op} is an unknown operator"
       end
     end
+
+
+    @doc false
+    def prepend_str_to_atom(str, atom) do 
+      pre = str <> Atom.to_string(atom)
+      String.to_atom(pre)
+    end
+    
     
 
     @doc false 
@@ -100,9 +108,13 @@ defmodule Mizur do
 
     @doc false
     defmacro define_basis(basis) do 
+
+
       quote do 
+
         @basis unquote(basis)
         @metrics [unquote(basis) | @metrics]
+
 
         def unquote(basis)() do 
           {

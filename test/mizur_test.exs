@@ -6,10 +6,10 @@ defmodule MizurTest do
   defmodule Distance do 
     use Mizur.System 
 
-    type cm 
-    type mm = cm / 10
-    type m  = cm * 100 
-    type km = 100_000 * cm
+    type m
+    type cm = m / 100 
+    type mm = m / 1000 
+    type km = m * 1000
 
   end
 
