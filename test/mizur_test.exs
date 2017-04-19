@@ -2,7 +2,28 @@ defmodule MizurTest do
   use ExUnit.Case
   doctest Mizur
 
-  defmodule Test do 
+
+  defmodule Distance do 
+    use Mizur.System 
+
+    type cm 
+    type mm = cm / 10
+    type m  = cm * 100 
+    type km = 100_000 * cm
+
+  end
+
+  defmodule Time do 
+    use Mizur.System 
+
+    type sec
+    type min  = sec * 60 
+    type hour = (60 * 60) * sec
+    type day  = 60 * sec * (60 * 24)
+
+  end
+  
+  defmodule Temperature do 
     use Mizur.System
 
     type celsius
@@ -11,7 +32,7 @@ defmodule MizurTest do
 
   end
 
-  {_, _, b, a} = Test.farenheit
+  {_, _, b, a} = Temperature.farenheit
   IO.inspect (b.(1))
 
   
