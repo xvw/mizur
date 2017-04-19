@@ -25,5 +25,18 @@ defmodule MizurTest do
     type oth = 32 + (celsius * 1.8)
   end
 
+  test "Simple Unwrapping" do 
+
+    a = Temperature.celsius(1000)
+    b = Distance.km(1234)
+    c = Time.sec(2090)
+
+    assert Mizur.unwrap(a) == 1000.0
+    assert Mizur.unwrap(b) == 1234.0
+    assert Mizur.unwrap(c) == 2090.0
+
+  end
+  
+
   
 end
