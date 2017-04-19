@@ -31,7 +31,6 @@ defmodule MizurTest do
     type oth = 32 + (celsius * 1.8)
   end
 
-  IO.inspect (Mizur.from(Distance.m(1000), to: Distance.km))
 
   
 end

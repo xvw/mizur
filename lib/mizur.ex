@@ -36,15 +36,6 @@ defmodule Mizur do
       end
     end
 
-
-    @doc false
-    def prepend_str_to_atom(str, atom) do 
-      pre = str <> Atom.to_string(atom)
-      String.to_atom(pre)
-    end
-    
-    
-
     @doc false 
     def revert_expr(acc, f_expr) do 
       expr = Macro.postwalk(
@@ -213,6 +204,10 @@ defmodule Mizur do
   def from({{module, _, _, to}, base}, to: {module, _, from, _} = t) do
     new_value = from.(to.(base))
     {t, new_value}
+  end
+  def from({{m, _, _, _},_}, to: {other_m, _, _, _}) do 
+    message = "#{m} is not compatible with #{other_m}"
+    raise RuntimeError, message: message
   end
 
 end
