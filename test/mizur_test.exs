@@ -3,16 +3,16 @@ defmodule MizurTest do
   doctest Mizur
 
   defmodule Test do 
-    use Mizur 
+    use Mizur.System
 
     type celsius
     type farenheit = celsius * 1.8 + 32.0
-    type cm = 18
+    type oth = 32 + (celsius * 1.8)
 
   end
 
   {_, _, b, a} = Test.farenheit
-  IO.inspect (a.(1))
+  IO.inspect (b.(1))
 
   
 end
