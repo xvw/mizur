@@ -126,6 +126,7 @@ defmodule Mizur do
           {
             __MODULE__, 
             unquote(basis),
+            @intensive,
             fn(x) -> x * 1.0 end, # from_basis
             fn(x) -> x * 1.0 end  # to_basis
           }
@@ -153,6 +154,7 @@ defmodule Mizur do
           {
             __MODULE__, 
             unquote(name), 
+            @intensive,
             revert_lambda(unquote(expr)),   # from_basis 
             create_lambda(unquote(expr))    # to_basis
           }
@@ -216,7 +218,7 @@ defmodule Mizur do
 
   def unwrap({_, value}), do: value
 
-  def from({{module, _, _, to}, base}, to: {module, _, from, _} = t) do
+  def from({{module, _, _, _, to}, base}, to: {module, _, _, from, _} = t) do
     new_value = from.(to.(base))
     {t, new_value}
   end
