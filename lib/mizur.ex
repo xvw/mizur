@@ -313,6 +313,19 @@ defmodule Mizur do
   def base ~> to do 
     from(base, to: to)
   end
+
+  @doc """
+  Applies a function to the numeric value of a typed value and re-packs
+  the result of the function in the same subtype.
+  For example:
+      iex> MizurTest.Distance.km(120)
+      ...> |> Mizur.map(fn(x) -> x * 2 end)
+      {MizurTest.Distance.km, 240.0}
+  """
+  @spec map(typed_value, (number -> number)) :: typed_value 
+  def map({type, elt}, f) do 
+    {type, f.(elt)}
+  end
   
 
 end
