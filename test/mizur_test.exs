@@ -29,8 +29,9 @@ defmodule MizurTest do
     type celsius
     type farenheit = (celsius * 1.8) + 32.0
     type oth = 32 + (celsius * 1.8)
-
   end
+
+  IO.inspect (Mizur.from(Distance.m(1000), to: Distance.km))
 
   
 end
