@@ -324,8 +324,9 @@ defmodule Mizur do
   end
 
   @doc """
-  Applies a function to the numeric value of a typed value and re-packs
+  Applies a function to the numeric value of a `typed_value` and re-packs
   the result of the function in the same subtype.
+  
   For example:
       iex> MizurTest.Distance.km(120)
       ...> |> Mizur.map(fn(x) -> x * 2 end)
@@ -337,9 +338,10 @@ defmodule Mizur do
   end
 
   @doc """
-  Applies a function to the two numeric values of two `typed_values()` in 
+  Applies a function to the two numeric values of two `typed_values` in 
   the same metric system, and re-packages the result 
-  of the function in a `typed_value()` of the subtype of the left `typed_values()`.
+  of the function in a `typed_value` of the subtype of the left `typed_values`.
+  
   For example: 
       iex> a = MizurTest.Distance.m(100)
       ...> b = MizurTest.Distance.km(2)
