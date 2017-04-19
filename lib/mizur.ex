@@ -272,6 +272,7 @@ defmodule Mizur do
 
   @doc """
   Retrieves the wrapped numeric value in a `typed_value`.
+
   For example: 
       iex> x = MizurTest.Distance.cm(12)
       ...> Mizur.unwrap(x)
@@ -284,6 +285,7 @@ defmodule Mizur do
 
   @doc """
   Converts a `typed_value` to another subtype of its metric system.
+
   For example: 
       iex> x = MizurTest.Distance.cm(120)
       ...> Mizur.from(x, to: MizurTest.Distance.m)
@@ -299,7 +301,14 @@ defmodule Mizur do
     raise RuntimeError, message: message
   end
 
-  
+  @doc """
+  Infix version of `from/2`.
+
+  For example:
+      iex> import Mizur
+      ...> MizurTest.Distance.cm(100) ~> MizurTest.Distance.m
+      {MizurTest.Distance.m, 1.0}
+  """
   @spec typed_value ~> metric_type :: typed_value
   def base ~> to do 
     from(base, to: to)
