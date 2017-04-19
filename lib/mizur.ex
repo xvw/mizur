@@ -281,6 +281,14 @@ defmodule Mizur do
   def unwrap({_, value}), do: value
 
 
+
+  @doc """
+  Converts a `typed_value` to another subtype of its metric system.
+  For example: 
+      iex> x = MizurTest.Distance.cm(120)
+      ...> Mizur.from(x, to: MizurTest.Distance.m)
+      {MizurTest.Distance.m, 1.2}
+  """
   @spec from(typed_value, [to: metric_type]) :: typed_value
   def from({{module, _, _, _, to}, base}, to: {module, _, _, from, _} = t) do
     new_value = from.(to.(base))
@@ -290,5 +298,12 @@ defmodule Mizur do
     message = "#{m} is not compatible with #{other_m}"
     raise RuntimeError, message: message
   end
+
+  
+  @spec typed_value ~> metric_type :: typed_value
+  def base ~> to do 
+    from(base, to: to)
+  end
+  
 
 end
