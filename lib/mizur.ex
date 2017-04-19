@@ -22,6 +22,28 @@ defmodule Mizur do
   end
 
 
+  @doc false 
+  defmacro create_lambda(expr) do 
+    formatted = Macro.postwalk(expr, fn(elt) -> 
+      case elt do 
+        {x, _, nil} when is_atom(x) -> {x, [], __MODULE__}
+        _ -> elt
+      end
+    end)
+    quote do: 
+      (fn(celsius) -> unquote(formatted) end)
+  end
+
+  @doc false 
+  defmacro revert_lambda(expr) do 
+    quote do 
+
+    end
+  end
+  
+  
+
+
   @doc false
   defmacro define_basis(basis) do 
     quote do 
@@ -32,8 +54,8 @@ defmodule Mizur do
         {
           __MODULE__, 
           unquote(basis),
-          fn(x) -> x * 1.0 end, 
-          fn(x) -> x * 1.0 end
+          fn(x) -> x * 1.0 end, # to_basis
+          fn(x) -> x * 1.0 end  # from_basis
         }
       end
 
@@ -50,8 +72,27 @@ defmodule Mizur do
 
   @doc false
   defmacro define_internal_type(name, expr) do 
+
+
     quote do 
       @metrics [unquote(name) | @metrics]
+
+      def unquote(name)() do 
+        {
+          __MODULE__, 
+          unquote(name), 
+          revert_lambda(unquote(expr)),  # to_basis 
+          create_lambda(unquote(expr)) # from_basis
+        }
+      end
+
+      def unquote(name)(value) do 
+        {
+          apply(__MODULE__, unquote(name), []),
+          value * 1.0
+        }
+      end
+
     end
   end
 
@@ -80,8 +121,11 @@ defmodule Mizur do
             Enum.member?(@metrics, unquote(name)) ->
               raise RuntimeError, 
                 message: "#{unquote(name)} is already defined"
-            true -> define_internal_type(unquote(name), unquote(rest))
-              
+            true -> 
+              define_internal_type(
+                unquote(name), 
+                unquote(rest)
+              )  
           end
       end
     end

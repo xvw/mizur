@@ -11,8 +11,8 @@ defmodule MizurTest do
 
   end
 
-
-  IO.inspect (Test.celsius(12) |> Mizur.unwrap)
+  {_, _, b, a} = Test.farenheit
+  IO.inspect (a.(1))
 
   
 end
