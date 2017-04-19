@@ -8,6 +8,19 @@ defmodule Mizur do
   to be typesafe.
   """
 
+  @type metric_type :: {
+    module, 
+    atom, 
+    boolean, 
+    (number -> float),
+    (number -> float)
+  }
+
+  @type typed_value :: {
+    metric_type, 
+    float
+  }
+
   defmodule System do 
 
     @moduledoc """
@@ -264,13 +277,16 @@ defmodule Mizur do
       ...> Mizur.unwrap(x)
       12.0
   """
+  @spec unwrap(typed_value) :: float
   def unwrap({_, value}), do: value
 
+
+  @spec from(typed_value, [to: metric_type]) :: typed_value
   def from({{module, _, _, _, to}, base}, to: {module, _, _, from, _} = t) do
     new_value = from.(to.(base))
     {t, new_value}
   end
-  def from({{m, _, _, _},_}, to: {other_m, _, _, _}) do 
+  def from({{m, _, _, _, _},_}, to: {other_m, _, _, _, _}) do 
     message = "#{m} is not compatible with #{other_m}"
     raise RuntimeError, message: message
   end
