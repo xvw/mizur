@@ -32,9 +32,5 @@ defmodule MizurTest do
 
   end
 
-  {_, _, b, a} = Temperature.oth
-  IO.inspect (b.(12456))
-  IO.inspect (a.(6902.2222222))
-
   
 end

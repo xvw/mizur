@@ -78,7 +78,6 @@ defmodule Mizur do
           _ -> elt
         end
       end)
-      IO.inspect [from: formatted]
       quote do: (fn(basis) -> unquote(formatted) end)
     end
 
@@ -95,7 +94,6 @@ defmodule Mizur do
           end
         end
       )
-      IO.inspect [to: formatted]
       quote do: fn(target) -> unquote(formatted) end
     end
     
@@ -110,8 +108,8 @@ defmodule Mizur do
           {
             __MODULE__, 
             unquote(basis),
-            fn(x) -> x * 1.0 end, # to_basis
-            fn(x) -> x * 1.0 end  # from_basis
+            fn(x) -> x * 1.0 end, # from_basis
+            fn(x) -> x * 1.0 end  # to_basis
           }
         end
 
@@ -137,8 +135,8 @@ defmodule Mizur do
           {
             __MODULE__, 
             unquote(name), 
-            revert_lambda(unquote(expr)),  # to_basis 
-            create_lambda(unquote(expr))    # from_basis
+            revert_lambda(unquote(expr)),   # from_basis 
+            create_lambda(unquote(expr))    # to_basis
           }
         end
 
@@ -199,5 +197,10 @@ defmodule Mizur do
   
 
   def unwrap({_, value}), do: value
+
+  def from({{module, _, _, to}, base}, to: {module, _, from, _} = t) do
+    new_value = from.(to.(base))
+    {t, new_value}
+  end
 
 end
