@@ -29,6 +29,11 @@ defmodule Mizur do
     float
   }
 
+  @typedoc """
+  This type represents a results of a comparison
+  """
+  @type comparison_result :: :eq | :lt | :gt
+
   defmodule System do 
 
     @moduledoc """
@@ -353,6 +358,32 @@ defmodule Mizur do
     {_, b } = elt2 ~> t 
     {t, f.(a, b)}
   end
+
+
+  @doc """
+  Comparison between two `typed_value` of the same metric system.
+
+  The function returns:
+  -  `:eq` for `equals` 
+  -  `:lt` if the left-values is **lower than** the right-values
+  -  `:gt` if the left-values is **greater than** the right-values
+
+  For example:
+      iex> x = MizurTest.Distance.m(1)
+      ...> y = MizurTest.Distance.cm(100)
+      ...> Mizur.compare(x, with: y)
+      :eq
+  """
+  @spec compare(typed_value, [with: typed_value]) :: comparison_result
+  def compare({t, left}, with: elt_right) do 
+    {_, right} = elt_right ~> t
+    cond do 
+      left > right -> :gt 
+      right > left -> :lt 
+      true         -> :eq 
+    end
+  end
+  
   
 
 end
