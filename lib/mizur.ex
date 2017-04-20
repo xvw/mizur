@@ -304,19 +304,68 @@ defmodule Mizur do
   @spec type_of(typed_value) :: metric_type
   def type_of({t, _}), do: t
 
+  @doc """
+  Retrieves the system of a `typed_value`.
 
-   @doc """
+  For example: 
+      iex> x = MizurTest.Distance.cm(12)
+      ...> Mizur.system_of(x)
+      MizurTest.Distance
+  """
+  @spec system_of(typed_value) :: module
+  def system_of({{m, _, _, _, _}, _}), do: m
+
+
+  @doc """
   Checks if a `typed_value` is included in a `metric_type`.
 
   For example: 
       iex> x = MizurTest.Distance.cm(12)
-      ...> Mizur.has_type?(x, MizurTest.Distance.cm)
+      ...> Mizur.type?(x, MizurTest.Distance.cm)
       true
   """
-  @spec has_type?(typed_value, metric_type) :: boolean
-  def has_type?({t, _}, t), do: true 
-  def has_type(_, _), do: false
+  @spec type?(typed_value, metric_type) :: boolean
+  def type?({t, _}, t), do: true 
+  def type?(_, _), do: false
 
+  @doc """
+  Checks if a `typed_value` is included in a system.
+
+  For example: 
+      iex> x = MizurTest.Distance.cm(12)
+      ...> Mizur.system?(x, MizurTest.Distance)
+      true
+  """
+  @spec system?(typed_value, module) :: boolean 
+  def system?({{m, _, _, _, _}, _}, m), do: true 
+  def system(_, _), do: false
+
+  @doc """
+  Checks if two `typed_value` has the same type.
+
+  For example: 
+      iex> x = MizurTest.Distance.cm(12)
+      ...> y = MizurTest.Distance.cm(100)
+      ...> Mizur.same_type?(x, y)
+      true
+  """
+  @spec same_type?(typed_value, typed_value) :: boolean 
+  def same_type?({t, _}, {t, _}), do: true
+  def same_type?(_, _), do: false
+
+  @doc """
+  Checks if two `typed_value` has the same system.
+
+  For example: 
+      iex> x = MizurTest.Distance.cm(12)
+      ...> y = MizurTest.Distance.km(100)
+      ...> Mizur.same_system?(x, y)
+      true
+  """
+  @spec same_system?(typed_value, typed_value) :: boolean 
+  def same_system?({{m, _, _, _, _}, _}, {{m, _, _, _, _}, _}), do: true
+  def same_system?(_, _), do: false
+ 
 
 
   @doc """
