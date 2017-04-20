@@ -1,6 +1,8 @@
 defmodule MizurTest do
   use ExUnit.Case
+  
   doctest Mizur
+  doctest Mizur.Infix
 
   defmodule Distance do 
     use Mizur.System

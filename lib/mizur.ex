@@ -280,7 +280,6 @@ defmodule Mizur do
 
 
   end
-  
 
 
   @doc """
@@ -372,26 +371,80 @@ defmodule Mizur do
     end
   end
 
+  defp fail_for_intensive() do 
+    raise RuntimeError, 
+      message: "Arithmetic operations are not allowed for extensive system"
+  end
+
   @doc """
   Makes the addition between two `typed_value` of the same metric system. 
   The return value will have the subtype of the left `typed_value`.
+
       iex> a = MizurTest.Distance.cm(12)
       ...> b = MizurTest.Distance.m(2)
       ...> Mizur.add(a, b)
       MizurTest.Distance.cm(212)
   """
   @spec add(typed_value, typed_value) :: typed_value 
-  def add(a, b) do 
+  def add({{_, _, false, _, _}, _} = a, b) do 
     map2(a, b, &+/2)
   end
+  def add(_, _), do: fail_for_intensive()
+  
+
+  @doc """
+  Makes the subtraction between two `typed_value` of the same metric system. 
+  The return value will have the subtype of the left `typed_value`.
+
+      iex> a = MizurTest.Distance.cm(12)
+      ...> b = MizurTest.Distance.m(2)
+      ...> Mizur.sub(b, a)
+      MizurTest.Distance.m(1.88)
+  """
+  @spec sub(typed_value, typed_value) :: typed_value 
+  def sub({{_, _, false, _, _}, _} = a, b) do 
+    map2(a, b, &-/2)
+  end
+  def sub(_, _), do: fail_for_intensive()
+
+  @doc """
+  Multiplies a `typed_value` by a `number`. The subtype of the return value 
+  will be the subtype of the left `typed_value`.
+
+      iex> a = MizurTest.Distance.cm(12)
+      ...> Mizur.mult(a, 100)
+      MizurTest.Distance.cm(1200)
+  """
+  @spec mult(typed_value, number) :: typed_value 
+  def mult({{_, _, false, _, _}, _} = a, b) do 
+    map(a, &(&1*b))
+  end
+  def mult(_, _), do: fail_for_intensive()
 
 
   defmodule Infix do
 
+
     @moduledoc """
     This module offers infix versions of the common functions 
     of the Mizur module.
+
+    When used, it accepts the following options:
+
+    - `:override` : Which corresponds to the list of operators (`: +`, `: -`,`: * `,`: / `) 
+    which must overwrite their versions from the Kernel module. 
+    If the `override` argument is omitted, all operators will be overloaded.
     """
+
+    @doc false
+    defmacro __using__(opts) do 
+      excepted = opts[:override] || [:+, :-, :*, :/]
+      new_opts = Enum.map(excepted, &({&1, 2}))
+      quote do 
+        import Kernel, except: unquote(new_opts)
+        import Mizur.Infix
+      end
+    end
 
     @doc """
     Infix version of `from/2`.
@@ -404,6 +457,47 @@ defmodule Mizur do
     @spec Mizur.typed_value ~> Mizur.metric_type :: Mizur.typed_value
     def base ~> to do 
       Mizur.from(base, to: to)
+    end
+
+    @doc """
+    Infix version of `Mizur.add/2` :
+
+        iex> use Mizur.Infix, override: [:+]
+        ...> a = MizurTest.Distance.cm(12)
+        ...> b = MizurTest.Distance.m(2)
+        ...> a + b
+        MizurTest.Distance.cm(212)
+    """
+    @spec Mizur.typed_value + Mizur.metric_type :: Mizur.typed_value
+    def a + b do 
+      Mizur.add(a, b)
+    end
+
+    @doc """
+    Infix version of `Mizur.sub/2`:
+    
+        iex> use Mizur.Infix, override: [:-]
+        ...> a = MizurTest.Distance.cm(12)
+        ...> b = MizurTest.Distance.m(2)
+        ...> b - a
+        MizurTest.Distance.m(1.88)
+    """
+    @spec Mizur.typed_value - Mizur.metric_type :: Mizur.typed_value
+    def a - b do 
+      Mizur.sub(a, b)
+    end
+
+    @doc """
+    Infix version of `Mizur.mult/2`:
+
+        iex> use Mizur.Infix, override: [:*]
+        ...> a = MizurTest.Distance.cm(12)
+        ...> a * 10
+        MizurTest.Distance.cm(120)
+    """
+    @spec Mizur.typed_value * number :: Mizur.typed_value 
+    def a * b do 
+      Mizur.mult(a, b)
     end
 
   end
