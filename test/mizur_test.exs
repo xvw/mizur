@@ -112,5 +112,45 @@ defmodule MizurTest do
     end
   end
 
+  test "Simple add" do 
+    import Distance
+    a = Mizur.add(cm(100), m(1))
+    assert a == cm(200)
+  end
+
+  test "Simple sub" do 
+    import Distance
+    a = Mizur.sub(cm(100), m(1))
+    assert a == cm(0)
+  end
+
+  test "Simple mult" do 
+    import Distance
+    a = Mizur.mult(cm(100), 3)
+    assert a == cm(300)
+  end
+
+  test "Simple div" do 
+    import Distance
+    a = Mizur.div(cm(100), 2)
+    assert a == cm(50)
+  end
+
+  test "Arithmetic for intensive operatio," do 
+    import Temperature
+    message = "Arithmetic operations are not allowed for extensive system"
+    assert_raise RuntimeError, message, fn -> 
+      _ = Mizur.add(celsius(12), farenheit(23))
+    end
+    assert_raise RuntimeError, message, fn -> 
+      _ = Mizur.sub(celsius(12), farenheit(23))
+    end
+    assert_raise RuntimeError, message, fn -> 
+      _ = Mizur.mult(celsius(12), 12)
+    end
+    assert_raise RuntimeError, message, fn -> 
+      _ = Mizur.div(celsius(12), 45)
+    end
+  end
   
 end
