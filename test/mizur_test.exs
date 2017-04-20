@@ -136,7 +136,7 @@ defmodule MizurTest do
     assert a == cm(50)
   end
 
-  test "Arithmetic for intensive operatio," do 
+  test "Arithmetic for intensive operation" do 
     import Temperature
     message = "Arithmetic operations are not allowed for extensive system"
     assert_raise RuntimeError, message, fn -> 
