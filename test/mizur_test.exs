@@ -36,6 +36,31 @@ defmodule MizurTest do
     assert Mizur.unwrap(c) == 2090.0
 
   end
+
+  test "Simple coercion" do 
+
+    a = Temperature.celsius(1)
+    b = Mizur.from(a, to: Temperature.farenheit)
+    assert b == Temperature.farenheit((1-32.0)/1.8)
+
+    c = Temperature.farenheit(1)
+    d = Mizur.from(c, to: Temperature.celsius)
+    assert d == Temperature.celsius(1*1.8 + 32.0)
+
+    e = Distance.m(1)
+    f = Mizur.from(e, to: Distance.cm)
+    assert f == Distance.cm(100)
+
+  end
+
+  test "Coercion failure" do 
+    message = "#{Distance} is not compatible with #{Temperature}"
+    assert_raise RuntimeError, message, fn -> 
+      _ = Mizur.from(Distance.km(10), to: Temperature.celsius)
+    end
+  end
+  
+  
   
 
   
