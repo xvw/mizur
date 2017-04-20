@@ -71,6 +71,22 @@ defmodule MizurTest do
     b = Mizur.map(a, &(&1 * 2))
     assert b == Distance.km(2000)
   end
+
+  test "for map2" do 
+    a = Distance.m(2)
+    b = Distance.cm(200)
+    c = Mizur.map2(a, b, &(&1 + &2))
+    assert c == Distance.m(4)
+  end
+
+  test "for map2 failure" do 
+    message = "#{Temperature} is not compatible with #{Distance}"
+    assert_raise RuntimeError, message, fn -> 
+      _ = Mizur.map2(Distance.km(1), Temperature.celsius(2), fn(_,_) -> 10 end)
+    end
+  end
+  
+  
   
 
   
