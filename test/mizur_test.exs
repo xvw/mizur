@@ -60,34 +60,55 @@ defmodule MizurTest do
     end
   end
   
-  test "for infix version of from" do 
+  test "Infix version of from" do 
     import Mizur 
     a = Distance.km(2) ~> Distance.m
     assert a == Distance.m(2000)
   end
   
-  test "for map" do 
+  test "Mapping" do 
     a = Distance.km(1000)
     b = Mizur.map(a, &(&1 * 2))
     assert b == Distance.km(2000)
   end
 
-  test "for map2" do 
+  test "Mapping of two values" do 
     a = Distance.m(2)
     b = Distance.cm(200)
     c = Mizur.map2(a, b, &(&1 + &2))
     assert c == Distance.m(4)
   end
 
-  test "for map2 failure" do 
+  test "Failure for mapping of two values" do 
     message = "#{Temperature} is not compatible with #{Distance}"
     assert_raise RuntimeError, message, fn -> 
       _ = Mizur.map2(Distance.km(1), Temperature.celsius(2), fn(_,_) -> 10 end)
     end
   end
+
+  test "Comparison :eq 1" do 
+    x = Distance.m(1)
+    y = Distance.cm(100)
+    assert (Mizur.compare(x, with: y)) == :eq
+    assert (Mizur.compare(x, with: x)) == :eq
+    assert (Mizur.compare(y, with: y)) == :eq
+    assert (Mizur.compare(y, with: x)) == :eq
+  end
+
+  test "Comparison :lt/gt 1" do 
+    x = Distance.m(23)
+    y = Distance.cm(100)
+    assert (Mizur.compare(x, with: y)) == :gt
+    assert (Mizur.compare(y, with: x)) == :lt
+  end
   
   
-  
+  test "Comparison failure" do 
+    message = "#{Temperature} is not compatible with #{Distance}"
+    assert_raise RuntimeError, message, fn -> 
+      _ = Mizur.compare(Distance.km(1), with: Temperature.celsius(12))
+    end
+  end
 
   
 end
