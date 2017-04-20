@@ -317,28 +317,49 @@ defmodule Mizur do
 
 
   @doc """
+  Reformulation of `Mizur.in_type/2`
+
+  For example: 
+      iex> x = MizurTest.Distance.cm(12)
+      ...> Mizur.in?(x, type: MizurTest.Distance.cm)
+      true
+  """
+  def in?(value, type: t), do: in_type?(value, t)
+
+  @doc """
+  Reformulation of `Mizur.in_system/2`
+
+  For example: 
+      iex> x = MizurTest.Distance.cm(12)
+      ...> Mizur.in?(x, system: MizurTest.Temperature)
+      false
+  """
+  def in?(value, system: s), do: in_system?(value, s)
+
+
+  @doc """
   Checks if a `typed_value` is included in a `metric_type`.
 
   For example: 
       iex> x = MizurTest.Distance.cm(12)
-      ...> Mizur.type?(x, MizurTest.Distance.cm)
+      ...> Mizur.in_type?(x, MizurTest.Distance.cm)
       true
   """
-  @spec type?(typed_value, metric_type) :: boolean
-  def type?({t, _}, t), do: true 
-  def type?(_, _), do: false
+  @spec in_type?(typed_value, metric_type) :: boolean
+  def in_type?({t, _}, t), do: true 
+  def in_type?(_, _), do: false
 
   @doc """
   Checks if a `typed_value` is included in a system.
 
   For example: 
       iex> x = MizurTest.Distance.cm(12)
-      ...> Mizur.system?(x, MizurTest.Distance)
+      ...> Mizur.in_system?(x, MizurTest.Distance)
       true
   """
-  @spec system?(typed_value, module) :: boolean 
-  def system?({{m, _, _, _, _}, _}, m), do: true 
-  def system(_, _), do: false
+  @spec in_system?(typed_value, module) :: boolean 
+  def in_system?({{m, _, _, _, _}, _}, m), do: true 
+  def in_system?(_, _), do: false
 
   @doc """
   Checks if two `typed_value` has the same type.
@@ -621,6 +642,25 @@ defmodule Mizur do
     def a / b do 
       Mizur.div(a, b)
     end
+
+
+    @doc """
+    Helper to build `typed_value`
+
+        iex> use Mizur.Infix, override: [:in]
+        ...> a = MizurTest.Distance.cm(120)
+        ...> {a in MizurTest.Distance.m, 12 in MizurTest.Distance.km}
+        {MizurTest.Distance.m(1.2), MizurTest.Distance.km(12)}
+    """
+    @spec (Mizur.typed_value | number) in Mizur.metric_type :: Mizur.typed_value
+    def a in t do 
+      case a do 
+        {{_, _, _, _, _}, _}  -> Mizur.from(a, to: t)
+        a when is_number(a)   -> {t, Kernel.*(a, 1.0)}
+        _ -> raise RuntimeError, message: "#{t} is incomprehensible"
+      end
+    end
+    
 
   end
   
