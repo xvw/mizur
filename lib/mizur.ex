@@ -547,14 +547,15 @@ defmodule Mizur do
 
     When used, it accepts the following options:
 
-    - `:override` : Which corresponds to the list of operators (`: +`, `: -`,`: * `,`: / `) 
+    - `:override` : Which corresponds to the list of operators 
+    (`: +`, `: -`,`: * `,`: /` and `:in`) 
     which must overwrite their versions from the Kernel module. 
     If the `override` argument is omitted, all operators will be overloaded.
     """
 
     @doc false
     defmacro __using__(opts) do 
-      excepted = opts[:override] || [:+, :-, :*, :/]
+      excepted = opts[:override] || [:+, :-, :*, :/, :in]
       new_opts = Enum.map(excepted, &({&1, 2}))
       quote do 
         import Kernel, except: unquote(new_opts)

@@ -152,5 +152,19 @@ defmodule MizurTest do
       _ = Mizur.div(celsius(12), 45)
     end
   end
+
+  test "Usage of in" do 
+    use Mizur.Infix
+    import Distance
+
+    assert (45 in cm()) == cm(45)
+    assert (1 in m() in cm()) == cm(100)
+
+    message = "#{Distance} is not compatible with #{Temperature}"
+    assert_raise RuntimeError, message, fn -> 
+      _ = cm(10) in Temperature.farenheit
+    end
+  end
+  
   
 end
