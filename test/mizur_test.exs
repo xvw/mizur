@@ -66,6 +66,11 @@ defmodule MizurTest do
     assert a == Distance.m(2000)
   end
   
+  test "for map" do 
+    a = Distance.km(1000)
+    b = Mizur.map(a, &(&1 * 2))
+    assert b == Distance.km(2000)
+  end
   
 
   
