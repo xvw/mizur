@@ -60,6 +60,11 @@ defmodule MizurTest do
     end
   end
   
+  test "for infix version of from" do 
+    import Mizur 
+    a = Distance.km(2) ~> Distance.m
+    assert a == Distance.m(2000)
+  end
   
   
 
