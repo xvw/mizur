@@ -315,18 +315,6 @@ defmodule Mizur do
     raise RuntimeError, message: message
   end
 
-  @doc """
-  Infix version of `from/2`.
-
-  For example:
-      iex> import Mizur
-      ...> MizurTest.Distance.cm(100) ~> MizurTest.Distance.m
-      {MizurTest.Distance.m, 1.0}
-  """
-  @spec typed_value ~> metric_type :: typed_value
-  def base ~> to do 
-    from(base, to: to)
-  end
 
   @doc """
   Applies a function to the numeric value of a `typed_value` and re-packs
@@ -355,7 +343,7 @@ defmodule Mizur do
   """
   @spec map2(typed_value, typed_value, (number, number -> number)) :: typed_value
   def map2({t, a}, elt2, f) do 
-    {_, b } = elt2 ~> t 
+    {_, b } = from(elt2, to: t)
     {t, f.(a, b)}
   end
 
@@ -376,12 +364,48 @@ defmodule Mizur do
   """
   @spec compare(typed_value, [with: typed_value]) :: comparison_result
   def compare({t, left}, with: elt_right) do 
-    {_, right} = elt_right ~> t
+    {_, right} = from(elt_right, to: t)
     cond do 
       left > right -> :gt 
       right > left -> :lt 
       true         -> :eq 
     end
+  end
+
+  @doc """
+  Makes the addition between two `typed_value` of the same metric system. 
+  The return value will have the subtype of the left `typed_value`.
+      iex> a = MizurTest.Distance.cm(12)
+      ...> b = MizurTest.Distance.m(2)
+      ...> Mizur.add(a, b)
+      MizurTest.Distance.cm(212)
+  """
+  @spec add(typed_value, typed_value) :: typed_value 
+  def add(a, b) do 
+    map2(a, b, &+/2)
+  end
+
+
+  defmodule Infix do
+
+    @moduledoc """
+    This module offers infix versions of the common functions 
+    of the Mizur module.
+    """
+
+    @doc """
+    Infix version of `from/2`.
+
+    For example:
+        iex> import Mizur.Infix
+        ...> MizurTest.Distance.cm(100) ~> MizurTest.Distance.m
+        {MizurTest.Distance.m, 1.0}
+    """
+    @spec Mizur.typed_value ~> Mizur.metric_type :: Mizur.typed_value
+    def base ~> to do 
+      Mizur.from(base, to: to)
+    end
+
   end
   
   
