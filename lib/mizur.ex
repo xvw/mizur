@@ -293,6 +293,30 @@ defmodule Mizur do
   @spec unwrap(typed_value) :: float
   def unwrap({_, value}), do: value
 
+  @doc """
+  Retrieves the type of a `typed_value`.
+
+  For example: 
+      iex> x = MizurTest.Distance.cm(12)
+      ...> Mizur.type_of(x)
+      MizurTest.Distance.cm
+  """
+  @spec type_of(typed_value) :: metric_type
+  def type_of({t, _}), do: t
+
+
+   @doc """
+  Checks if a `typed_value` is included in a `metric_type`.
+
+  For example: 
+      iex> x = MizurTest.Distance.cm(12)
+      ...> Mizur.has_type?(x, MizurTest.Distance.cm)
+      true
+  """
+  @spec has_type?(typed_value, metric_type) :: boolean
+  def has_type?({t, _}, t), do: true 
+  def has_type(_, _), do: false
+
 
 
   @doc """
@@ -380,6 +404,8 @@ defmodule Mizur do
   Makes the addition between two `typed_value` of the same metric system. 
   The return value will have the subtype of the left `typed_value`.
 
+  **Warning:** Arithmetic operations are not allowed for extensive system
+
       iex> a = MizurTest.Distance.cm(12)
       ...> b = MizurTest.Distance.m(2)
       ...> Mizur.add(a, b)
@@ -396,6 +422,8 @@ defmodule Mizur do
   Makes the subtraction between two `typed_value` of the same metric system. 
   The return value will have the subtype of the left `typed_value`.
 
+  **Warning:** Arithmetic operations are not allowed for extensive system
+
       iex> a = MizurTest.Distance.cm(12)
       ...> b = MizurTest.Distance.m(2)
       ...> Mizur.sub(b, a)
@@ -411,6 +439,8 @@ defmodule Mizur do
   Multiplies a `typed_value` by a `number`. The subtype of the return value 
   will be the subtype of the left `typed_value`.
 
+  **Warning:** Arithmetic operations are not allowed for extensive system
+
       iex> a = MizurTest.Distance.cm(12)
       ...> Mizur.mult(a, 100)
       MizurTest.Distance.cm(1200)
@@ -420,6 +450,22 @@ defmodule Mizur do
     map(a, &(&1*b))
   end
   def mult(_, _), do: fail_for_intensive()
+
+  @doc """
+  Divides a `typed_value` by a `number`. The subtype of the return value 
+  will be the subtype of the left `typed_value`.
+
+  **Warning:** Arithmetic operations are not allowed for extensive system
+
+      iex> a = MizurTest.Distance.cm(12)
+      ...> Mizur.div(a, 2)
+      MizurTest.Distance.cm(6.0)
+  """
+  @spec div(typed_value, number) :: typed_value 
+  def div({{_, _, false, _, _}, _} = a, b) do 
+    map(a, &(&1/b))
+  end
+  def div(_, _), do: fail_for_intensive()
 
 
   defmodule Infix do
@@ -460,6 +506,20 @@ defmodule Mizur do
     end
 
     @doc """
+    Infix (and reverted) version of `from/2`.
+
+    For example:
+        iex> import Mizur.Infix
+        ...> MizurTest.Distance.m <~ MizurTest.Distance.cm(100) 
+        {MizurTest.Distance.m, 1.0}
+    """
+    @spec Mizur.metric_type <~ Mizur.typed_value :: Mizur.typed_value
+    def to <~ base do 
+      base ~> to
+    end
+
+
+    @doc """
     Infix version of `Mizur.add/2` :
 
         iex> use Mizur.Infix, override: [:+]
@@ -468,7 +528,7 @@ defmodule Mizur do
         ...> a + b
         MizurTest.Distance.cm(212)
     """
-    @spec Mizur.typed_value + Mizur.metric_type :: Mizur.typed_value
+    @spec Mizur.typed_value + Mizur.typed_value :: Mizur.typed_value
     def a + b do 
       Mizur.add(a, b)
     end
@@ -482,7 +542,7 @@ defmodule Mizur do
         ...> b - a
         MizurTest.Distance.m(1.88)
     """
-    @spec Mizur.typed_value - Mizur.metric_type :: Mizur.typed_value
+    @spec Mizur.typed_value - Mizur.typed_value :: Mizur.typed_value
     def a - b do 
       Mizur.sub(a, b)
     end
@@ -498,6 +558,19 @@ defmodule Mizur do
     @spec Mizur.typed_value * number :: Mizur.typed_value 
     def a * b do 
       Mizur.mult(a, b)
+    end
+
+    @doc """
+    Infix version of `Mizur.div/2`:
+
+        iex> use Mizur.Infix, override: [:/]
+        ...> a = MizurTest.Distance.cm(12)
+        ...> a / 2
+        MizurTest.Distance.cm(6)
+    """
+    @spec Mizur.typed_value / number :: Mizur.typed_value 
+    def a / b do 
+      Mizur.div(a, b)
     end
 
   end
