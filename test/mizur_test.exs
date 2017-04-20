@@ -165,6 +165,11 @@ defmodule MizurTest do
       _ = cm(10) in Temperature.farenheit
     end
   end
+
+  test "Metadata of typed values" do 
+
+  end
+  
   
   
 end
