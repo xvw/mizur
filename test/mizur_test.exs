@@ -183,13 +183,15 @@ defmodule MizurTest do
 
   end
 
-  # test "in, system and types" do 
+  test "Experience with sigils" do 
 
-  #   import Distance
-  #   import Time 
-  #   import Temperature
+    import Distance
+    use Mizur.Infix, except: [==: 2]
+    
+    a = ~t"200"cm + ~t"3"m 
+    assert a == ~t"500"cm
 
-  # end
+  end
   
   
   

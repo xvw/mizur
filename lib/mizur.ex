@@ -86,8 +86,9 @@ defmodule Mizur do
       end
     end
 
+  
     @doc false 
-    def rev_operator(op) do 
+    defp rev_operator(op) do 
       case op do 
         :+ -> :- 
         :- -> :+ 
@@ -100,7 +101,7 @@ defmodule Mizur do
     end
 
     @doc false 
-    def revert_expr(acc, f_expr) do 
+    defp revert_expr(acc, f_expr) do 
       expr = Macro.postwalk(
         f_expr, 
         fn(elt) -> 
@@ -163,7 +164,6 @@ defmodule Mizur do
     @doc false
     defmacro define_basis(basis) do 
 
-
       quote do 
 
         @basis unquote(basis)
@@ -186,6 +186,15 @@ defmodule Mizur do
             value * 1.0
           }
         end
+
+        def sigil_t(value, unquote(to_charlist(basis))) do 
+          apply(
+            __MODULE__, 
+            unquote(basis), 
+            [String.to_integer(value)]
+          )
+        end
+        
         
       end
     end
@@ -213,6 +222,14 @@ defmodule Mizur do
             apply(__MODULE__, unquote(name), []),
             value * 1.0
           }
+        end
+
+        def sigil_t(value, unquote(to_charlist(name))) do 
+          apply(
+            __MODULE__, 
+            unquote(name), 
+            [String.to_integer(value)]
+          )
         end
 
       end
