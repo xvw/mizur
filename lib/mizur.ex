@@ -596,6 +596,10 @@ defmodule Mizur do
         !=:  2,
         ===: 2, 
         !==: 2,
+        >:   2, 
+        <:   2, 
+        <=:  2, 
+        >=:  2,
         in:  2
       ]
 
@@ -736,6 +740,56 @@ defmodule Mizur do
     @spec Mizur.typed_value !== Mizur.typed_value :: boolean 
     def a !== b do 
       not Mizur.strict_equals(a, b)
+    end
+
+    @doc """
+    Infix version of `Mizur.compare/2 == :gt` :
+
+        iex> use Mizur.Infix, only: [>: 2]
+        ...> MizurTest.Distance.cm(100) > MizurTest.Distance.m(0.9)
+        true
+    """
+    @spec Mizur.typed_value > Mizur.typed_value :: boolean 
+    def a > b do 
+      Kernel.==(Mizur.compare(a, with: b), :gt)
+    end
+
+    @doc """
+    Infix version of `Mizur.compare/2 == :lt` :
+
+        iex> use Mizur.Infix, only: [<: 2]
+        ...> MizurTest.Distance.cm(100) < MizurTest.Distance.m(11)
+        true
+    """
+    @spec Mizur.typed_value < Mizur.typed_value :: boolean 
+    def a < b do 
+      Kernel.==(Mizur.compare(a, with: b), :lt)
+    end
+
+    @doc """
+    Infix version of `Mizur.compare/2 == :lt || :eq` :
+
+        iex> use Mizur.Infix, only: [<=: 2]
+        ...> MizurTest.Distance.cm(100) <= MizurTest.Distance.m(1)
+        true
+    """
+    @spec Mizur.typed_value <= Mizur.typed_value :: boolean 
+    def a <= b do 
+      x = Mizur.compare(a, with: b)
+      Kernel.==(x, :eq) || Kernel.==(x, :lt)
+    end
+
+    @doc """
+    Infix version of `Mizur.compare/2 == :gt || :eq` :
+
+        iex> use Mizur.Infix, only: [>=: 2]
+        ...> MizurTest.Distance.cm(100) >= MizurTest.Distance.m(1)
+        true
+    """
+    @spec Mizur.typed_value >= Mizur.typed_value :: boolean 
+    def a >= b do 
+      x = Mizur.compare(a, with: b)
+      Kernel.==(x, :eq) || Kernel.==(x, :gt)
     end
     
 
