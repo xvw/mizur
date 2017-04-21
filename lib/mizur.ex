@@ -465,6 +465,38 @@ defmodule Mizur do
     end
   end
 
+  @doc """
+  Returns `true` if two `yped_values` ​​have the same numeric 
+  value (in the same metric system). `false` otherwise.
+
+      iex> a = MizurTest.Distance.cm(100)
+      ...> b = MizurTest.Distance.m(1)
+      ...> c = MizurTest.Temperature.celsius(1)
+      ...> {Mizur.equals(a, b), Mizur.equals(b, c)}
+      {true, false}
+  """
+  @spec equals(typed_value, typed_value) :: boolean 
+  def equals(a, b) do
+    same_system?(a, b) && compare(a, with: b) == :eq
+  end
+
+  @doc """
+  Returns `true` if two `yped_values` ​​have the same numeric 
+  value (in the same type). `false` otherwise.
+
+      iex> a = MizurTest.Distance.cm(100)
+      ...> b = MizurTest.Distance.cm(100)
+      ...> c = MizurTest.Distance.m(1)
+      ...> {Mizur.strict_equals(a, b), Mizur.strict_equals(b, c)}
+      {true, false}
+  """
+  @spec strict_equals(typed_value, typed_value) :: boolean
+  def strict_equals(a, b) do 
+    same_type?(a, b) && compare(a, with: b) == :eq
+  end
+  
+
+  @doc false
   defp fail_for_intensive() do 
     raise RuntimeError, 
       message: "Arithmetic operations are not allowed for extensive system"
@@ -536,7 +568,7 @@ defmodule Mizur do
     map(a, &(&1/b))
   end
   def div(_, _), do: fail_for_intensive()
-
+  
 
   defmodule Infix do
 
@@ -547,19 +579,30 @@ defmodule Mizur do
 
     When used, it accepts the following options:
 
-    - `:override` : Which corresponds to the list of operators 
-    (`: +`, `: -`,`: * `,`: /` and `:in`) 
-    which must overwrite their versions from the Kernel module. 
-    If the `override` argument is omitted, all operators will be overloaded.
+    - `:only` : same of `:only` in importation 
+    - `:except` : same of `:except` in importation 
+
     """
 
     @doc false
     defmacro __using__(opts) do 
-      excepted = opts[:override] || [:+, :-, :*, :/, :in]
-      new_opts = Enum.map(excepted, &({&1, 2}))
+
+      operators = [
+        +: 2, 
+        -: 2, 
+        *: 2, 
+        /: 2, 
+        ==: 2, 
+        in: 2
+      ]
+
+      except = opts[:except] || []
+      only = opts[:only] || operators
+      all = only -- except
+
       quote do 
-        import Kernel, except: unquote(new_opts)
-        import Mizur.Infix
+        import Kernel, except: unquote(all)
+        import Mizur.Infix, only: unquote(all)
       end
     end
 
@@ -567,7 +610,7 @@ defmodule Mizur do
     Infix version of `from/2`.
 
     For example:
-        iex> import Mizur.Infix
+        iex> import Mizur.Infix, only: [~>: 2]
         ...> MizurTest.Distance.cm(100) ~> MizurTest.Distance.m
         {MizurTest.Distance.m, 1.0}
     """
@@ -580,7 +623,7 @@ defmodule Mizur do
     Infix (and reverted) version of `from/2`.
 
     For example:
-        iex> import Mizur.Infix
+        iex> import Mizur.Infix, only: [<~: 2]
         ...> MizurTest.Distance.m <~ MizurTest.Distance.cm(100) 
         {MizurTest.Distance.m, 1.0}
     """
@@ -593,7 +636,7 @@ defmodule Mizur do
     @doc """
     Infix version of `Mizur.add/2` :
 
-        iex> use Mizur.Infix, override: [:+]
+        iex> use Mizur.Infix, only: [+: 2]
         ...> a = MizurTest.Distance.cm(12)
         ...> b = MizurTest.Distance.m(2)
         ...> a + b
@@ -607,7 +650,7 @@ defmodule Mizur do
     @doc """
     Infix version of `Mizur.sub/2`:
     
-        iex> use Mizur.Infix, override: [:-]
+        iex> use Mizur.Infix, only: [-: 2]
         ...> a = MizurTest.Distance.cm(12)
         ...> b = MizurTest.Distance.m(2)
         ...> b - a
@@ -621,7 +664,7 @@ defmodule Mizur do
     @doc """
     Infix version of `Mizur.mult/2`:
 
-        iex> use Mizur.Infix, override: [:*]
+        iex> use Mizur.Infix, only: [*: 2]
         ...> a = MizurTest.Distance.cm(12)
         ...> a * 10
         MizurTest.Distance.cm(120)
@@ -634,7 +677,7 @@ defmodule Mizur do
     @doc """
     Infix version of `Mizur.div/2`:
 
-        iex> use Mizur.Infix, override: [:/]
+        iex> use Mizur.Infix, only: [/: 2]
         ...> a = MizurTest.Distance.cm(12)
         ...> a / 2
         MizurTest.Distance.cm(6)
@@ -644,11 +687,24 @@ defmodule Mizur do
       Mizur.div(a, b)
     end
 
+    @doc """
+    Infix version of `Mizur.equals/2` :
+
+        iex> use Mizur.Infix, only: [==: 2]
+        ...> MizurTest.Distance.cm(100) == MizurTest.Distance.m(1)
+        true
+    """
+    @spec Mizur.typed_value == Mizur.typed_value :: boolean 
+    def a == b do 
+      Mizur.equals(a, b)
+    end
+    
+
 
     @doc """
     Helper to build `typed_value`
 
-        iex> use Mizur.Infix, override: [:in]
+        iex> use Mizur.Infix, only: [in: 2]
         ...> a = MizurTest.Distance.cm(120)
         ...> {a in MizurTest.Distance.m, 12 in MizurTest.Distance.km}
         {MizurTest.Distance.m(1.2), MizurTest.Distance.km(12)}

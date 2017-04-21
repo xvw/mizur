@@ -63,7 +63,7 @@ defmodule MizurTest do
   end
   
   test "Infix version of from" do 
-    import Mizur.Infix
+    use Mizur.Infix, only: [~>: 2]
     a = Distance.km(2) ~> Distance.m
     assert a == Distance.m(2000)
   end
@@ -154,7 +154,7 @@ defmodule MizurTest do
   end
 
   test "Usage of in" do 
-    use Mizur.Infix
+    use Mizur.Infix, except: [:==]
     import Distance
 
     assert (45 in cm()) == cm(45)
@@ -182,6 +182,15 @@ defmodule MizurTest do
 
 
   end
+
+  # test "in, system and types" do 
+
+  #   import Distance
+  #   import Time 
+  #   import Temperature
+
+  # end
+  
   
   
   
