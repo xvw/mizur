@@ -187,7 +187,7 @@ defmodule Mizur do
           }
         end
 
-        def sigil_t(value, unquote(to_charlist(basis))) do 
+        def sigil_t(value, unquote(to_charlist(basis))) do
           apply(
             __MODULE__, 
             unquote(basis), 
