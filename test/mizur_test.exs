@@ -191,6 +191,11 @@ defmodule MizurTest do
     a = ~t"200"cm + ~t"3"m 
     assert a == ~t"500"cm
 
+    message = "#{Time} is not compatible with #{Distance}"
+    assert_raise RuntimeError, message, fn -> 
+      _ = a + Time.sec(2000)
+    end
+
   end
   
   
