@@ -588,12 +588,15 @@ defmodule Mizur do
     defmacro __using__(opts) do 
 
       operators = [
-        +: 2, 
-        -: 2, 
-        *: 2, 
-        /: 2, 
-        ==: 2, 
-        in: 2
+        +:   2, 
+        -:   2, 
+        *:   2, 
+        /:   2, 
+        ==:  2,
+        !=:  2,
+        ===: 2, 
+        !==: 2,
+        in:  2
       ]
 
       except = opts[:except] || []
@@ -697,6 +700,42 @@ defmodule Mizur do
     @spec Mizur.typed_value == Mizur.typed_value :: boolean 
     def a == b do 
       Mizur.equals(a, b)
+    end
+
+    @doc """
+    Infix version of `not Mizur.equals/2` :
+
+        iex> use Mizur.Infix, only: [!=: 2]
+        ...> MizurTest.Distance.cm(100) != MizurTest.Distance.m(2)
+        true
+    """
+    @spec Mizur.typed_value != Mizur.typed_value :: boolean 
+    def a != b do 
+      not Mizur.equals(a, b)
+    end
+
+    @doc """
+    Infix version of `Mizur.strict_equals/2` :
+
+        iex> use Mizur.Infix, only: [===: 2]
+        ...> MizurTest.Distance.cm(100) == MizurTest.Distance.cm(100)
+        true
+    """
+    @spec Mizur.typed_value === Mizur.typed_value :: boolean 
+    def a === b do 
+      Mizur.strict_equals(a, b)
+    end
+
+    @doc """
+    Infix version of `not Mizur.strict_equals/2` :
+
+        iex> use Mizur.Infix, only: [!==: 2]
+        ...> MizurTest.Distance.cm(100) !== MizurTest.Distance.m(100)
+        true
+    """
+    @spec Mizur.typed_value !== Mizur.typed_value :: boolean 
+    def a !== b do 
+      not Mizur.strict_equals(a, b)
     end
     
 
