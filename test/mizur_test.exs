@@ -166,7 +166,20 @@ defmodule MizurTest do
     end
   end
 
-  test "Metadata of typed values" do 
+  test "type_of and system_of" do 
+
+    import Distance
+    import Time 
+    import Temperature
+
+    assert Mizur.type_of(cm(10)) == cm()
+    assert Mizur.type_of(farenheit(123)) == farenheit()
+    assert Mizur.type_of(sec(12)) == sec()
+
+    assert Mizur.system_of(cm(10)) == Mizur.system_of(km(10))
+    assert Mizur.system_of(celsius(10)) == Mizur.system_of(farenheit(10))
+    assert Mizur.system_of(sec(10)) == Mizur.system_of(hour(10))
+
 
   end
   
