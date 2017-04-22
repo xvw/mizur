@@ -183,6 +183,11 @@ defmodule MizurTest do
 
   end
 
+  test "random tests on meta data" do 
+    assert false
+  end
+  
+
   test "Experience with sigils" do 
 
     import Distance
