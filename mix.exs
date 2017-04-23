@@ -12,7 +12,7 @@ defmodule Mizur.Mixfile do
       source_url: "https://github.com/xvw/mizur",
       homepage_url: "https://xvw.github.io/xvw/mizur",
       docs: [
-        main: "README",
+        main: "readme",
         extras: ["README.md"]
       ],
       package: package(),
@@ -59,6 +59,6 @@ defmodule Mizur.Mixfile do
      maintainers: ["Xavier Van de Woestyne"],
      licenses: ["MIT"],
      links: %{"GitHub" => "https://github.com/xvw/mizur",
-              "Docs" => "http://xvw.github.io/mizur/"}]
+              "Docs" => "http://xvw.github.io/mizur/doc/readme.html"}]
   end
 end
