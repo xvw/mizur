@@ -1,0 +1,997 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.15.0">
+    <title>Mizur – Mizur v0.1.0</title>
+    <link rel="stylesheet" href="dist/app-f7824c48e6.css" />
+    
+    <script src="dist/sidebar_items-d9a79dac17.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="README.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Mizur
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.1.0
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Mizur v0.1.0</small>
+        Mizur
+        
+        
+          <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p><strong>Mizur</strong> is a tool to simplify the management, conversions  
+and mapping of units. </p>
+<p>The manipulation of units of measurement try (at best) 
+to be typesafe.</p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:comparison_result/0">comparison_result()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>This type represents a results of a comparison</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:metric_type/0">metric_type()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>This type represents a unit of measure 
+(defined with using Mizur.System)</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:typed_value/0">typed_value()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>This type represents a value wrapped in a metric system</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#add/2">add(a, b)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Makes the addition between two <code class="inline">typed_value</code> of the same metric system. 
+The return value will have the subtype of the left <code class="inline">typed_value</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#compare/2">compare(arg, list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Comparison between two <code class="inline">typed_value</code> of the same metric system</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#div/2">div(a, b)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Divides a <code class="inline">typed_value</code> by a <code class="inline">number</code>. The subtype of the return value 
+will be the subtype of the left <code class="inline">typed_value</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#equals/2">equals(a, b)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns <code class="inline">true</code> if two <code class="inline">yped_values</code> ​​have the same numeric 
+value (in the same metric system). <code class="inline">false</code> otherwise</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#from/2">from(arg, list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Converts a <code class="inline">typed_value</code> to another subtype of its metric system</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#in?/2">in?(value, list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Reformulation of <code class="inline">Mizur.in_system/2</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#in_system?/2">in_system?(arg1, m)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Checks if a <code class="inline">typed_value</code> is included in a system</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#in_type?/2">in_type?(arg1, t)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Checks if a <code class="inline">typed_value</code> is included in a <code class="inline">metric_type</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#map/2">map(arg, f)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Applies a function to the numeric value of a <code class="inline">typed_value</code> and re-packs
+the result of the function in the same subtype</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#map2/3">map2(arg, elt2, f)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Applies a function to the two numeric values of two <code class="inline">typed_values</code> in 
+the same metric system, and re-packages the result 
+of the function in a <code class="inline">typed_value</code> of the subtype of the left <code class="inline">typed_values</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#mult/2">mult(a, b)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Multiplies a <code class="inline">typed_value</code> by a <code class="inline">number</code>. The subtype of the return value 
+will be the subtype of the left <code class="inline">typed_value</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#same_system?/2">same_system?(arg1, arg2)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Checks if two <code class="inline">typed_value</code> has the same system</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#same_type?/2">same_type?(arg1, arg2)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Checks if two <code class="inline">typed_value</code> has the same type</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#strict_equals/2">strict_equals(a, b)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns <code class="inline">true</code> if two <code class="inline">yped_values</code> ​​have the same numeric 
+value (in the same type). <code class="inline">false</code> otherwise</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#sub/2">sub(a, b)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Makes the subtraction between two <code class="inline">typed_value</code> of the same metric system. 
+The return value will have the subtype of the left <code class="inline">typed_value</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#system_of/1">system_of(arg)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Retrieves the system of a <code class="inline">typed_value</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#type_of/1">type_of(arg)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Retrieves the type of a <code class="inline">typed_value</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#unwrap/1">unwrap(arg)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Retrieves the wrapped numeric value in a <code class="inline">typed_value</code></p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+        </section>
+      
+
+      
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <i class="icon-link"></i>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div class="detail" id="t:comparison_result/0">
+  
+  <div class="detail-header">
+    <a href="#t:comparison_result/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">comparison_result()</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L35" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>comparison_result() :: :eq | :lt | :gt</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>This type represents a results of a comparison</p>
+
+  </section>
+</div>
+<div class="detail" id="t:metric_type/0">
+  
+  <div class="detail-header">
+    <a href="#t:metric_type/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">metric_type()</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L16" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>metric_type() :: {module, atom, boolean, (number -> float), (number -> float)}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>This type represents a unit of measure 
+(defined with using Mizur.System)</p>
+
+  </section>
+</div>
+<div class="detail" id="t:typed_value/0">
+  
+  <div class="detail-header">
+    <a href="#t:typed_value/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">typed_value()</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L27" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>typed_value() :: {<a href="#t:metric_type/0">metric_type</a>, float}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>This type represents a value wrapped in a metric system</p>
+
+  </section>
+</div>
+
+          </div>
+        </section>
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="add/2">
+  
+  <div class="detail-header">
+    <a href="#add/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">add(a, b)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L270" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>add(<a href="#t:typed_value/0">typed_value</a>, <a href="#t:typed_value/0">typed_value</a>) :: <a href="#t:typed_value/0">typed_value</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Makes the addition between two <code class="inline">typed_value</code> of the same metric system. 
+The return value will have the subtype of the left <code class="inline">typed_value</code>.</p>
+<p><strong>Warning:</strong> Arithmetic operations are not allowed for extensive system</p>
+<pre><code class="iex elixir">iex&gt; a = MizurTest.Distance.cm(12)
+...&gt; b = MizurTest.Distance.m(2)
+...&gt; Mizur.add(a, b)
+MizurTest.Distance.cm(212)</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="compare/2">
+  
+  <div class="detail-header">
+    <a href="#compare/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">compare(arg, list)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L212" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>compare(<a href="#t:typed_value/0">typed_value</a>, [{:with, <a href="#t:typed_value/0">typed_value</a>}]) :: <a href="#t:comparison_result/0">comparison_result</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Comparison between two <code class="inline">typed_value</code> of the same metric system.</p>
+<p>The function returns:</p>
+<ul>
+<li><code class="inline">:eq</code> for <code class="inline">equals</code> 
+</li>
+<li><code class="inline">:lt</code> if the left-values is <strong>lower than</strong> the right-values
+</li>
+<li><code class="inline">:gt</code> if the left-values is <strong>greater than</strong> the right-values
+</li>
+</ul>
+<p>For example:</p>
+<pre><code class="iex elixir">iex&gt; x = MizurTest.Distance.m(1)
+...&gt; y = MizurTest.Distance.cm(100)
+...&gt; Mizur.compare(x, with: y)
+:eq</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="div/2">
+  
+  <div class="detail-header">
+    <a href="#div/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">div(a, b)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L320" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>div(<a href="#t:typed_value/0">typed_value</a>, number) :: <a href="#t:typed_value/0">typed_value</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Divides a <code class="inline">typed_value</code> by a <code class="inline">number</code>. The subtype of the return value 
+will be the subtype of the left <code class="inline">typed_value</code>.</p>
+<p><strong>Warning:</strong> Arithmetic operations are not allowed for extensive system</p>
+<pre><code class="iex elixir">iex&gt; a = MizurTest.Distance.cm(12)
+...&gt; Mizur.div(a, 2)
+MizurTest.Distance.cm(6.0)</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="equals/2">
+  
+  <div class="detail-header">
+    <a href="#equals/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">equals(a, b)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L232" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>equals(<a href="#t:typed_value/0">typed_value</a>, <a href="#t:typed_value/0">typed_value</a>) :: boolean</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Returns <code class="inline">true</code> if two <code class="inline">yped_values</code> ​​have the same numeric 
+value (in the same metric system). <code class="inline">false</code> otherwise.</p>
+<pre><code class="iex elixir">iex&gt; a = MizurTest.Distance.cm(100)
+...&gt; b = MizurTest.Distance.m(1)
+...&gt; c = MizurTest.Temperature.celsius(1)
+...&gt; {Mizur.equals(a, b), Mizur.equals(b, c)}
+{true, false}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="from/2">
+  
+  <div class="detail-header">
+    <a href="#from/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">from(arg, list)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L154" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>from(<a href="#t:typed_value/0">typed_value</a>, [{:to, <a href="#t:metric_type/0">metric_type</a>}]) :: <a href="#t:typed_value/0">typed_value</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Converts a <code class="inline">typed_value</code> to another subtype of its metric system.</p>
+<p>For example: </p>
+<pre><code class="iex elixir">iex&gt; x = MizurTest.Distance.cm(120)
+...&gt; Mizur.from(x, to: MizurTest.Distance.m)
+{MizurTest.Distance.m, 1.2}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="in?/2">
+  
+  <div class="detail-header">
+    <a href="#in?/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">in?(value, list)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L80" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Reformulation of <code class="inline">Mizur.in_system/2</code></p>
+<p>For example: </p>
+<pre><code class="iex elixir">iex&gt; x = MizurTest.Distance.cm(12)
+...&gt; Mizur.in?(x, system: MizurTest.Temperature)
+false</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="in_system?/2">
+  
+  <div class="detail-header">
+    <a href="#in_system?/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">in_system?(arg1, m)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L114" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>in_system?(<a href="#t:typed_value/0">typed_value</a>, module) :: boolean</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Checks if a <code class="inline">typed_value</code> is included in a system.</p>
+<p>For example: </p>
+<pre><code class="iex elixir">iex&gt; x = MizurTest.Distance.cm(12)
+...&gt; Mizur.in_system?(x, MizurTest.Distance)
+true</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="in_type?/2">
+  
+  <div class="detail-header">
+    <a href="#in_type?/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">in_type?(arg1, t)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L102" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>in_type?(<a href="#t:typed_value/0">typed_value</a>, <a href="#t:metric_type/0">metric_type</a>) :: boolean</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Checks if a <code class="inline">typed_value</code> is included in a <code class="inline">metric_type</code>.</p>
+<p>For example: </p>
+<pre><code class="iex elixir">iex&gt; x = MizurTest.Distance.cm(12)
+...&gt; Mizur.in_type?(x, MizurTest.Distance.cm)
+true</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="map/2">
+  
+  <div class="detail-header">
+    <a href="#map/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">map(arg, f)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L175" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>map(<a href="#t:typed_value/0">typed_value</a>, (number -> number)) :: <a href="#t:typed_value/0">typed_value</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Applies a function to the numeric value of a <code class="inline">typed_value</code> and re-packs
+the result of the function in the same subtype.</p>
+<p>For example:</p>
+<pre><code class="iex elixir">iex&gt; MizurTest.Distance.km(120)
+...&gt; |&gt; Mizur.map(fn(x) -&gt; x * 2 end)
+{MizurTest.Distance.km, 240.0}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="map2/3">
+  
+  <div class="detail-header">
+    <a href="#map2/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">map2(arg, elt2, f)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L191" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>map2(<a href="#t:typed_value/0">typed_value</a>, <a href="#t:typed_value/0">typed_value</a>, (number, number -> number)) :: <a href="#t:typed_value/0">typed_value</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Applies a function to the two numeric values of two <code class="inline">typed_values</code> in 
+the same metric system, and re-packages the result 
+of the function in a <code class="inline">typed_value</code> of the subtype of the left <code class="inline">typed_values</code>.</p>
+<p>For example: </p>
+<pre><code class="iex elixir">iex&gt; a = MizurTest.Distance.m(100)
+...&gt; b = MizurTest.Distance.km(2)
+...&gt; Mizur.map2(a, b, &amp;(&amp;1 * &amp;2))
+{MizurTest.Distance.m, 200000.0}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="mult/2">
+  
+  <div class="detail-header">
+    <a href="#mult/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">mult(a, b)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L304" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>mult(<a href="#t:typed_value/0">typed_value</a>, number) :: <a href="#t:typed_value/0">typed_value</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Multiplies a <code class="inline">typed_value</code> by a <code class="inline">number</code>. The subtype of the return value 
+will be the subtype of the left <code class="inline">typed_value</code>.</p>
+<p><strong>Warning:</strong> Arithmetic operations are not allowed for extensive system</p>
+<pre><code class="iex elixir">iex&gt; a = MizurTest.Distance.cm(12)
+...&gt; Mizur.mult(a, 100)
+MizurTest.Distance.cm(1200)</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="same_system?/2">
+  
+  <div class="detail-header">
+    <a href="#same_system?/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">same_system?(arg1, arg2)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L140" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>same_system?(<a href="#t:typed_value/0">typed_value</a>, <a href="#t:typed_value/0">typed_value</a>) :: boolean</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Checks if two <code class="inline">typed_value</code> has the same system.</p>
+<p>For example: </p>
+<pre><code class="iex elixir">iex&gt; x = MizurTest.Distance.cm(12)
+...&gt; y = MizurTest.Distance.km(100)
+...&gt; Mizur.same_system?(x, y)
+true</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="same_type?/2">
+  
+  <div class="detail-header">
+    <a href="#same_type?/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">same_type?(arg1, arg2)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L127" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>same_type?(<a href="#t:typed_value/0">typed_value</a>, <a href="#t:typed_value/0">typed_value</a>) :: boolean</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Checks if two <code class="inline">typed_value</code> has the same type.</p>
+<p>For example: </p>
+<pre><code class="iex elixir">iex&gt; x = MizurTest.Distance.cm(12)
+...&gt; y = MizurTest.Distance.cm(100)
+...&gt; Mizur.same_type?(x, y)
+true</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="strict_equals/2">
+  
+  <div class="detail-header">
+    <a href="#strict_equals/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">strict_equals(a, b)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L247" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>strict_equals(<a href="#t:typed_value/0">typed_value</a>, <a href="#t:typed_value/0">typed_value</a>) :: boolean</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Returns <code class="inline">true</code> if two <code class="inline">yped_values</code> ​​have the same numeric 
+value (in the same type). <code class="inline">false</code> otherwise.</p>
+<pre><code class="iex elixir">iex&gt; a = MizurTest.Distance.cm(100)
+...&gt; b = MizurTest.Distance.cm(100)
+...&gt; c = MizurTest.Distance.m(1)
+...&gt; {Mizur.strict_equals(a, b), Mizur.strict_equals(b, c)}
+{true, false}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="sub/2">
+  
+  <div class="detail-header">
+    <a href="#sub/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">sub(a, b)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L288" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>sub(<a href="#t:typed_value/0">typed_value</a>, <a href="#t:typed_value/0">typed_value</a>) :: <a href="#t:typed_value/0">typed_value</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Makes the subtraction between two <code class="inline">typed_value</code> of the same metric system. 
+The return value will have the subtype of the left <code class="inline">typed_value</code>.</p>
+<p><strong>Warning:</strong> Arithmetic operations are not allowed for extensive system</p>
+<pre><code class="iex elixir">iex&gt; a = MizurTest.Distance.cm(12)
+...&gt; b = MizurTest.Distance.m(2)
+...&gt; Mizur.sub(b, a)
+MizurTest.Distance.m(1.88)</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="system_of/1">
+  
+  <div class="detail-header">
+    <a href="#system_of/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">system_of(arg)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L69" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>system_of(<a href="#t:typed_value/0">typed_value</a>) :: module</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Retrieves the system of a <code class="inline">typed_value</code>.</p>
+<p>For example: </p>
+<pre><code class="iex elixir">iex&gt; x = MizurTest.Distance.cm(12)
+...&gt; Mizur.system_of(x)
+MizurTest.Distance</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="type_of/1">
+  
+  <div class="detail-header">
+    <a href="#type_of/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">type_of(arg)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L58" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>type_of(<a href="#t:typed_value/0">typed_value</a>) :: <a href="#t:metric_type/0">metric_type</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Retrieves the type of a <code class="inline">typed_value</code>.</p>
+<p>For example: </p>
+<pre><code class="iex elixir">iex&gt; x = MizurTest.Distance.cm(12)
+...&gt; Mizur.type_of(x)
+MizurTest.Distance.cm</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="unwrap/1">
+  
+  <div class="detail-header">
+    <a href="#unwrap/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">unwrap(arg)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L47" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>unwrap(<a href="#t:typed_value/0">typed_value</a>) :: float</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Retrieves the wrapped numeric value in a <code class="inline">typed_value</code>.</p>
+<p>For example: </p>
+<pre><code class="iex elixir">iex&gt; x = MizurTest.Distance.cm(12)
+...&gt; Mizur.unwrap(x)
+12.0</code></pre>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.15.0),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-372682077e.js"></script>
+  </body>
+</html>
+

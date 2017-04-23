@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.15.0">
+    <title>Mizur – Mizur v0.1.0</title>
+    <link rel="stylesheet" href="dist/app-f7824c48e6.css" />
+    
+    <script src="dist/sidebar_items-d9a79dac17.js"></script>
+  </head>
+  <body data-type="extras">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+<div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="README.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Mizur
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.1.0
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+<h1>Mizur</h1>
+<p>Pronounced <code class="inline">/&#39;meʒə/</code></p>
+<p><strong>Mizur</strong> is a tool to simplify the management, conversions  
+and mapping of units. 
+The manipulation of units of measurement try (at best) 
+to be typesafe.</p>
+<p><img src="images/logo.png" alt="Mizur Logo"/>
+(A special thanks to <a href="https://github.com/fh-d">@fh-d</a> for this awesome logo !)</p>
+<ul>
+<li><a href="#content">Presentation</a>
+</li>
+<li><a href="#some-examples">Some example</a>
+</li>
+<li><a href="#installation">Installation</a>
+</li>
+<li><a href="#special-thanks">Special thanks</a>
+</li>
+</ul>
+<h2 id="some-examples" class="section-heading">
+  <a href="#some-examples" class="hover-link"><i class="icon-link"></i></a>
+  Some examples
+</h2>
+
+<h3>Basic example</h3>
+<p>Definition of a metric system for computing distances :</p>
+<pre><code class="elixir">
+defmodule Distance do 
+  use Mizur.System
+  type m
+  type cm = m / 100 
+  type mm = m / 1000 
+  type km = m * 1000
+end
+</code></pre>
+<p>Using this module provides the following functions:</p>
+<ul>
+<li><code class="inline">Distance.m/0</code> : to reference the type <code class="inline">Distance.m</code>
+</li>
+<li><code class="inline">Distance.cm/0</code> : to reference the type <code class="inline">Distance.cm</code>
+</li>
+<li><code class="inline">Distance.mm/0</code> : to reference the type <code class="inline">Distance.mm</code>
+</li>
+<li><code class="inline">Distance.km/0</code> : to reference the type <code class="inline">Distance.km</code>
+</li>
+</ul>
+<p>and : </p>
+<ul>
+<li><code class="inline">Distance.m/1</code> : to create packed values in the <code class="inline">Distance.m</code> type
+</li>
+<li><code class="inline">Distance.cm/1</code> : to create packed values in the <code class="inline">Distance.cm</code> type
+</li>
+<li><code class="inline">Distance.mm/1</code> : to create packed values in the <code class="inline">Distance.mm</code> type
+</li>
+<li><code class="inline">Distance.km/1</code> : to create packed values in the <code class="inline">Distance.km</code> type
+</li>
+</ul>
+<p>and sigils : <code class="inline">Distance.sigil_t(value, [&#39;typename&#39;])</code>.</p>
+<h4>Example of using Mizur</h4>
+<pre><code class="elixir">a = Distance.m(200)
+b = Distance.cm(200)
+result = Mizur.add(a, b)
+assert result = Distance.m(202)</code></pre>
+<h3>Using infix notation</h3>
+<p>You can use infix notation for operations on units of measurements 
+using <code class="inline">use Mizur.Infix</code>.</p>
+<p>As with the <code class="inline">import</code> directive, you can use the <code class="inline">:except</code> and <code class="inline">:only</code> parameters 
+(exactly in the same way as using<code class="inline">import</code>).</p>
+<p>The main difference with <code class="inline">import</code> is that use of<code class="inline">use</code> will overwrite the correct 
+operators of the <a href="https://hexdocs.pm/elixir/Kernel.html"><code class="inline">Kernel</code></a> module.</p>
+<h3>Manage arithmetic operations on datetime</h3>
+<pre><code class="elixir">defmodule MyTime do 
+
+  use Mizur.System
+  type sec
+  type min  = sec * 60 
+  type hour = sec * 60 * 60
+  type day  = sec * 60 * (60 * 24)
+
+  def now do 
+    DateTime.utc_now()
+    |&gt; DateTime.to_unix(:second)
+    |&gt; sec()
+  end
+
+  def new(year, month, day, hour, min, sec) do
+    ndt = NaiveDateTime.new(year, month, day, hour, min, sec) 
+    case ndt do 
+      {:error, message} -&gt; raise RuntimeError, message: &quot;#{message}&quot;
+      {:ok, value} -&gt;
+        DateTime.from_naive!(value, &quot;Etc/UTC&quot;)
+        |&gt; DateTime.to_unix(:second)
+        |&gt; sec()
+    end
+  end
+
+  def to_datetime(value) do 
+    elt = Mizur.from(value, to: sec())
+    int = round(Mizur.unwrap(elt))
+    DateTime.from_unix!(int) #beurk, it is unsafe
+  end
+  
+end
+
+use Mizur.Infix, only: [+: 2, -: 2]
+import MyTime
+
+# Create a typed_value of the current timestamp:
+a = now()
+
+# Add two days and four hour
+b = a + ~t(2)day + ~t(4)hour # I use Sigils... 
+
+# Sub ten minuts 
+c = b - ~t(10)min
+
+# Convert into DateTime 
+result = to_datetime(c)</code></pre>
+<h3>Other examples</h3>
+<p>The test module gives many examples of uses :
+<a href="https://github.com/xvw/mizur/blob/master/test/mizur_test.exs">Test module</a></p>
+<h2 id="installation" class="section-heading">
+  <a href="#installation" class="hover-link"><i class="icon-link"></i></a>
+  Installation
+</h2>
+
+<p>If <a href="https://hex.pm/docs/publish">available in Hex</a>, the package can be installed
+by adding <code class="inline">mizur</code> to your list of dependencies in <code class="inline">mix.exs</code>:</p>
+<pre><code class="elixir">def deps do
+  [{:mizur, &quot;~&gt; 0.1.0&quot;}]
+end</code></pre>
+<h2 id="special-thanks" class="section-heading">
+  <a href="#special-thanks" class="hover-link"><i class="icon-link"></i></a>
+  Special Thanks
+</h2>
+
+<ul>
+<li><a href="https://github.com/julien-leclercq">@julien-leclercq</a>, a lot of help about unit-comprehension
+</li>
+<li><a href="https://github.com/Fenntasy">@Fenntasy</a>, help for the design
+</li>
+<li><a href="https://github.com/fh-d">@fh-d</a>, for the logo
+</li>
+<li><a href="https://github.com/tgautier">@tgautier</a> and the LilleFP team !
+</li>
+</ul>
+<p>Documentation can be generated with <a href="https://github.com/elixir-lang/ex_doc">ExDoc</a>
+and published on <a href="https://hexdocs.pm">HexDocs</a>. Once published, the docs can
+be found at <a href="https://hexdocs.pm/mizur">https://hexdocs.pm/mizur</a>.</p>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.15.0),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-372682077e.js"></script>
+  </body>
+</html>
+
