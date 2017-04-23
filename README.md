@@ -31,8 +31,23 @@ defmodule Distance do
 end
 
 ```
+Using this module provides the following functions:
 
-#### Usage of the system
+-  `Distance.m/0` : to reference the type `Distance.m`
+-  `Distance.cm/0` : to reference the type `Distance.cm`
+-  `Distance.mm/0` : to reference the type `Distance.mm`
+-  `Distance.km/0` : to reference the type `Distance.km`
+
+and : 
+
+-  `Distance.m/1` : to create packed values in the `Distance.m` type
+-  `Distance.cm/1` : to create packed values in the `Distance.cm` type
+-  `Distance.mm/1` : to create packed values in the `Distance.mm` type
+-  `Distance.km/1` : to create packed values in the `Distance.km` type
+
+and sigils : `Distance.sigil_t(value, ['typename'])`.
+
+#### Example of using Mizur
 
 ```elixir
 a = Distance.m(200)
@@ -40,6 +55,18 @@ b = Distance.cm(200)
 result = Mizur.add(a, b)
 assert result = Distance.m(202)
 ```
+
+### Using infix notation
+
+You can use infix notation for operations on units of measurements 
+using `use Mizur.Infix`.
+
+As with the `import` directive, you can use the `:except` and `:only` parameters 
+(exactly in the same way as using` import`).
+
+The main difference with `import` is that use of` use` will overwrite the correct 
+operators of the `Kernel` module.
+
 
 ### Manage arithmetic operations on datetime
 
