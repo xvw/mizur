@@ -17,12 +17,12 @@ defmodule MizurTest do
     use Mizur.System
     type sec
     type min  = sec * 60 
-    type hour = 60 * 60 * sec
-    type day  = 60 * sec * (60 * 24)
+    type hour = sec * 60 * 60
+    type day  = sec * 60 * (60 * 24)
 
     def now do 
       DateTime.utc_now()
-      |> DateTime.to_unix()
+      |> DateTime.to_unix(:second)
       |> sec()
     end
 
@@ -32,15 +32,14 @@ defmodule MizurTest do
         {:error, message} -> raise RuntimeError, message: "#{message}"
         {:ok, value} ->
           DateTime.from_naive!(value, "Etc/UTC")
-          |> DateTime.to_unix
+          |> DateTime.to_unix(:second)
           |> sec()
       end
     end
 
     def to_datetime(value) do 
       elt = Mizur.from(value, to: sec())
-      int = Mizur.unwrap(elt)
-        |> round()
+      int = round(Mizur.unwrap(elt))
       DateTime.from_unix!(int) #beurk, it is unsafe
     end
     

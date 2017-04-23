@@ -32,6 +32,8 @@ end
 
 ```
 
+#### Usage of the system
+
 ```elixir
 a = Distance.m(200)
 b = Distance.cm(200)
@@ -39,9 +41,57 @@ result = Mizur.add(a, b)
 assert result = Distance.m(202)
 ```
 
-#### Usage of the system
+### Manage arithmetic operations on datetime
 
+```elixir 
+defmodule MyTime do 
 
+  use Mizur.System
+  type sec
+  type min  = sec * 60 
+  type hour = sec * 60 * 60
+  type day  = sec * 60 * (60 * 24)
+
+  def now do 
+    DateTime.utc_now()
+    |> DateTime.to_unix(:second)
+    |> sec()
+  end
+
+  def new(year, month, day, hour, min, sec) do
+    ndt = NaiveDateTime.new(year, month, day, hour, min, sec) 
+    case ndt do 
+      {:error, message} -> raise RuntimeError, message: "#{message}"
+      {:ok, value} ->
+        DateTime.from_naive!(value, "Etc/UTC")
+        |> DateTime.to_unix(:second)
+        |> sec()
+    end
+  end
+
+  def to_datetime(value) do 
+    elt = Mizur.from(value, to: sec())
+    int = round(Mizur.unwrap(elt))
+    DateTime.from_unix!(int) #beurk, it is unsafe
+  end
+  
+end
+
+use Mizur.Infix, only: [+: 2, -: 2]
+import MyTime
+
+# Create a typed_value of the current timestamp:
+a = now()
+
+# Add two days and four hour
+b = a + ~t(2)day + ~t(4)hour # I use Sigils... 
+
+# Sub ten minuts 
+c = b - ~t(10)min
+
+# Convert into DateTime 
+result = to_datetime(c)
+```
 
 ### Other examples
 

@@ -4,6 +4,7 @@ defmodule Mizur.System do
   Sets up a metric system.
 
   This module must be used in another module to define a metric system.
+  Using this module provide functions to builds typed values.
 
   When used, it accepts the following options:
 
@@ -24,6 +25,7 @@ defmodule Mizur.System do
 
   end
   ```
+
   """
 
   @doc false
