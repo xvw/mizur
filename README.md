@@ -6,6 +6,9 @@ and mapping of units.
 The manipulation of units of measurement try (at best) 
 to be typesafe.
 
+![Mizur Logo](images/logo.png)
+(A special thanks to [@fh-d](https://github.com/fh-d) for this awesome logo !)
+
 ## Some examples
 
 ### Basic example
