@@ -51,6 +51,7 @@ end
 
 - [@julien-leclercq](https://github.com/julien-leclercq), a lot of help about unit-comprehension
 - [@Fenntasy](https://github.com/Fenntasy), help for the design
+- [@fh-d](https://github.com/fh-d), for the logo
 - [@tgautier](https://github.com/tgautier) and the LilleFP team !
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
