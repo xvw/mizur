@@ -9,6 +9,11 @@ to be typesafe.
 ![Mizur Logo](images/logo.png)
 (A special thanks to [@fh-d](https://github.com/fh-d) for this awesome logo !)
 
+- [Presentation](#content)
+- [Some example](#some-examples)
+- [Installation](#installation)
+- [Special thanks](#special-thanks)
+
 ## Some examples
 
 ### Basic example
@@ -27,9 +32,16 @@ end
 
 ```
 
-#### Usage of the metric-system
+```elixir
+a = Distance.m(200)
+b = Distance.cm(200)
+result = Mizur.add(a, b)
+assert result = Distance.m(202)
+```
 
-to be done
+#### Usage of the system
+
+
 
 ### Other examples
 
@@ -47,7 +59,7 @@ def deps do
 end
 ```
 
-## Special Thanks ! 
+## Special Thanks
 
 - [@julien-leclercq](https://github.com/julien-leclercq), a lot of help about unit-comprehension
 - [@Fenntasy](https://github.com/Fenntasy), help for the design

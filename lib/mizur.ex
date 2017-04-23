@@ -252,7 +252,7 @@ defmodule Mizur do
   @doc false
   defp fail_for_intensive() do 
     raise RuntimeError, 
-      message: "Arithmetic operations are not allowed for extensive system"
+      message: "Arithmetic operations are not allowed for intensive system"
   end
 
   @doc """

@@ -13,18 +13,43 @@ defmodule MizurTest do
   end
 
   defmodule Time do 
-    use Mizur.System 
+
+    use Mizur.System
     type sec
     type min  = sec * 60 
     type hour = 60 * 60 * sec
     type day  = 60 * sec * (60 * 24)
+
+    def now do 
+      DateTime.utc_now()
+      |> DateTime.to_unix()
+      |> sec()
+    end
+
+    def new(year, month, day, hour, min, sec) do
+      ndt = NaiveDateTime.new(year, month, day, hour, min, sec) 
+      case ndt do 
+        {:error, message} -> raise RuntimeError, message: "#{message}"
+        {:ok, value} ->
+          DateTime.from_naive!(value, "Etc/UTC")
+          |> DateTime.to_unix
+          |> sec()
+      end
+    end
+
+    def to_datetime(value) do 
+      elt = Mizur.from(value, to: sec())
+      int = Mizur.unwrap(elt)
+        |> round()
+      DateTime.from_unix!(int) #beurk, it is unsafe
+    end
+    
   end
   
   defmodule Temperature do 
     use Mizur.System, intensive: true
     type celsius
     type farenheit = (celsius * 1.8) + 32.0
-    type oth = 32 + (celsius * 1.8)
   end
 
   test "Simple Unwrapping" do 
@@ -138,7 +163,7 @@ defmodule MizurTest do
 
   test "Arithmetic for intensive operation" do 
     import Temperature
-    message = "Arithmetic operations are not allowed for extensive system"
+    message = "Arithmetic operations are not allowed for intensive system"
     assert_raise RuntimeError, message, fn -> 
       _ = Mizur.add(celsius(12), farenheit(23))
     end
@@ -182,12 +207,7 @@ defmodule MizurTest do
 
 
   end
-
-  test "random tests on meta data" do 
-    assert true
-  end
   
-
   test "Experience with sigils" do 
 
     import Distance
@@ -203,7 +223,14 @@ defmodule MizurTest do
 
   end
   
-  
-  
+  test "Experience with time" do 
+    use Mizur.Infix, only: [+: 2]
+
+    d = 22
+    t = Time.new(2017, 4, d, 1, 0, 0)
+    dt2 = Time.to_datetime(t + Time.day(3))
+    assert (Kernel.+(d, 3)) == dt2.day
+
+  end
   
 end
