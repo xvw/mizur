@@ -1,16 +1,16 @@
 # Mizur
 Pronounced `/'meʒə/`
 
-**Mizur** is a tool to simplify the management, conversions  
+**Mizur** is a tool to simplify the management, conversion  
 and mapping of units. 
-The manipulation of units of measurement try (at best) 
-to be typesafe.
+The manipulation of measurement units should (at best) 
+be typesafe.
 
 ![Mizur Logo](images/logo.png)
 (A special thanks to [@fh-d](https://github.com/fh-d) for this awesome logo !)
 
 - [Presentation](#content)
-- [Some example](#some-examples)
+- [Some examples](#some-examples)
 - [Installation](#installation)
 - [Special thanks](#special-thanks)
 
@@ -47,7 +47,7 @@ and :
 
 and sigils : `Distance.sigil_t(value, ['typename'])`.
 
-#### Example of using Mizur
+#### Example of common Mizur usage
 
 ```elixir
 a = Distance.m(200)
@@ -64,7 +64,7 @@ using `use Mizur.Infix`.
 As with the `import` directive, you can use the `:except` and `:only` parameters 
 (exactly in the same way as using` import`).
 
-The main difference with `import` is that use of` use` will overwrite the correct 
+The main difference with `import` is that `use` will overwrite the correct 
 operators of the `Kernel` module.
 
 
@@ -122,7 +122,7 @@ result = to_datetime(c)
 
 ### Other examples
 
-The test module gives many examples of uses :
+The test module gives many usage examples :
 [Test module](https://github.com/xvw/mizur/blob/master/test/mizur_test.exs)
 
 ## Installation
