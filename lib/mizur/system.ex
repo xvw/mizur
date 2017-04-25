@@ -189,11 +189,9 @@ defmodule Mizur.System do
     quote do 
       @metrics [unquote(name) | @metrics]
 
-      Module.add_doc(
-        __MODULE__, __ENV__.line + 3, 
-        :def, {unquote(name), 0}, [], 
-        "References the type `#{unquote(name)}`"
-      )
+      @doc """
+      TEST
+      """
       def unquote(name)() do 
         {
           __MODULE__, 
