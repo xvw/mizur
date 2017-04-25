@@ -43,6 +43,11 @@ defmodule Mizur.System do
   @doc false
   defmacro __before_compile__(_env) do
     quote do
+      Module.add_doc(
+        __MODULE__, __ENV__.line + 3, 
+        :def, {:system_metric, 0}, [], 
+        false
+      )
       def system_metric do
         %{
           units: @metrics,
@@ -140,7 +145,7 @@ defmodule Mizur.System do
       Module.add_doc(
         __MODULE__, __ENV__.line + 3, 
         :def, {unquote(basis), 0}, [], 
-        "References the type `#{unquote(basis)}`"
+        "References the subtype `#{unquote(basis)}`"
       )
       def unquote(basis)() do 
         {
@@ -155,7 +160,7 @@ defmodule Mizur.System do
       Module.add_doc(
         __MODULE__, __ENV__.line + 3, 
         :def, {unquote(basis), 1}, [:value], 
-        "Builds a value into `#{unquote(basis)}`"
+        "Builds a value into the subtype `#{unquote(basis)}`"
       )
       def unquote(basis)(value) do 
         {
@@ -189,9 +194,11 @@ defmodule Mizur.System do
     quote do 
       @metrics [unquote(name) | @metrics]
 
-      @doc """
-      TEST
-      """
+      Module.add_doc(
+        __MODULE__, __ENV__.line + 3, 
+        :def, {unquote(name), 0}, [], 
+        "References the subtype `#{unquote(name)}`"
+      )
       def unquote(name)() do 
         {
           __MODULE__, 
@@ -205,7 +212,7 @@ defmodule Mizur.System do
       Module.add_doc(
         __MODULE__, __ENV__.line + 3, 
         :def, {unquote(name), 1}, [:value], 
-        "Builds a value into `#{unquote(name)}`"
+        "Builds a value into the subtype `#{unquote(name)}`"
       )
       def unquote(name)(value) do 
         {
