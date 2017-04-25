@@ -132,7 +132,7 @@ by adding `mizur` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:mizur, "~> 0.1.0"}]
+  [{:mizur, "~> 0.1.1"}]
 end
 ```
 

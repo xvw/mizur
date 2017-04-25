@@ -151,8 +151,8 @@ defmodule Mizur do
       {MizurTest.Distance.m, 1.2}
   """
   @spec from(typed_value, [to: metric_type]) :: typed_value
-  def from({{module, _, _, _, to}, base}, to: {module, _, _, from, _} = t) do
-    new_value = from.(to.(base))
+  def from({{module, _, _, _, to}, base}, to: {module, _, _, right, _} = t) do
+    new_value = right.(to.(base))
     {t, new_value}
   end
 
