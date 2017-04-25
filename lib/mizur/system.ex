@@ -136,6 +136,12 @@ defmodule Mizur.System do
       @metrics [unquote(basis) | @metrics]
 
 
+
+      Module.add_doc(
+        __MODULE__, __ENV__.line + 3, 
+        :def, {unquote(basis), 0}, [], 
+        "References the type `#{unquote(basis)}`"
+      )
       def unquote(basis)() do 
         {
           __MODULE__, 
@@ -146,6 +152,11 @@ defmodule Mizur.System do
         }
       end
 
+      Module.add_doc(
+        __MODULE__, __ENV__.line + 3, 
+        :def, {unquote(basis), 1}, [:value], 
+        "Builds a value into `#{unquote(basis)}`"
+      )
       def unquote(basis)(value) do 
         {
           apply(__MODULE__, unquote(basis), []),
@@ -153,6 +164,11 @@ defmodule Mizur.System do
         }
       end
 
+      Module.add_doc(
+        __MODULE__, __ENV__.line + 3, 
+        :def, {:sigil_t, 2}, [:value, :charlist], 
+        false
+      )
       def sigil_t(value, unquote(to_charlist(basis))) do
         apply(
           __MODULE__, 
@@ -173,6 +189,11 @@ defmodule Mizur.System do
     quote do 
       @metrics [unquote(name) | @metrics]
 
+      Module.add_doc(
+        __MODULE__, __ENV__.line + 3, 
+        :def, {unquote(name), 0}, [], 
+        "References the type `#{unquote(name)}`"
+      )
       def unquote(name)() do 
         {
           __MODULE__, 
@@ -183,6 +204,11 @@ defmodule Mizur.System do
         }
       end
 
+      Module.add_doc(
+        __MODULE__, __ENV__.line + 3, 
+        :def, {unquote(name), 1}, [:value], 
+        "Builds a value into `#{unquote(name)}`"
+      )
       def unquote(name)(value) do 
         {
           apply(__MODULE__, unquote(name), []),
@@ -190,6 +216,11 @@ defmodule Mizur.System do
         }
       end
 
+      Module.add_doc(
+        __MODULE__, __ENV__.line + 3, 
+        :def, {:sigil_t, 2}, [:value, :charlist], 
+        false
+      )
       def sigil_t(value, unquote(to_charlist(name))) do 
         apply(
           __MODULE__, 
