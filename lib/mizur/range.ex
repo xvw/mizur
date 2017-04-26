@@ -71,5 +71,21 @@ defmodule Mizur.Range do
     {a, b, _} = sort(range)
     (value >= a) and (value <= b)
   end
+
+
+  @doc """
+  Checks if two ranges overlap.
+
+      iex> :to_be_done
+      :to_be_done
+
+  """
+  @spec overlap?(range, range) :: boolean 
+  def overlap?(a, b) do 
+    use Mizur.Infix, only: [>=: 2, <=: 2]
+    {startA, endA, _} = sort(a)
+    {startB, endB, _} = sort(b)
+    (startA <= endB) and (endA >= startB) 
+  end
   
 end
