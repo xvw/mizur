@@ -3,6 +3,7 @@ defmodule MizurTest do
   
   doctest Mizur
   doctest Mizur.Infix
+  doctest Mizur.Range
 
   defmodule Distance do 
     use Mizur.System
