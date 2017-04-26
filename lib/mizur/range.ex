@@ -55,13 +55,21 @@ defmodule Mizur.Range do
   end
 
   @doc """
+  Checks if a `typed_value` is included in a range.
 
+      iex> a = MizurTest.Distance.cm(1)
+      ...> b = MizurTest.Distance.km(10)
+      ...> r = Mizur.Range.new!(a, b)
+      ...> p = Mizur.Range.new!(b, a)
+      ...> x = MizurTest.Distance.m(1987)
+      ...> {Mizur.Range.include?(x, in: r), Mizur.Range.include?(x, in: p)}
+      {true, true}
   """
   @spec include?(Mizur.typed_value, [in: range]) :: boolean
-  def include?(value, in: {a, b, ord}) do 
+  def include?(value, in: range) do 
     use Mizur.Infix, only: [>=: 2, <=: 2]
-    {minim, maxim} = if (ord), do: {a, b}, else: {b, a}
-    (value >= minim) and (value <= maxim)
+    {a, b, _} = sort(range)
+    (value >= a) and (value <= b)
   end
   
 end
