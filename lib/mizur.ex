@@ -219,6 +219,35 @@ defmodule Mizur do
   end
 
   @doc """
+  Returns the biggest `typed_value`.
+
+      iex> Mizur.max(MizurTest.Distance.cm(12), MizurTest.Distance.m(1))
+      MizurTest.Distance.m(1)
+  """
+  @spec max(typed_value, typed_value) :: typed_value
+  def max(a, b) do 
+    cond do 
+      compare(a, with: b) in [:gt, :eq] -> a 
+      true -> b 
+    end
+  end
+
+  @doc """
+  Returns the smallest `typed_value`.
+
+      iex> Mizur.min(MizurTest.Distance.cm(12), MizurTest.Distance.m(1))
+      MizurTest.Distance.cm(12)
+  """
+  @spec min(typed_value, typed_value) :: typed_value
+  def min(a, b) do 
+    cond do 
+      compare(a, with: b) in [:lt, :eq] -> a 
+      true -> b
+    end
+  end
+
+
+  @doc """
   Returns `true` if two `yped_values` ​​have the same numeric 
   value (in the same metric system). `false` otherwise.
 
@@ -247,7 +276,7 @@ defmodule Mizur do
   def strict_equals(a, b) do 
     same_type?(a, b) && compare(a, with: b) == :eq
   end
-  
+
 
   @doc false
   defp fail_for_intensive() do 
@@ -321,5 +350,5 @@ defmodule Mizur do
     map(a, &(&1/b))
   end
   def div(_, _), do: fail_for_intensive()
-  
+    
 end
