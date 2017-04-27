@@ -137,9 +137,22 @@ defmodule Mizur.Range do
     (startA <= endB) and (endA >= startB) 
   end
 
+  @doc """
+  Tests if a range is a subrange of another range.
+
+      iex> a = MizurTest.Distance.m(1)
+      ...> b = MizurTest.Distance.km(1)
+      ...> r = Mizur.Range.new!(a, b)
+      ...> x = MizurTest.Distance.m(2)
+      ...> y = MizurTest.Distance.m(900)
+      ...> q = Mizur.Range.new!(x, y)
+      ...> Mizur.Range.subrange?(q, of: r)
+      true
+  """
   @spec subrange?(range, [of: range]) :: boolean 
   def subrange?(a, of: b) do 
-    true
+    {x, y} = {min(a), max(a)}
+    include?(x, in: b) and include?(y, in: b)
   end
   
 end
