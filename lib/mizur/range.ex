@@ -1,7 +1,11 @@
 defmodule Mizur.Range do 
 
   @moduledoc """
+  This module provides a minimalistic approach of Range between 
+  `typed_value`. A range is characterized by two values and one 
+  direction. The two values must necessarily be different.
 
+  
   """
 
   @typedoc """
@@ -23,10 +27,10 @@ defmodule Mizur.Range do
       {MizurTest.Distance.cm(1), MizurTest.Distance.cm(10), true}
 
       iex> Mizur.Range.new!(MizurTest.Distance.m(1), MizurTest.Distance.cm(10))
-      {MizurTest.Distance.m(1), MizurTest.Distance.cm(10), false}
+      {MizurTest.Distance.m(1), MizurTest.Distance.m(10/100.0), false}
   """
   @spec new!(Mizur.typed_value, Mizur.typed_value) :: range 
-  def new!(a, b) do 
+  def new!({type, _} = a, b) do 
     ord =
       case Mizur.compare(a, with: b) do 
         :lt -> true 
@@ -34,17 +38,17 @@ defmodule Mizur.Range do
         :eq -> 
           raise ArgumentError, message: "Left and right are the same !"
       end
-    {a, b, ord}
+    {a, Mizur.from(b, to: type), ord}
   end
 
   @doc """
   Sorts a range.
 
-      iex> a = MizurTest.Distance.m(1)
+      iex> a = MizurTest.Distance.cm(1000)
       ...> b = MizurTest.Distance.cm(2)
       ...> c = Mizur.Range.new!(a, b)
       ...> Mizur.Range.sort(c)
-      Mizur.Range.new!(MizurTest.Distance.cm(2), MizurTest.Distance.m(1))
+      Mizur.Range.new!(MizurTest.Distance.cm(2), MizurTest.Distance.cm(1000))
   """
   @spec sort(range) :: range 
   def sort({a, b, ord} = range) do 
@@ -76,8 +80,23 @@ defmodule Mizur.Range do
   @doc """
   Checks if two ranges overlap.
 
-      iex> :to_be_done
-      :to_be_done
+      iex> a = MizurTest.Distance.m(1)
+      ...> b = MizurTest.Distance.km(1)
+      ...> x = MizurTest.Distance.m(20)
+      ...> y = MizurTest.Distance.km(2)
+      ...> r = Mizur.Range.new!(a, b)
+      ...> p = Mizur.Range.new!(x, y)
+      ...> Mizur.Range.overlap?(r, p)
+      true
+
+      iex> a = MizurTest.Distance.m(1)
+      ...> b = MizurTest.Distance.km(1)
+      ...> x = MizurTest.Distance.km(2)
+      ...> y = MizurTest.Distance.km(20)
+      ...> r = Mizur.Range.new!(a, b)
+      ...> p = Mizur.Range.new!(x, y)
+      ...> Mizur.Range.overlap?(r, p)
+      false
 
   """
   @spec overlap?(range, range) :: boolean 
