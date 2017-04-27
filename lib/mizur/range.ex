@@ -144,6 +144,18 @@ defmodule Mizur.Range do
   end
 
   @doc """
+  Reverses a `range` : 
+
+      iex> a = MizurTest.Distance.cm(1000)
+      ...> b = MizurTest.Distance.cm(2)
+      ...> c = Mizur.Range.new!(a, b)
+      ...> Mizur.Range.reverse(c)
+      Mizur.Range.new!(MizurTest.Distance.cm(2), MizurTest.Distance.cm(1000))
+  """
+  @spec reverse(range) :: range 
+  def reverse({a, b, c}), do: {b, a, !c}
+
+  @doc """
   Checks if a `typed_value` is included in a range.
 
       iex> a = MizurTest.Distance.cm(1)
