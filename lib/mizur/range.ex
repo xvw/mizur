@@ -2,7 +2,7 @@ defmodule Mizur.Range do
 
   @moduledoc """
   This module provides a minimalistic approach of Range between 
-  `typed_value`. A range is characterized by two values and one 
+  `typed_value`. A range is characterized by two values and a 
   direction. The two values must necessarily be different.
   """
 
@@ -40,6 +40,27 @@ defmodule Mizur.Range do
   end
 
   @doc """
+  Checks if a `range` is increasing.
+
+      iex> r = Mizur.Range.new!(MizurTest.Distance.cm(1), MizurTest.Distance.cm(10))
+      ...> Mizur.Range.increasing?(r)
+      true
+  """
+  @spec increasing?(range) :: boolean
+  def increasing?({_, _, f}), do: f
+
+
+  @doc """
+  Checks if a `range` is decreasing.
+
+      iex> r = Mizur.Range.new!(MizurTest.Distance.cm(10), MizurTest.Distance.cm(1))
+      ...> Mizur.Range.decreasing?(r)
+      true
+  """
+  @spec decreasing?(range) :: boolean
+  def decreasing?(range), do: (not increasing?(range))
+
+  @doc """
   Returns the smallest `typed_value` of a `range`.
 
       iex> a = MizurTest.Distance.cm(1000)
@@ -53,6 +74,30 @@ defmodule Mizur.Range do
     {a, _, _} = sort(range)
     a
   end
+
+  @doc """
+  Returns the first element of a range.
+
+      iex> a = MizurTest.Distance.cm(1000)
+      ...> b = MizurTest.Distance.cm(2)
+      ...> c = Mizur.Range.new!(a, b)
+      ...> Mizur.Range.first(c)
+      MizurTest.Distance.cm(1000)
+  """
+  @spec first(range) :: Mizur.typed_value 
+  def first({a, _, _}), do: a 
+
+  @doc """
+  Returns the last element of a range.
+
+      iex> a = MizurTest.Distance.cm(1000)
+      ...> b = MizurTest.Distance.cm(2)
+      ...> c = Mizur.Range.new!(a, b)
+      ...> Mizur.Range.last(c)
+      MizurTest.Distance.cm(2)
+  """
+  @spec last(range) :: Mizur.typed_value 
+  def last({_, a, _}), do: a 
 
   @doc """
   Returns the the biggest `typed_value` of a `range`.
@@ -165,10 +210,33 @@ defmodule Mizur.Range do
     include?(x, in: b) and include?(y, in: b)
   end
 
-  defp foldl_aux(acc, f, current, max, step) do 
-    
+  @doc false
+  defp foldl_aux(acc, f, current, max, step, next) do 
+    case Mizur.compare(current, with: max) do 
+      :lt -> 
+        new_acc = f.(acc, current)
+        next_step = Mizur.map2(current, step, next)
+        foldl_aux(new_acc, f, next_step, max, step, next)
+      _   -> f.(acc, max)
+    end
   end
 
+  @doc """
+  Folds (reduces) the given `range` from the left with a function. 
+  Requires an accumulator.
+
+      iex> a = MizurTest.Distance.cm(1)
+      ...> b = MizurTest.Distance.cm(10)
+      ...> r = Mizur.Range.new!(a, b)
+      ...> Mizur.Range.foldl(r, fn(acc, x) -> [Mizur.unwrap(x) | acc] end, [])
+      Enum.map((10..1), fn(x) -> x * 1.0 end)
+
+      iex> a = MizurTest.Distance.m(0)
+      ...> b = MizurTest.Distance.m(10_000)
+      ...> r = Mizur.Range.new!(a, b)
+      ...> Mizur.Range.foldl(r, fn(acc, x) -> [Mizur.unwrap(x) | acc] end, [], MizurTest.Distance.km(1))
+      Enum.map((10..0), fn(x) -> x * 1000.0 end)
+  """
   @spec foldl(range, (Mizur.typed_value, any -> any), any, nil | Mizur.metric_type) :: any
   def foldl(range, f, default, step \\ nil) do 
     real_step = case step do 
@@ -177,7 +245,8 @@ defmodule Mizur.Range do
         apply(mod, t, [1])
       data -> data
     end 
-    default
+    next = if (increasing?(range)), do: &+/2, else: &-/2
+    foldl_aux(default, f, first(range), last(range), real_step, next)
   end
   
 end
