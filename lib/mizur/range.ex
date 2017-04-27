@@ -4,8 +4,6 @@ defmodule Mizur.Range do
   This module provides a minimalistic approach of Range between 
   `typed_value`. A range is characterized by two values and one 
   direction. The two values must necessarily be different.
-
-  
   """
 
   @typedoc """
@@ -70,6 +68,18 @@ defmodule Mizur.Range do
     {_, a, _} = sort(range)
     a
   end
+
+  @doc """
+  Returns the type of a `range`.
+
+      iex> a = MizurTest.Distance.cm(1000)
+      ...> b = MizurTest.Distance.km(2)
+      ...> c = Mizur.Range.new!(a, b)
+      ...> Mizur.Range.type_of(c)
+      MizurTest.Distance.cm()
+  """
+  @spec type_of(range) :: Mizur.metric_type
+  def type_of({{t, _}, _, _}), do: t 
 
   @doc """
   Sorts a range.
@@ -153,6 +163,21 @@ defmodule Mizur.Range do
   def subrange?(a, of: b) do 
     {x, y} = {min(a), max(a)}
     include?(x, in: b) and include?(y, in: b)
+  end
+
+  defp foldl_aux(acc, f, current, max, step) do 
+    
+  end
+
+  @spec foldl(range, (Mizur.typed_value, any -> any), any, nil | Mizur.metric_type) :: any
+  def foldl(range, f, default, step \\ nil) do 
+    real_step = case step do 
+      nil -> 
+        {mod, t, _, _, _} = type_of(range)
+        apply(mod, t, [1])
+      data -> data
+    end 
+    default
   end
   
 end
