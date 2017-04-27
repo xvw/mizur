@@ -28,7 +28,8 @@ defmodule Mizur.Infix do
       <:   2, 
       <=:  2, 
       >=:  2,
-      in:  2
+      in:  2,
+      ..: 2
     ]
 
     except = opts[:except] || []
@@ -218,6 +219,19 @@ defmodule Mizur.Infix do
   def a >= b do 
     x = Mizur.compare(a, with: b)
     Kernel.==(x, :eq) || Kernel.==(x, :gt)
+  end
+
+
+  @doc """
+  Infix version of `Mizur.Range.new!/2`. 
+
+      iex> use Mizur.Infix, only: [..: 2]
+      ...> MizurTest.Distance.cm(1) .. MizurTest.Distance.m(1)
+      Mizur.Range.new!(MizurTest.Distance.cm(1), MizurTest.Distance.cm(100))
+  """
+  @spec Mizur.typed_value .. Mizur.typed_value :: Mizur.Range.range
+  def a .. b do 
+    Mizur.Range.new!(a, b)
   end
   
 
