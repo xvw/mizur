@@ -223,15 +223,15 @@ defmodule Mizur.Infix do
 
 
   @doc """
-  Infix version of `Mizur.Range.new!/2`. 
+  Infix version of `Mizur.Range.new/2`. 
 
       iex> use Mizur.Infix, only: [..: 2]
       ...> MizurTest.Distance.cm(1) .. MizurTest.Distance.m(1)
-      Mizur.Range.new!(MizurTest.Distance.cm(1), MizurTest.Distance.cm(100))
+      Mizur.Range.new(MizurTest.Distance.cm(1), MizurTest.Distance.cm(100))
   """
   @spec Mizur.typed_value .. Mizur.typed_value :: Mizur.Range.range
   def a .. b do 
-    Mizur.Range.new!(a, b)
+    Mizur.Range.new(a, b)
   end
   
 

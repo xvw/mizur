@@ -18,21 +18,21 @@ defmodule Mizur.Range do
   @doc """
   Builds a range between two `typed_value`.
   
-      iex> Mizur.Range.new!(MizurTest.Distance.cm(1), MizurTest.Distance.cm(10))
+      iex> Mizur.Range.new(MizurTest.Distance.cm(1), MizurTest.Distance.cm(10))
       {MizurTest.Distance.cm(1), MizurTest.Distance.cm(10)}
 
-      iex> Mizur.Range.new!(MizurTest.Distance.m(1), MizurTest.Distance.cm(10))
+      iex> Mizur.Range.new(MizurTest.Distance.m(1), MizurTest.Distance.cm(10))
       {MizurTest.Distance.m(1), MizurTest.Distance.m(10/100.0)}
   """
-  @spec new!(Mizur.typed_value, Mizur.typed_value) :: range 
-  def new!({type, _} = a, b) do 
+  @spec new(Mizur.typed_value, Mizur.typed_value) :: range 
+  def new({type, _} = a, b) do 
     {a, Mizur.from(b, to: type)}
   end
 
   @doc """
   Checks if a `range` is increasing.
 
-      iex> r = Mizur.Range.new!(MizurTest.Distance.cm(1), MizurTest.Distance.cm(10))
+      iex> r = Mizur.Range.new(MizurTest.Distance.cm(1), MizurTest.Distance.cm(10))
       ...> Mizur.Range.increasing?(r)
       true
   """
@@ -43,7 +43,7 @@ defmodule Mizur.Range do
   @doc """
   Checks if a `range` is decreasing.
 
-      iex> r = Mizur.Range.new!(MizurTest.Distance.cm(10), MizurTest.Distance.cm(1))
+      iex> r = Mizur.Range.new(MizurTest.Distance.cm(10), MizurTest.Distance.cm(1))
       ...> Mizur.Range.decreasing?(r)
       true
   """
@@ -55,7 +55,7 @@ defmodule Mizur.Range do
 
       iex> a = MizurTest.Distance.cm(1000)
       ...> b = MizurTest.Distance.cm(2)
-      ...> c = Mizur.Range.new!(a, b)
+      ...> c = Mizur.Range.new(a, b)
       ...> Mizur.Range.min(c)
       MizurTest.Distance.cm(2)
   """
@@ -70,7 +70,7 @@ defmodule Mizur.Range do
 
       iex> a = MizurTest.Distance.cm(1000)
       ...> b = MizurTest.Distance.cm(2)
-      ...> c = Mizur.Range.new!(a, b)
+      ...> c = Mizur.Range.new(a, b)
       ...> Mizur.Range.first(c)
       MizurTest.Distance.cm(1000)
   """
@@ -82,7 +82,7 @@ defmodule Mizur.Range do
 
       iex> a = MizurTest.Distance.cm(1000)
       ...> b = MizurTest.Distance.cm(2)
-      ...> c = Mizur.Range.new!(a, b)
+      ...> c = Mizur.Range.new(a, b)
       ...> Mizur.Range.last(c)
       MizurTest.Distance.cm(2)
   """
@@ -94,7 +94,7 @@ defmodule Mizur.Range do
 
       iex> a = MizurTest.Distance.cm(1000)
       ...> b = MizurTest.Distance.cm(2)
-      ...> c = Mizur.Range.new!(a, b)
+      ...> c = Mizur.Range.new(a, b)
       ...> Mizur.Range.max(c)
       MizurTest.Distance.cm(1000)
   """
@@ -109,7 +109,7 @@ defmodule Mizur.Range do
 
       iex> a = MizurTest.Distance.cm(1000)
       ...> b = MizurTest.Distance.km(2)
-      ...> c = Mizur.Range.new!(a, b)
+      ...> c = Mizur.Range.new(a, b)
       ...> Mizur.Range.type_of(c)
       MizurTest.Distance.cm()
   """
@@ -121,9 +121,9 @@ defmodule Mizur.Range do
 
       iex> a = MizurTest.Distance.cm(1000)
       ...> b = MizurTest.Distance.cm(2)
-      ...> c = Mizur.Range.new!(a, b)
+      ...> c = Mizur.Range.new(a, b)
       ...> Mizur.Range.sort(c)
-      Mizur.Range.new!(MizurTest.Distance.cm(2), MizurTest.Distance.cm(1000))
+      Mizur.Range.new(MizurTest.Distance.cm(2), MizurTest.Distance.cm(1000))
   """
   @spec sort(range) :: range 
   def sort({a, b}) do 
@@ -138,9 +138,9 @@ defmodule Mizur.Range do
 
       iex> a = MizurTest.Distance.cm(1000)
       ...> b = MizurTest.Distance.cm(2)
-      ...> c = Mizur.Range.new!(a, b)
+      ...> c = Mizur.Range.new(a, b)
       ...> Mizur.Range.reverse(c)
-      Mizur.Range.new!(MizurTest.Distance.cm(2), MizurTest.Distance.cm(1000))
+      Mizur.Range.new(MizurTest.Distance.cm(2), MizurTest.Distance.cm(1000))
   """
   @spec reverse(range) :: range 
   def reverse({a, b}), do: {b, a}
@@ -150,8 +150,8 @@ defmodule Mizur.Range do
 
       iex> a = MizurTest.Distance.cm(1)
       ...> b = MizurTest.Distance.km(10)
-      ...> r = Mizur.Range.new!(a, b)
-      ...> p = Mizur.Range.new!(b, a)
+      ...> r = Mizur.Range.new(a, b)
+      ...> p = Mizur.Range.new(b, a)
       ...> x = MizurTest.Distance.m(1987)
       ...> {Mizur.Range.include?(x, in: r), Mizur.Range.include?(x, in: p)}
       {true, true}
@@ -171,8 +171,8 @@ defmodule Mizur.Range do
       ...> b = MizurTest.Distance.km(1)
       ...> x = MizurTest.Distance.m(20)
       ...> y = MizurTest.Distance.km(2)
-      ...> r = Mizur.Range.new!(a, b)
-      ...> p = Mizur.Range.new!(x, y)
+      ...> r = Mizur.Range.new(a, b)
+      ...> p = Mizur.Range.new(x, y)
       ...> Mizur.Range.overlap?(r, p)
       true
 
@@ -180,8 +180,8 @@ defmodule Mizur.Range do
       ...> b = MizurTest.Distance.km(1)
       ...> x = MizurTest.Distance.km(2)
       ...> y = MizurTest.Distance.km(20)
-      ...> r = Mizur.Range.new!(a, b)
-      ...> p = Mizur.Range.new!(x, y)
+      ...> r = Mizur.Range.new(a, b)
+      ...> p = Mizur.Range.new(x, y)
       ...> Mizur.Range.overlap?(r, p)
       false
 
@@ -199,10 +199,10 @@ defmodule Mizur.Range do
 
       iex> a = MizurTest.Distance.m(1)
       ...> b = MizurTest.Distance.km(1)
-      ...> r = Mizur.Range.new!(a, b)
+      ...> r = Mizur.Range.new(a, b)
       ...> x = MizurTest.Distance.m(2)
       ...> y = MizurTest.Distance.m(900)
-      ...> q = Mizur.Range.new!(x, y)
+      ...> q = Mizur.Range.new(x, y)
       ...> Mizur.Range.subrange?(q, of: r)
       true
   """
@@ -229,13 +229,13 @@ defmodule Mizur.Range do
 
       iex> a = MizurTest.Distance.cm(1)
       ...> b = MizurTest.Distance.cm(10)
-      ...> r = Mizur.Range.new!(a, b)
+      ...> r = Mizur.Range.new(a, b)
       ...> Mizur.Range.foldl(r, fn(acc, x) -> [Mizur.unwrap(x) | acc] end, [])
       Enum.map((10..1), fn(x) -> x * 1.0 end)
 
       iex> a = MizurTest.Distance.m(0)
       ...> b = MizurTest.Distance.m(10_000)
-      ...> r = Mizur.Range.new!(a, b)
+      ...> r = Mizur.Range.new(a, b)
       ...> Mizur.Range.foldl(r, fn(acc, x) -> [Mizur.unwrap(x) | acc] end, [], MizurTest.Distance.km(1))
       Enum.map((10..0), fn(x) -> x * 1000.0 end)
   """
@@ -257,7 +257,7 @@ defmodule Mizur.Range do
 
       iex> a = MizurTest.Distance.cm(1)
       ...> b = MizurTest.Distance.cm(10)
-      ...> r = Mizur.Range.new!(a, b)
+      ...> r = Mizur.Range.new(a, b)
       ...> Mizur.Range.foldr(r, fn(acc, x) -> [Mizur.unwrap(x) | acc] end, [])
       Enum.map((1..10), fn(x) -> x * 1.0 end)
   """
@@ -273,7 +273,7 @@ defmodule Mizur.Range do
 
       iex> a = MizurTest.Distance.cm(1)
       ...> b = MizurTest.Distance.cm(10)
-      ...> r = Mizur.Range.new!(a, b) 
+      ...> r = Mizur.Range.new(a, b) 
       ...> Enum.map(Mizur.Range.to_list(r), &Mizur.unwrap/1)
       [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]
   """
