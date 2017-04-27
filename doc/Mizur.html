@@ -5,10 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.15.0">
-    <title>Mizur – Mizur v0.1.0</title>
+    <title>Mizur – Mizur v1.0.0</title>
     <link rel="stylesheet" href="dist/app-f7824c48e6.css" />
     
-    <script src="dist/sidebar_items-d9a79dac17.js"></script>
+    <script src="dist/sidebar_items-5e68a2ca0a.js"></script>
   </head>
   <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
@@ -20,13 +20,13 @@
 <section class="sidebar">
 
   
-  <a href="README.html" class="sidebar-projectLink">
+  <a href="readme.html" class="sidebar-projectLink">
     <div class="sidebar-projectDetails">
       <h1 class="sidebar-projectName">
         Mizur
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.1.0
+        v1.0.0
       </h2>
     </div>
     
@@ -58,7 +58,7 @@
 
 
       <h1>
-        <small class="visible-xs">Mizur v0.1.0</small>
+        <small class="visible-xs">Mizur v1.0.0</small>
         Mizur
         
         
@@ -221,6 +221,24 @@ the result of the function in the same subtype</p>
     <div class="summary-synopsis"><p>Applies a function to the two numeric values of two <code class="inline">typed_values</code> in 
 the same metric system, and re-packages the result 
 of the function in a <code class="inline">typed_value</code> of the subtype of the left <code class="inline">typed_values</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#max/2">max(a, b)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns the biggest <code class="inline">typed_value</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#min/2">min(a, b)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns the smallest <code class="inline">typed_value</code></p>
 </div>
   
 </div>
@@ -417,7 +435,7 @@ The return value will have the subtype of the left <code class="inline">typed_va
     </a>
     <span class="signature">add(a, b)</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L270" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L299" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -489,7 +507,7 @@ MizurTest.Distance.cm(212)</code></pre>
     </a>
     <span class="signature">div(a, b)</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L320" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L349" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -520,7 +538,7 @@ MizurTest.Distance.cm(6.0)</code></pre>
     </a>
     <span class="signature">equals(a, b)</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L232" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L261" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -722,6 +740,62 @@ of the function in a <code class="inline">typed_value</code> of the subtype of t
 
   </section>
 </div>
+<div class="detail" id="max/2">
+  
+  <div class="detail-header">
+    <a href="#max/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">max(a, b)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L228" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>max(<a href="#t:typed_value/0">typed_value</a>, <a href="#t:typed_value/0">typed_value</a>) :: <a href="#t:typed_value/0">typed_value</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Returns the biggest <code class="inline">typed_value</code>.</p>
+<pre><code class="iex elixir">iex&gt; Mizur.max(MizurTest.Distance.cm(12), MizurTest.Distance.m(1))
+MizurTest.Distance.m(1)</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="min/2">
+  
+  <div class="detail-header">
+    <a href="#min/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">min(a, b)</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L242" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>min(<a href="#t:typed_value/0">typed_value</a>, <a href="#t:typed_value/0">typed_value</a>) :: <a href="#t:typed_value/0">typed_value</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Returns the smallest <code class="inline">typed_value</code>.</p>
+<pre><code class="iex elixir">iex&gt; Mizur.min(MizurTest.Distance.cm(12), MizurTest.Distance.m(1))
+MizurTest.Distance.cm(12)</code></pre>
+
+  </section>
+</div>
 <div class="detail" id="mult/2">
   
   <div class="detail-header">
@@ -730,7 +804,7 @@ of the function in a <code class="inline">typed_value</code> of the subtype of t
     </a>
     <span class="signature">mult(a, b)</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L304" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L333" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -823,7 +897,7 @@ true</code></pre>
     </a>
     <span class="signature">strict_equals(a, b)</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L247" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L276" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -855,7 +929,7 @@ value (in the same type). <code class="inline">false</code> otherwise.</p>
     </a>
     <span class="signature">sub(a, b)</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L288" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur.ex#L317" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     

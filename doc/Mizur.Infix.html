@@ -5,10 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.15.0">
-    <title>Mizur.Infix – Mizur v0.1.0</title>
+    <title>Mizur.Infix – Mizur v1.0.0</title>
     <link rel="stylesheet" href="dist/app-f7824c48e6.css" />
     
-    <script src="dist/sidebar_items-d9a79dac17.js"></script>
+    <script src="dist/sidebar_items-5e68a2ca0a.js"></script>
   </head>
   <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
@@ -20,13 +20,13 @@
 <section class="sidebar">
 
   
-  <a href="README.html" class="sidebar-projectLink">
+  <a href="readme.html" class="sidebar-projectLink">
     <div class="sidebar-projectDetails">
       <h1 class="sidebar-projectName">
         Mizur
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.1.0
+        v1.0.0
       </h2>
     </div>
     
@@ -58,7 +58,7 @@
 
 
       <h1>
-        <small class="visible-xs">Mizur v0.1.0</small>
+        <small class="visible-xs">Mizur v1.0.0</small>
         Mizur.Infix
         
         
@@ -140,6 +140,15 @@ of the Mizur module.</p>
   </div>
   
     <div class="summary-synopsis"><p>Infix version of <a href="Mizur.html#sub/2"><code class="inline">Mizur.sub/2</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#../2">a..b</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Infix version of <a href="Mizur.Range.html#new!/2"><code class="inline">Mizur.Range.new!/2</code></a></p>
 </div>
   
 </div>
@@ -260,7 +269,7 @@ of the Mizur module.</p>
     </a>
     <span class="signature">a != b</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L145" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L146" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -289,7 +298,7 @@ true</code></pre>
     </a>
     <span class="signature">a !== b</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L169" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L170" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -318,7 +327,7 @@ true</code></pre>
     </a>
     <span class="signature">a * b</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L108" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L109" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -348,7 +357,7 @@ MizurTest.Distance.cm(120)</code></pre>
     </a>
     <span class="signature">a + b</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L81" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L82" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -379,7 +388,7 @@ MizurTest.Distance.cm(212)</code></pre>
     </a>
     <span class="signature">a - b</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L95" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L96" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -402,6 +411,35 @@ MizurTest.Distance.m(1.88)</code></pre>
 
   </section>
 </div>
+<div class="detail" id="../2">
+  
+  <div class="detail-header">
+    <a href="#../2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">a..b</span>
+    
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L233" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="Mizur.html#t:typed_value/0">Mizur.typed_value</a>..<a href="Mizur.html#t:typed_value/0">Mizur.typed_value</a> :: <a href="Mizur.Range.html#t:range/0">Mizur.Range.range</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Infix version of <a href="Mizur.Range.html#new!/2"><code class="inline">Mizur.Range.new!/2</code></a>. </p>
+<pre><code class="iex elixir">iex&gt; use Mizur.Infix, only: [..: 2]
+...&gt; MizurTest.Distance.cm(1) .. MizurTest.Distance.m(1)
+Mizur.Range.new!(MizurTest.Distance.cm(1), MizurTest.Distance.cm(100))</code></pre>
+
+  </section>
+</div>
 <div class="detail" id="//2">
   
   <div class="detail-header">
@@ -410,7 +448,7 @@ MizurTest.Distance.m(1.88)</code></pre>
     </a>
     <span class="signature">a / b</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L121" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L122" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -440,7 +478,7 @@ MizurTest.Distance.cm(6)</code></pre>
     </a>
     <span class="signature">a &lt; b</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L193" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L194" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -469,7 +507,7 @@ true</code></pre>
     </a>
     <span class="signature">a &lt;= b</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L205" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L206" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -498,7 +536,7 @@ true</code></pre>
     </a>
     <span class="signature">to &lt;~ base</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L66" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L67" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -528,7 +566,7 @@ true</code></pre>
     </a>
     <span class="signature">a == b</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L133" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L134" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -557,7 +595,7 @@ true</code></pre>
     </a>
     <span class="signature">a === b</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L157" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L158" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -586,7 +624,7 @@ true</code></pre>
     </a>
     <span class="signature">a &gt; b</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L181" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L182" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -615,7 +653,7 @@ true</code></pre>
     </a>
     <span class="signature">a &gt;= b</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L218" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L219" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -644,7 +682,7 @@ true</code></pre>
     </a>
     <span class="signature">a in t</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L234" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L248" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -674,7 +712,7 @@ true</code></pre>
     </a>
     <span class="signature">base ~&gt; to</span>
     
-      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L53" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/xvw/mizur/blob/master/lib/mizur/infix.ex#L54" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     

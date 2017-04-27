@@ -5,10 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.15.0">
-    <title>Mizur – Mizur v0.1.0</title>
+    <title>Mizur – Mizur v1.0.0</title>
     <link rel="stylesheet" href="dist/app-f7824c48e6.css" />
     
-    <script src="dist/sidebar_items-d9a79dac17.js"></script>
+    <script src="dist/sidebar_items-5e68a2ca0a.js"></script>
   </head>
   <body data-type="extras">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
@@ -20,13 +20,13 @@
 <section class="sidebar">
 
   
-  <a href="README.html" class="sidebar-projectLink">
+  <a href="readme.html" class="sidebar-projectLink">
     <div class="sidebar-projectDetails">
       <h1 class="sidebar-projectName">
         Mizur
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.1.0
+        v1.0.0
       </h2>
     </div>
     
@@ -59,16 +59,16 @@
 
 <h1>Mizur</h1>
 <p>Pronounced <code class="inline">/&#39;meʒə/</code></p>
-<p><strong>Mizur</strong> is a tool to simplify the management, conversions  
+<p><strong>Mizur</strong> is a tool to simplify the management, conversion  
 and mapping of units. 
-The manipulation of units of measurement try (at best) 
-to be typesafe.</p>
+The manipulation of measurement units should (at best) 
+be typesafe.</p>
 <p><img src="images/logo.png" alt="Mizur Logo"/>
 (A special thanks to <a href="https://github.com/fh-d">@fh-d</a> for this awesome logo !)</p>
 <ul>
 <li><a href="#content">Presentation</a>
 </li>
-<li><a href="#some-examples">Some example</a>
+<li><a href="#some-examples">Some examples</a>
 </li>
 <li><a href="#installation">Installation</a>
 </li>
@@ -114,7 +114,7 @@ end
 </li>
 </ul>
 <p>and sigils : <code class="inline">Distance.sigil_t(value, [&#39;typename&#39;])</code>.</p>
-<h4>Example of using Mizur</h4>
+<h4>Example of common Mizur usage</h4>
 <pre><code class="elixir">a = Distance.m(200)
 b = Distance.cm(200)
 result = Mizur.add(a, b)
@@ -124,7 +124,7 @@ assert result = Distance.m(202)</code></pre>
 using <code class="inline">use Mizur.Infix</code>.</p>
 <p>As with the <code class="inline">import</code> directive, you can use the <code class="inline">:except</code> and <code class="inline">:only</code> parameters 
 (exactly in the same way as using<code class="inline">import</code>).</p>
-<p>The main difference with <code class="inline">import</code> is that use of<code class="inline">use</code> will overwrite the correct 
+<p>The main difference with <code class="inline">import</code> is that <code class="inline">use</code> will overwrite the correct 
 operators of the <a href="https://hexdocs.pm/elixir/Kernel.html"><code class="inline">Kernel</code></a> module.</p>
 <h3>Manage arithmetic operations on datetime</h3>
 <pre><code class="elixir">defmodule MyTime do 
@@ -175,7 +175,7 @@ c = b - ~t(10)min
 # Convert into DateTime 
 result = to_datetime(c)</code></pre>
 <h3>Other examples</h3>
-<p>The test module gives many examples of uses :
+<p>The test module gives many usage examples :
 <a href="https://github.com/xvw/mizur/blob/master/test/mizur_test.exs">Test module</a></p>
 <h2 id="installation" class="section-heading">
   <a href="#installation" class="hover-link"><i class="icon-link"></i></a>
@@ -185,7 +185,7 @@ result = to_datetime(c)</code></pre>
 <p>If <a href="https://hex.pm/docs/publish">available in Hex</a>, the package can be installed
 by adding <code class="inline">mizur</code> to your list of dependencies in <code class="inline">mix.exs</code>:</p>
 <pre><code class="elixir">def deps do
-  [{:mizur, &quot;~&gt; 0.1.0&quot;}]
+  [{:mizur, &quot;~&gt; 0.1.1&quot;}]
 end</code></pre>
 <h2 id="special-thanks" class="section-heading">
   <a href="#special-thanks" class="hover-link"><i class="icon-link"></i></a>
@@ -204,7 +204,7 @@ end</code></pre>
 </ul>
 <p>Documentation can be generated with <a href="https://github.com/elixir-lang/ex_doc">ExDoc</a>
 and published on <a href="https://hexdocs.pm">HexDocs</a>. Once published, the docs can
-be found at <a href="https://hexdocs.pm/mizur">https://hexdocs.pm/mizur</a>.</p>
+be found at <a href="https://hexdocs.pm/mizur/readme.html">https://hexdocs.pm/mizur/readme.html</a>.</p>
 
       <footer class="footer">
         <p>
