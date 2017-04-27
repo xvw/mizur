@@ -12,7 +12,6 @@ defmodule Mizur.Range do
   @type range :: {
     Mizur.typed_value, 
     Mizur.typed_value, 
-    boolean # Min to max or Max to min
   }
 
 
@@ -22,21 +21,14 @@ defmodule Mizur.Range do
   `ArgumentError`.
 
       iex> Mizur.Range.new!(MizurTest.Distance.cm(1), MizurTest.Distance.cm(10))
-      {MizurTest.Distance.cm(1), MizurTest.Distance.cm(10), true}
+      {MizurTest.Distance.cm(1), MizurTest.Distance.cm(10)}
 
       iex> Mizur.Range.new!(MizurTest.Distance.m(1), MizurTest.Distance.cm(10))
-      {MizurTest.Distance.m(1), MizurTest.Distance.m(10/100.0), false}
+      {MizurTest.Distance.m(1), MizurTest.Distance.m(10/100.0)}
   """
   @spec new!(Mizur.typed_value, Mizur.typed_value) :: range 
   def new!({type, _} = a, b) do 
-    ord =
-      case Mizur.compare(a, with: b) do 
-        :lt -> true 
-        :gt -> false 
-        :eq -> 
-          raise ArgumentError, message: "Left and right are the same !"
-      end
-    {a, Mizur.from(b, to: type), ord}
+    {a, Mizur.from(b, to: type)}
   end
 
   @doc """
@@ -47,7 +39,7 @@ defmodule Mizur.Range do
       true
   """
   @spec increasing?(range) :: boolean
-  def increasing?({_, _, f}), do: f
+  def increasing?({a, b}), do: Mizur.compare(a, with: b) in [:lt, :eq]
 
 
   @doc """
@@ -71,7 +63,7 @@ defmodule Mizur.Range do
   """
   @spec min(range) :: Mizur.typed_value 
   def min(range) do 
-    {a, _, _} = sort(range)
+    {a, _} = sort(range)
     a
   end
 
@@ -85,7 +77,7 @@ defmodule Mizur.Range do
       MizurTest.Distance.cm(1000)
   """
   @spec first(range) :: Mizur.typed_value 
-  def first({a, _, _}), do: a 
+  def first({a, _}), do: a 
 
   @doc """
   Returns the last element of a range.
@@ -97,7 +89,7 @@ defmodule Mizur.Range do
       MizurTest.Distance.cm(2)
   """
   @spec last(range) :: Mizur.typed_value 
-  def last({_, a, _}), do: a 
+  def last({_, a}), do: a 
 
   @doc """
   Returns the the biggest `typed_value` of a `range`.
@@ -110,7 +102,7 @@ defmodule Mizur.Range do
   """
   @spec max(range) :: Mizur.typed_value 
   def max(range) do 
-    {_, a, _} = sort(range)
+    {_, a} = sort(range)
     a
   end
 
@@ -124,7 +116,7 @@ defmodule Mizur.Range do
       MizurTest.Distance.cm()
   """
   @spec type_of(range) :: Mizur.metric_type
-  def type_of({{t, _}, _, _}), do: t 
+  def type_of({{t, _}, _}), do: t 
 
   @doc """
   Sorts a range.
@@ -136,10 +128,10 @@ defmodule Mizur.Range do
       Mizur.Range.new!(MizurTest.Distance.cm(2), MizurTest.Distance.cm(1000))
   """
   @spec sort(range) :: range 
-  def sort({a, b, ord} = range) do 
-    cond do 
-      ord -> range 
-      true -> {b, a, true}
+  def sort({a, b}) do 
+    case Mizur.compare(a, with: b) do 
+      :lt -> {a, b}
+      _ -> {b, a}
     end
   end
 
@@ -153,7 +145,7 @@ defmodule Mizur.Range do
       Mizur.Range.new!(MizurTest.Distance.cm(2), MizurTest.Distance.cm(1000))
   """
   @spec reverse(range) :: range 
-  def reverse({a, b, c}), do: {b, a, !c}
+  def reverse({a, b}), do: {b, a}
 
   @doc """
   Checks if a `typed_value` is included in a range.
@@ -169,7 +161,7 @@ defmodule Mizur.Range do
   @spec include?(Mizur.typed_value, [in: range]) :: boolean
   def include?(value, in: range) do 
     use Mizur.Infix, only: [>=: 2, <=: 2]
-    {a, b, _} = sort(range)
+    {a, b} = sort(range)
     (value >= a) and (value <= b)
   end
 
@@ -199,8 +191,8 @@ defmodule Mizur.Range do
   @spec overlap?(range, range) :: boolean 
   def overlap?(a, b) do 
     use Mizur.Infix, only: [>=: 2, <=: 2]
-    {startA, endA, _} = sort(a)
-    {startB, endB, _} = sort(b)
+    {startA, endA} = sort(a)
+    {startB, endB} = sort(b)
     (startA <= endB) and (endA >= startB) 
   end
 
@@ -223,13 +215,13 @@ defmodule Mizur.Range do
   end
 
   @doc false
-  defp foldl_aux(acc, f, current, max, step, next) do 
-    case Mizur.compare(current, with: max) do 
-      :lt -> 
+  defp foldl_aux(acc, f, current, max, step, {next, flag}) do 
+    cond do 
+      Mizur.compare(current, with: max) == flag -> 
         new_acc = f.(acc, current)
         next_step = Mizur.map2(current, step, next)
-        foldl_aux(new_acc, f, next_step, max, step, next)
-      _   -> f.(acc, max)
+        foldl_aux(new_acc, f, next_step, max, step, {next, flag})
+      true -> f.(acc, max)
     end
   end
 
@@ -257,8 +249,41 @@ defmodule Mizur.Range do
         apply(mod, t, [1])
       data -> data
     end 
-    next = if (increasing?(range)), do: &+/2, else: &-/2
-    foldl_aux(default, f, first(range), last(range), real_step, next)
+    data = if (increasing?(range)), do: {&+/2, :lt}, else: {&-/2, :gt}
+    foldl_aux(default, f, first(range), last(range), real_step, data)
   end
+
+  @doc """
+  Folds (reduces) the given `range` from the left with a function. 
+  Requires an accumulator.
+
+      iex> a = MizurTest.Distance.cm(1)
+      ...> b = MizurTest.Distance.cm(10)
+      ...> r = Mizur.Range.new!(a, b)
+      ...> Mizur.Range.foldr(r, fn(acc, x) -> [Mizur.unwrap(x) | acc] end, [])
+      Enum.map((1..10), fn(x) -> x * 1.0 end)
+  """
+  @spec foldr(range, (Mizur.typed_value, any -> any), any, nil | Mizur.metric_type) :: any
+  def foldr(range, f, default, step \\ nil) do 
+    range 
+    |> reverse()
+    |> foldl(f, default, step)
+  end
+
+  @doc """
+  Converts a range to a list of `typed_value`.
+
+      iex> a = MizurTest.Distance.cm(1)
+      ...> b = MizurTest.Distance.cm(10)
+      ...> r = Mizur.Range.new!(a, b) 
+      ...> Enum.map(Mizur.Range.to_list(r), &Mizur.unwrap/1)
+      [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]
+  """
+  @spec to_list(range, nil | Mizur.metric_type) :: [Mizur.typed_value]
+  def to_list(range, step \\ nil) do 
+    range 
+    |> foldr(fn(acc, x) -> [ x | acc ] end, [], step)
+  end
+
   
 end
