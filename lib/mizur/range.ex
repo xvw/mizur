@@ -42,6 +42,36 @@ defmodule Mizur.Range do
   end
 
   @doc """
+  Returns the smallest `typed_value` of a `range`.
+
+      iex> a = MizurTest.Distance.cm(1000)
+      ...> b = MizurTest.Distance.cm(2)
+      ...> c = Mizur.Range.new!(a, b)
+      ...> Mizur.Range.min(c)
+      MizurTest.Distance.cm(2)
+  """
+  @spec min(range) :: Mizur.typed_value 
+  def min(range) do 
+    {a, _, _} = sort(range)
+    a
+  end
+
+  @doc """
+  Returns the the biggest `typed_value` of a `range`.
+
+      iex> a = MizurTest.Distance.cm(1000)
+      ...> b = MizurTest.Distance.cm(2)
+      ...> c = Mizur.Range.new!(a, b)
+      ...> Mizur.Range.max(c)
+      MizurTest.Distance.cm(1000)
+  """
+  @spec max(range) :: Mizur.typed_value 
+  def max(range) do 
+    {_, a, _} = sort(range)
+    a
+  end
+
+  @doc """
   Sorts a range.
 
       iex> a = MizurTest.Distance.cm(1000)
@@ -105,6 +135,11 @@ defmodule Mizur.Range do
     {startA, endA, _} = sort(a)
     {startB, endB, _} = sort(b)
     (startA <= endB) and (endA >= startB) 
+  end
+
+  @spec subrange?(range, [of: range]) :: boolean 
+  def subrange?(a, of: b) do 
+    true
   end
   
 end
