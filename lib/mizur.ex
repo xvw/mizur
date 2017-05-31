@@ -8,9 +8,6 @@ defmodule Mizur do
   to be typesafe.
   """
 
-  defmodule Test do 
-    use Mizur.System
-  end
   
 
 end

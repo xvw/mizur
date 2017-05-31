@@ -11,7 +11,7 @@ defmodule Mizur.System do
 
       import Mizur.System
 
-      @basis nil 
+      @metrics []
 
       defmodule Type do 
         @moduledoc """
@@ -32,7 +32,8 @@ defmodule Mizur.System do
         # Struct to define a type
         @enforce_keys [:name, :from_basis, :to_basis]
         defstruct [:name, :from_basis, :to_basis]
-      end
+
+      end # End of Type
 
       @typedoc """
       This type represents a **Typed value**.
@@ -46,6 +47,62 @@ defmodule Mizur.System do
       @enforce_keys [:type, :value]
       defstruct [:type, :value]
 
+    end # End of Internal module
+
+  end # End of using
+
+  @doc false
+  defmacro define_basis(basis) do 
+    quote do 
+      @metrics [ unquote(basis) | @metrics]
+      define_internal_type(
+        unquote(basis), 
+        :mizur_internal_value
+      )
+    end
+  end
+
+  defmacro revert(expr, acc) do 
+    quote do 
+      case unquote(expr) do 
+        {:mizur_internal_value, [], Mizur.System} -> unquote(acc)
+        r -> IO.inspect r
+      end
+    end
+  end
+
+  @doc false 
+  defmacro define_internal_type(name, expr) do
+    mit = {:mizur_internal_value, [], __MODULE__}
+    new_expr = if is_atom(expr), do: mit, else: expr
+    quote do 
+      def unquote(name)() do 
+        %__MODULE__.Type{
+          name: unquote(name), 
+          from_basis: 
+            fn(mizur_internal_value) -> 
+              unquote(lambda(new_expr)) * 1.0 
+            end,
+          to_basis: 1.0
+        }
+      end
+    end
+  end
+
+
+  @doc """
+  """
+  defmacro type({basis, _, nil}) do 
+    quote do 
+      define_basis(unquote(basis))
+    end
+  end
+
+  @doc """
+  """
+  defmacro type({:=, _, [{name, _, nil}, rest]}) do 
+    quote do 
+      define_internal_type(unquote(name), unquote(rest))
     end
   end
 
