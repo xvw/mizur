@@ -17,7 +17,7 @@ by adding `mizur` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:mizur, "~> 0.1.1"}]
+  [{:mizur, "~> 2.0.0"}]
 end
 ```
 
