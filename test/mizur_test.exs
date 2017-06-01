@@ -12,7 +12,7 @@ defmodule MizurTest do
   test "experience" do 
     x = %Length.Type{name: :cm, from_basis: 0, to_basis: 0}
     _y = %Length{type: x, value: 32.0}
-    IO.inspect Length.m.from_basis.(12)
+    IO.inspect Length.dm.to_basis.(100)
   end
   
 end

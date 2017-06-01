@@ -62,28 +62,38 @@ defmodule Mizur.System do
     end
   end
 
-  defmacro revert(expr, acc) do 
-    quote do 
-      case unquote(expr) do 
-        {:mizur_internal_value, [], Mizur.System} -> unquote(acc)
-        r -> IO.inspect r
+  @doc false 
+  defmacro lambda(expr) do 
+    f = quote do: (mizur_internal_value)
+    r = Macro.postwalk(expr, fn(elt) ->
+      case elt do 
+        x when is_atom(x) -> quote do: unquote({x, [], __MODULE__})
+        {l, _, nil} when is_atom(l) -> 
+          quote do
+            IO.inspect __MODULE__
+            apply(__MODULE__, unquote(l), []).to_basis.(unquote(f))
+          end
+        _ -> elt
       end
-    end
+    end)
+    quote do: fn(mizur_internal_value) -> unquote(r) end
   end
 
   @doc false 
+  defmacro rev_lambda(_expr) do 
+    #r = Macro.postwalk(expr, fn(elt) -> elt end)
+    quote do: fn(mizur_internal_value) -> 10 end
+  end
+
+
+  @doc false 
   defmacro define_internal_type(name, expr) do
-    mit = {:mizur_internal_value, [], __MODULE__}
-    new_expr = if is_atom(expr), do: mit, else: expr
     quote do 
       def unquote(name)() do 
         %__MODULE__.Type{
           name: unquote(name), 
-          from_basis: 
-            fn(mizur_internal_value) -> 
-              unquote(lambda(new_expr)) * 1.0 
-            end,
-          to_basis: 1.0
+          from_basis: rev_lambda(unquote(expr)),
+          to_basis:  lambda(unquote(expr))
         }
       end
     end
