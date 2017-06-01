@@ -8,6 +8,13 @@ defmodule Mizur do
   to be typesafe.
   """
 
+
+  defmodule Length do 
+    use Mizur.System
+    type m
+    type cm = (1 / 100) * m
+    type mm = (cm / 10)
+  end
   
 
 end

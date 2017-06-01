@@ -6,13 +6,14 @@ defmodule MizurTest do
     use Mizur.System
     type m
     type mm
-    type dm = m / 10
+    type cm = m / 100
+    type dm = cm * 10
   end
 
   test "experience" do 
-    x = %Length.Type{name: :cm, from_basis: 0, to_basis: 0}
-    _y = %Length{type: x, value: 32.0}
-    IO.inspect Length.dm.to_basis.(100)
+    import Length
+    x = ~M(100)dm
+    IO.inspect x 
   end
   
 end

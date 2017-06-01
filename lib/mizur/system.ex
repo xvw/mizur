@@ -67,11 +67,23 @@ defmodule Mizur.System do
     f = quote do: (mizur_internal_value)
     r = Macro.postwalk(expr, fn(elt) ->
       case elt do 
-        x when is_atom(x) -> quote do: unquote({x, [], __MODULE__})
+        x when is_atom(x) -> 
+          quote do: unquote({x, [], __MODULE__})
         {l, _, nil} when is_atom(l) -> 
           quote do
-            IO.inspect __MODULE__
-            apply(__MODULE__, unquote(l), []).to_basis.(unquote(f))
+            cond do 
+              !Enum.member?(@metrics, unquote(l)) -> 
+                raise(
+                  RuntimeError, 
+                  message: "[#{unquote(l)}] does not exists."
+                )
+                true ->
+                  apply(
+                    __MODULE__, 
+                    unquote(l), 
+                    []
+                  ).to_basis.(unquote(f))
+              end 
           end
         _ -> elt
       end
@@ -89,6 +101,13 @@ defmodule Mizur.System do
   @doc false 
   defmacro define_internal_type(name, expr) do
     quote do 
+      @metrics [unquote(name) | @metrics]
+
+      @doc """
+      References the subtype `#{unquote(name)}` 
+      of `#{__MODULE__}.Type`
+      """
+      @spec unquote(name)() :: __MODULE__.Type.t
       def unquote(name)() do 
         %__MODULE__.Type{
           name: unquote(name), 
@@ -96,6 +115,28 @@ defmodule Mizur.System do
           to_basis:  lambda(unquote(expr))
         }
       end
+
+      @doc """
+      Builds a value into the subtype `#{unquote(name)}`
+      of `#{__MODULE__}.Type`
+      """
+      @spec unquote(name)(number) :: __MODULE__.t
+      def unquote(name)(value) do 
+        %__MODULE__{
+          type: apply(__MODULE__, unquote(name), []), 
+          value: value * 1.0
+        }
+      end
+
+      @doc false 
+      def sigil_M(value, unquote(to_charlist(name))) do 
+        apply(
+          __MODULE__, 
+          unquote(name), 
+          [String.to_integer(value)]
+        )
+      end
+
     end
   end
 
