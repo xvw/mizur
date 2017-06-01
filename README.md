@@ -1,3 +1,7 @@
+> I'm actually writting the `v2.0.0` of Mizur, checkout 
+> [master](https://github.com/xvw/mizur/tree/master) to see the v1.x
+
+
 # Mizur
 Pronounced `/'meʒə/`
 
