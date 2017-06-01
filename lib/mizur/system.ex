@@ -128,7 +128,14 @@ defmodule Mizur.System do
         }
       end
 
-      @doc false 
+      @doc """
+      A shortcut to write **typed values** using sigils notation. 
+      
+      For example : 
+          iex> import #{__MODULE__}
+          ...> ~M(200)#{unquote(name)}
+          #{__MODULE__}.#{unquote(name)}(200)
+      """
       def sigil_M(value, unquote(to_charlist(name))) do 
         apply(
           __MODULE__, 
