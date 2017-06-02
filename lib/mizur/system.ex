@@ -61,40 +61,76 @@ defmodule Mizur.System do
       )
     end
   end
-
   @doc false 
   defmacro lambda(expr) do 
     f = quote do: (mizur_internal_value)
     r = Macro.postwalk(expr, fn(elt) ->
-      case elt do 
-        x when is_atom(x) -> 
-          quote do: unquote({x, [], __MODULE__})
-        {l, _, nil} when is_atom(l) -> 
-          quote do
-            cond do 
-              !Enum.member?(@metrics, unquote(l)) -> 
-                raise(
-                  RuntimeError, 
-                  message: "[#{unquote(l)}] does not exists."
-                )
-                true ->
-                  apply(
-                    __MODULE__, 
-                    unquote(l), 
-                    []
-                  ).to_basis.(unquote(f))
-              end 
+          case elt do 
+            x when is_atom(x) -> 
+              quote do: unquote({x, [], __MODULE__})
+            {l, _, nil} when is_atom(l) -> 
+              quote do
+                apply(__MODULE__, unquote(l), []).to_basis.(unquote(f))
+              end
+            _ -> elt
           end
-        _ -> elt
-      end
-    end)
-    quote do: fn(mizur_internal_value) -> unquote(r) end
+        end)
+    IO.inspect [ver: Macro.to_string r]
+    quote do: (fn(mizur_internal_value) -> unquote(r) end)
+  end
+
+
+  @doc false 
+  def revert_operator(operator) do 
+    case operator do 
+      :+ -> :- 
+      :- -> :+ 
+      :* -> :/
+      :/ -> :*
+      _  -> 
+        raise RuntimeError, 
+          message: "#{operator} is an unknown operator"
+    end
   end
 
   @doc false 
-  defmacro rev_lambda(_expr) do 
-    #r = Macro.postwalk(expr, fn(elt) -> elt end)
-    quote do: fn(mizur_internal_value) -> 10 end
+  def revert(expr) do 
+    case expr do 
+      x when is_number(x) -> x
+      {op, _, [left, right]} -> 
+        {revert_operator(op), [], [revert(right), revert(left)]}
+      _ -> expr
+    end
+  end
+
+
+  @doc false 
+  defmacro rev_lambda(expr) do 
+    #new_expr = revert(expr, quote do: (mizur_internal_value)) 
+    case expr do 
+      x when is_number(x) -> 
+        IO.inspect [rev: Macro.to_string x]
+        quote do: (fn(_) -> unquote(x) end)
+      :mizur_internal_value -> 
+        quote do: (fn(mizur_internal_value) -> mizur_internal_value end)
+      e -> 
+        f = quote do: (mizur_internal_value)
+        new_expr =
+          Macro.postwalk(revert(expr), fn(elt) ->
+            case elt do
+              {key, _, nil} -> 
+                quote do
+                  apply(__MODULE__, unquote(key), []).
+                  from_basis.(unquote(f))
+                end 
+              _ -> elt 
+            end
+          end)
+        IO.inspect [rev: Macro.to_string new_expr]
+        quote do
+          (fn(mizur_internal_value) -> unquote(new_expr) end)
+        end
+      end
   end
 
 
