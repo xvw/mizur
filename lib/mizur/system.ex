@@ -65,6 +65,19 @@ defmodule Mizur.System do
       @spec to_integer(t) :: integer
       def to_integer(%__MODULE__{} = t), do: round(t.value)
 
+      @doc """
+      Converts a `typed_value` to another subtype of its metric system.
+      """
+      def from(%__MODULE__{} = basis, to: %__MODULE__.Type{} = target) do 
+        from = target.from_basis
+        to = basis.type.to_basis
+        value = basis.value
+        %__MODULE__{
+          type: target,
+          value: from.(to.(value))
+        }
+      end
+
     end # End of Internal module
 
   end # End of using

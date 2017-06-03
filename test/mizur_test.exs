@@ -49,6 +49,7 @@ defmodule MizurTest do
 
   test "experience " do 
     Length.m(12)
+    |> Length.from(to: Length.cm)
     |> Length.to_integer
     |> IO.inspect
   end
