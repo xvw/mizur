@@ -7,14 +7,14 @@ defmodule MizurTest do
     use Mizur.System
     type m 
     type dm = m / 10 
-    type cm = dm / 10 
+    type cm = dm / (2*5)
     type mm = 10 / cm
   end
 
   defmodule Temperature do 
     use Mizur.System
     type farenheit
-    type celsius = 32.0 + (farenheit * 1.8)
+    type celsius = (farenheit * 1.8) + 32
   end
 
   test "from and to basis for Length" do 

@@ -81,26 +81,18 @@ defmodule Mizur.System do
 
 
   @doc false 
-  def revert_operator(operator) do 
-    case operator do 
-      :+ -> :- 
-      :- -> :+ 
-      :* -> :/
-      :/ -> :*
-      _  -> 
-        raise RuntimeError, 
-          message: "#{operator} is an unknown operator"
-    end
-  end
-
-  @doc false 
   def revert(expr) do 
     case expr do 
-      x when is_number(x) -> x
-      {op, _, [left, right]} when is_number(left) or is_atom(left) -> 
-        IO.inspect [kkk: left, rr: right]
-        {revert_operator(op), [], [right, revert(left)]}
-      _ -> expr
+      {:+, _, [a, b]} when is_number(a) or is_atom(a) -> 
+        {:/, [], [{:-, [], [0, a]}, b]}
+      {:-, _, [a, b]} when is_number(a) or is_atom(a) -> 
+        {:/, [], [{:+, [], [0, a]}, b]}
+      {:+, _, [a, b]} when is_number(b) or is_atom(b) -> 
+        {:/, [], [{:-, [], [0, b]}, a]}
+      {:-, _, [a, b]} when is_number(b) or is_atom(b) -> 
+        {:/, [], [{:+, [], [0, b]}, a]}
+      {:*, _, [a, b]} -> {:/, [], [b, a]}
+      {:/, _, [a, b]} -> {:*, [], [b, a]}
     end
   end
 
@@ -114,11 +106,13 @@ defmodule Mizur.System do
         quote do: (fn(_) -> unquote(x) end)
       :mizur_internal_value -> 
         quote do: (fn(mizur_internal_value) -> mizur_internal_value end)
-      e -> 
+      _ -> 
         f = quote do: (mizur_internal_value)
         new_expr =
           Macro.postwalk(revert(expr), fn(elt) ->
             case elt do
+              {op, _, [a, b]} when is_number(a) and is_number(b) -> 
+                apply(Kernel, op, [a, b])
               {key, _, nil} -> 
                 quote do
                   apply(__MODULE__, unquote(key), []).
