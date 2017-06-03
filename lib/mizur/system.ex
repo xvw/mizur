@@ -97,8 +97,9 @@ defmodule Mizur.System do
   def revert(expr) do 
     case expr do 
       x when is_number(x) -> x
-      {op, _, [left, right]} -> 
-        {revert_operator(op), [], [revert(right), revert(left)]}
+      {op, _, [left, right]} when is_number(left) or is_atom(left) -> 
+        IO.inspect [kkk: left, rr: right]
+        {revert_operator(op), [], [right, revert(left)]}
       _ -> expr
     end
   end

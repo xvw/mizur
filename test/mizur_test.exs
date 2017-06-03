@@ -13,8 +13,8 @@ defmodule MizurTest do
 
   defmodule Temperature do 
     use Mizur.System
-    type celsius
-    type farenheit = 32.0 + (celsius * 1.8)
+    type farenheit
+    type celsius = 32.0 + (farenheit * 1.8)
   end
 
   test "from and to basis for Length" do 
@@ -33,12 +33,16 @@ defmodule MizurTest do
   end
 
   test "from and to basis for Temperature" do 
-    a = Temperature.celsius.to_basis.(10)
-    b = Temperature.celsius.from_basis.(17)
+    a = Temperature.farenheit.to_basis.(10)
+    b = Temperature.farenheit.from_basis.(17)
     assert a == 10.0
     assert b == 17.0
-    a = Temperature.farenheit.to_basis.(1)
-    assert a == -17.2222
+    a = Temperature.celsius.to_basis.(0)
+    assert a == 32
+    b = Temperature.celsius.to_basis.(1)
+    assert b == 33.8
+    c = Temperature.celsius.from_basis.(1)
+    IO.inspect c
   end
 
   
