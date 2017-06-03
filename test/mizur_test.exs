@@ -47,5 +47,11 @@ defmodule MizurTest do
     assert d == -32/(1.8*2)
   end
 
+  test "experience " do 
+    Length.m(12)
+    |> Length.to_integer
+    |> IO.inspect
+  end
+
   
 end

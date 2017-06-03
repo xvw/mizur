@@ -47,6 +47,24 @@ defmodule Mizur.System do
       @enforce_keys [:type, :value]
       defstruct [:type, :value]
 
+      @doc """
+      Extract the value of a **typed_value**
+      """
+      @spec unwrap(t) :: float
+      def unwrap(%__MODULE__{} = t), do: t.value
+
+      @doc """
+      same of `#{__MODULE__}.unwrap/2`
+      """
+      @spec to_float(t) :: float
+      def to_float(%__MODULE__{} = t), do: t.value
+
+      @doc """
+      Extract the value into an integer
+      """
+      @spec to_integer(t) :: integer
+      def to_integer(%__MODULE__{} = t), do: round(t.value)
+
     end # End of Internal module
 
   end # End of using
