@@ -75,7 +75,6 @@ defmodule Mizur.System do
             _ -> elt
           end
         end)
-    IO.inspect [ver: Macro.to_string r]
     quote do: (fn(mizur_internal_value) -> unquote(r) end)
   end
 
@@ -102,7 +101,6 @@ defmodule Mizur.System do
     #new_expr = revert(expr, quote do: (mizur_internal_value)) 
     case expr do 
       x when is_number(x) -> 
-        IO.inspect [rev: Macro.to_string x]
         quote do: (fn(_) -> unquote(x) end)
       :mizur_internal_value -> 
         quote do: (fn(mizur_internal_value) -> mizur_internal_value end)
@@ -121,7 +119,6 @@ defmodule Mizur.System do
               _ -> elt 
             end
           end)
-        IO.inspect [rev: Macro.to_string new_expr]
         quote do
           (fn(mizur_internal_value) -> unquote(new_expr) end)
         end
