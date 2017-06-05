@@ -47,12 +47,23 @@ defmodule MizurTest do
     assert d == -32/(1.8*2)
   end
 
-  test "experience " do 
+  test "Test simple conversion" do 
     Length.m(12)
     |> Length.from(to: Length.cm)
-    |> Length.to_integer
-    |> IO.inspect
+    |> Length.to_float
+    |> Kernel.==(1200.0)
+    |> assert
   end
+
+  test "macro is" do 
+    require Length
+    x = Length.m(12)
+    IO.inspect x
+    case x do 
+      x when Length.is_m(x) -> assert true 
+      _ -> assert false
+    end
+  end 
 
   
 end

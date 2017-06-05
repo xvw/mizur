@@ -72,10 +72,7 @@ defmodule Mizur.System do
         from = target.from_basis
         to = basis.type.to_basis
         value = basis.value
-        %__MODULE__{
-          type: target,
-          value: from.(to.(value))
-        }
+        %__MODULE__{ type: target, value: from.(to.(value))}
       end
 
     end # End of Internal module
@@ -159,6 +156,7 @@ defmodule Mizur.System do
 
   @doc false 
   defmacro define_internal_type(name, expr) do
+    is = String.to_atom("is_" <> Atom.to_string(name))
     quote do 
       @metrics [unquote(name) | @metrics]
 
@@ -202,6 +200,14 @@ defmodule Mizur.System do
           [String.to_integer(value)]
         )
       end
+
+      @doc """
+      Returns `true` if term is a `#{unquote(name)}`; otherwise returns false
+      """
+      defmacro unquote(is)(%__MODULE__{ type: %__MODULE__.Type{ name: unquote(name) } }) do 
+        quote do: true
+      end
+      defmacro unquote(is)(_), do: (quote do: false)
 
     end
   end
