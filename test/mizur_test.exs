@@ -4,7 +4,7 @@ defmodule MizurTest do
   #doctest Mizur.Length # To be erased
 
   defmodule Length do 
-    use Mizur.System
+    use Mizur
     type m 
     type dm = m / 10 
     type cm = dm / (2*5)
@@ -12,7 +12,7 @@ defmodule MizurTest do
   end
 
   defmodule Temperature do 
-    use Mizur.System
+    use Mizur
     type celsius
     type fahrenheit = (1.8 * celsius) + 32
   end
@@ -55,15 +55,4 @@ defmodule MizurTest do
     |> assert
   end
 
-  test "macro is" do 
-    require Length
-    x = Length.m(12)
-    IO.inspect x
-    case x do 
-      x when Length.is_m(x) -> assert true 
-      _ -> assert false
-    end
-  end 
-
-  
 end

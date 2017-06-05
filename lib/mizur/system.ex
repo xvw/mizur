@@ -47,34 +47,6 @@ defmodule Mizur.System do
       @enforce_keys [:type, :value]
       defstruct [:type, :value]
 
-      @doc """
-      Extract the value of a **typed_value**
-      """
-      @spec unwrap(t) :: float
-      def unwrap(%__MODULE__{} = t), do: t.value
-
-      @doc """
-      same of `#{__MODULE__}.unwrap/2`
-      """
-      @spec to_float(t) :: float
-      def to_float(%__MODULE__{} = t), do: t.value
-
-      @doc """
-      Extract the value into an integer
-      """
-      @spec to_integer(t) :: integer
-      def to_integer(%__MODULE__{} = t), do: round(t.value)
-
-      @doc """
-      Converts a `typed_value` to another subtype of its metric system.
-      """
-      def from(%__MODULE__{} = basis, to: %__MODULE__.Type{} = target) do 
-        from = target.from_basis
-        to = basis.type.to_basis
-        value = basis.value
-        %__MODULE__{ type: target, value: from.(to.(value))}
-      end
-
     end # End of Internal module
 
   end # End of using
@@ -200,14 +172,6 @@ defmodule Mizur.System do
           [String.to_integer(value)]
         )
       end
-
-      @doc """
-      Returns `true` if term is a `#{unquote(name)}`; otherwise returns false
-      """
-      defmacro unquote(is)(%__MODULE__{ type: %__MODULE__.Type{ name: unquote(name) } }) do 
-        quote do: true
-      end
-      defmacro unquote(is)(_), do: (quote do: false)
 
     end
   end
