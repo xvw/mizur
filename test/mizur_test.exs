@@ -42,9 +42,9 @@ defmodule MizurTest do
     b = Temperature.fahrenheit.to_basis.(1)
     assert b == 33.8
     c = Temperature.fahrenheit.from_basis.(1)
-    assert c == -32/(1.8*1)
+    assert c == (1-32.0)/1.8
     d = Temperature.fahrenheit.from_basis.(2)
-    assert d == -32/(1.8*2)
+    assert d == (2-32.0)/1.8
   end
 
   test "Test simple conversion" do 
@@ -54,5 +54,21 @@ defmodule MizurTest do
     |> Kernel.==(1200.0)
     |> assert
   end
+
+  test "Simple coercion" do 
+
+    a = Temperature.celsius(1)
+    b = Temperature.from(a, to: Temperature.fahrenheit)
+    assert b == Temperature.fahrenheit((1-32.0)/1.8)
+
+    c = Temperature.fahrenheit(1)
+    d = Temperature.from(c, to: Temperature.celsius)
+    assert d == Temperature.celsius(1*1.8 + 32.0)
+
+    e = Length.m(1)
+    f = Length.from(e, to: Distance.cm)
+    assert f == Length.cm(100)
+
+end
 
 end
