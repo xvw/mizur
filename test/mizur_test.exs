@@ -8,67 +8,84 @@ defmodule MizurTest do
     type m 
     type dm = m / 10 
     type cm = dm / (2*5)
-    type mm = 10 / cm
   end
 
   defmodule Temperature do 
     use Mizur
     type celsius
-    type fahrenheit = (1.8 * celsius) + 32
+    type fahrenheit = (celsius - 32) / 1.8
   end
 
-  test "from and to basis for Length" do 
+  defmodule Chrono do 
+    use Mizur
+    type sec 
+    type min = sec * 60 
+    type hour = min * 60 
+    type day = hour * 24
+  end
+
+  test "from and to basis for Length 1" do 
     a = Length.m.to_basis.(123)
     b = Length.m.from_basis.(126)
     assert a == 123.0 
     assert b == 126.0
+  end
+
+  test "from and to basis for Length 2" do 
     c = Length.cm.to_basis.(12300)
     d = Length.cm.from_basis.(12)
     assert c == 123.0 
     assert d == 1200.0
+  end
+  
+  test "from and to basis for length 3" do 
     e = Length.dm.to_basis.(10)
     f = Length.dm.from_basis.(10)
     assert e == 1.0 
     assert f == 100.0
   end
 
-  test "from and to basis for Temperature" do 
-    a = Temperature.celsius.to_basis.(10)
-    b = Temperature.celsius.from_basis.(17)
-    assert a == 10.0
-    assert b == 17.0
-    a = Temperature.fahrenheit.to_basis.(0)
-    assert a == 32
-    b = Temperature.fahrenheit.to_basis.(1)
-    assert b == 33.8
-    c = Temperature.fahrenheit.from_basis.(1)
-    assert c == (1-32.0)/1.8
-    d = Temperature.fahrenheit.from_basis.(2)
-    assert d == (2-32.0)/1.8
+  test "for temperature 1" do 
+    a = Temperature.celsius.to_basis.(1234)
+    assert a == 1234
   end
 
-  test "Test simple conversion" do 
-    Length.m(12)
+  test "for temperature 2" do 
+    a = Temperature.celsius.from_basis.(61234)
+    assert a == 61234
+  end
+
+  test "for temperature (more complexe example)" do 
+    a = Temperature.fahrenheit.to_basis.(1)
+    assert a == (1 - 32)/1.8
+  end
+
+  test "for temperature (more complexe example) 2" do 
+    a = Temperature.fahrenheit.to_basis.(2)
+    assert a == (2 - 32)/1.8
+  end
+
+  test "for temperature (more complexe example) 3" do 
+    a = Temperature.fahrenheit.to_basis.(3)
+    assert a == (3 - 32)/1.8
+  end
+
+
+
+  test "for Chrono" do 
+    a = Chrono.hour.to_basis.(2)
+    assert a == 7200.0
+  end
+  
+
+
+  test "Simple conversion with float" do 
+    a = Length.m(12)
     |> Length.from(to: Length.cm)
     |> Length.to_float
-    |> Kernel.==(1200.0)
-    |> assert
+    assert a == 1200.0
   end
 
-  test "Simple coercion" do 
 
-    a = Temperature.celsius(1)
-    b = Temperature.from(a, to: Temperature.fahrenheit)
-    assert b == Temperature.fahrenheit((1-32.0)/1.8)
-
-    c = Temperature.fahrenheit(1)
-    d = Temperature.from(c, to: Temperature.celsius)
-    assert d == Temperature.celsius(1*1.8 + 32.0)
-
-    e = Length.m(1)
-    f = Length.from(e, to: Distance.cm)
-    assert f == Length.cm(100)
-
-end
 
 end

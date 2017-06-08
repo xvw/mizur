@@ -78,20 +78,40 @@ defmodule Mizur.System do
     quote do: (fn(mizur_internal_value) -> unquote(r) end)
   end
 
+  @doc false 
+  defp revert_operator(op) do 
+    case op do 
+      :+ -> :- 
+      :- -> :+ 
+      :* -> :/
+      :/ -> :*
+      _  -> 
+        raise RuntimeError, 
+          message: "#{op} is an unknown operator"
+    end
+  end
+
 
   @doc false 
-  def revert(expr) do 
+  def revert(expr, acc \\ {:mizur_internal_value, [], __MODULE__}) do 
     case expr do 
-      {:+, _, [a, b]} when is_number(a) or is_atom(a) -> 
-        {:/, [], [{:-, [], [0, a]}, b]}
-      {:-, _, [a, b]} when is_number(a) or is_atom(a) -> 
-        {:/, [], [{:+, [], [0, a]}, b]}
-      {:+, _, [a, b]} when is_number(b) or is_atom(b) -> 
-        {:/, [], [{:-, [], [0, b]}, a]}
-      {:-, _, [a, b]} when is_number(b) or is_atom(b) -> 
-        {:/, [], [{:+, [], [0, b]}, a]}
-      {:*, _, [a, b]} -> {:/, [], [b, a]}
-      {:/, _, [a, b]} -> {:*, [], [b, a]}
+      {e, _, nil} -> 
+        {e, acc}
+      {op, _, [left, right]} 
+        when is_number(left) ->
+          new_acc = {revert_operator(op), [], [acc, left]}
+          revert(right, new_acc)
+      {op, _, [right, left]} 
+        when is_number(left) ->
+          new_acc = {revert_operator(op), [], [acc, left]}
+          revert(right, new_acc)
+      {op, _, [left, {_, [], nil}]} ->
+          {revert_operator(op), [], [acc, left]}
+      {op, _, [{_, [], nil}, left]} ->
+          {revert_operator(op), [], [acc, left]}
+      _ ->
+        IO.inspect [b: expr]
+        acc
     end
   end
 
@@ -105,22 +125,33 @@ defmodule Mizur.System do
       :mizur_internal_value -> 
         quote do: (fn(mizur_internal_value) -> mizur_internal_value end)
       _ -> 
-        f = quote do: (mizur_internal_value)
-        new_expr =
-          Macro.postwalk(revert(expr), fn(elt) ->
+        epr = Macro.postwalk(expr, fn(elt) ->
             case elt do
               {op, _, [a, b]} when is_number(a) and is_number(b) -> 
                 apply(Kernel, op, [a, b])
-              {key, _, nil} -> 
+              # {:mizur_internal_value,_, __MODULE__} -> 
+              #   quote do
+              #     apply(__MODULE__, unquote(at), []).
+              #     from_basis.(mizur_internal_value)
+              #   end
+              fresh -> fresh
+            end
+          end)
+        {at, ex} = revert(epr)
+        new_expr = Macro.postwalk(ex, fn(elt) ->
+            case elt do
+              {:mizur_internal_value,_, __MODULE__} -> 
                 quote do
-                  apply(__MODULE__, unquote(key), []).
-                  from_basis.(unquote(f))
-                end 
-              _ -> elt 
+                  apply(__MODULE__, unquote(at), []).
+                  from_basis.(mizur_internal_value)
+                end
+              fresh -> fresh
             end
           end)
         quote do
-          (fn(mizur_internal_value) -> unquote(new_expr) end)
+          fn(mizur_internal_value) -> 
+            unquote(new_expr) 
+          end
         end
       end
   end
@@ -128,7 +159,6 @@ defmodule Mizur.System do
 
   @doc false 
   defmacro define_internal_type(name, expr) do
-    is = String.to_atom("is_" <> Atom.to_string(name))
     quote do 
       @metrics [unquote(name) | @metrics]
 
