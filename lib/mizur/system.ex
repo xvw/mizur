@@ -159,6 +159,7 @@ defmodule Mizur.System do
 
   @doc false 
   defmacro define_internal_type(name, expr) do
+    is = String.to_atom("is_" <> Atom.to_string(name))
     quote do 
       @metrics [unquote(name) | @metrics]
 
@@ -201,6 +202,18 @@ defmodule Mizur.System do
           unquote(name), 
           [String.to_integer(value)]
         )
+      end
+
+      defmacro unquote(is)(e) do
+        mod = __MODULE__
+        typ = Module.concat(mod, Type)
+        n = unquote(name)
+        quote do
+          case unquote(e) do
+            %mod{type: %typ{name: unquote(n)}} -> true
+            _ -> false
+          end
+        end
       end
 
     end

@@ -15,4 +15,11 @@ defmodule Mizur do
     end
   end
 
+  defmodule Length do 
+    use Mizur.System
+    type m 
+    type dm = m / 10 
+    type cm = dm / 10
+  end
+
 end

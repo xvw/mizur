@@ -95,12 +95,24 @@ defmodule MizurTest do
   
 
 
-  test "Simple conversion with float" do 
+  test "Simple conversion with float 1" do 
     a = Length.m(12)
     |> Length.from(to: Length.cm)
     |> Length.to_float
     assert a == 1200.0
   end
+
+  test "for macros" do 
+    import Length
+    c = cm(12)
+
+    case c do 
+      x when is_cm(x) -> IO.inspect "lol"
+      _ -> IO.inspect "snif"
+    end 
+    
+  end
+  
 
 
 
