@@ -55,19 +55,35 @@ defmodule MizurTest do
     assert a == 61234
   end
 
-  test "for temperature (more complexe example)" do 
+  test "for temperature (more complexe example) 1 : to_basis" do 
     a = Temperature.fahrenheit.to_basis.(1)
     assert a == (1 - 32)/1.8
   end
 
-  test "for temperature (more complexe example) 2" do 
+  test "for temperature (more complexe example) 2 : to_basis" do 
     a = Temperature.fahrenheit.to_basis.(2)
     assert a == (2 - 32)/1.8
   end
 
-  test "for temperature (more complexe example) 3" do 
+  test "for temperature (more complexe example) 3 : to_basis" do 
     a = Temperature.fahrenheit.to_basis.(3)
     assert a == (3 - 32)/1.8
+  end
+
+
+  test "for temperature (more complexe example) : from_basis" do 
+    a = Temperature.fahrenheit.from_basis.(1)
+    assert a == 32 + (1*1.8)
+  end
+
+  test "for temperature (more complexe example) 2 : from_basis" do 
+    a = Temperature.fahrenheit.from_basis.(2)
+    assert a == 32 + (2*1.8)
+  end
+
+  test "for temperature (more complexe example) 3 : from_basis" do 
+    a = Temperature.fahrenheit.from_basis.(3)
+    assert a == 32 + (3*1.8)
   end
 
 
