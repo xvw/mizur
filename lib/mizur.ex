@@ -13,7 +13,8 @@ defmodule Mizur do
       use Mizur.System
       use Mizur.Implementation
       use Mizur.Api
+      use Mizur.Range
     end
   end
-  
+
 end
