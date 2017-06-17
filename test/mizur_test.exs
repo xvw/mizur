@@ -102,11 +102,16 @@ defmodule MizurTest do
     assert a == 1200.0
   end
 
+  test "From with temperatures" do 
+    a = Temperature.celsius(10)
+    |> Temperature.from(to: Temperature.fahrenheit)
+    |> Temperature.to_float
+    assert a == 50.0
+  end
+
   test "for macros" do 
     import Length
     c = cm(12)
-
-    IO.inspect is_cm(c)
 
     #case c do 
     #  x when is_cm(x) -> IO.inspect "lol"

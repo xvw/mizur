@@ -10,10 +10,6 @@ and mapping of units.
 The manipulation of measurement units should (at best) 
 be typesafe.
 
-![Mizur Logo](images/logo.png)
-(A special thanks to [@fh-d](https://github.com/fh-d) for this awesome logo !)
-
-
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
