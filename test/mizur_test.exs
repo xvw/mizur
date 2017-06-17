@@ -106,10 +106,13 @@ defmodule MizurTest do
     import Length
     c = cm(12)
 
-    case c do 
-      x when is_cm(x) -> IO.inspect "lol"
-      _ -> IO.inspect "snif"
-    end 
+    IO.inspect is_cm(c)
+
+    #case c do 
+    #  x when is_cm(x) -> IO.inspect "lol"
+    #  _ -> IO.inspect "snif"
+    #end 
+
     
   end
   
