@@ -109,6 +109,27 @@ defmodule MizurTest do
     assert a == 50.0
   end
 
+  test "From with chrono 1" do 
+    a = Chrono.sec(60)
+    b = Chrono.from(a, to: Chrono.min)
+    |> Chrono.to_float
+    assert b == 1.0
+  end
+
+  test "From with chrono 2" do 
+    a = Chrono.min(60)
+    b = Chrono.from(a, to: Chrono.hour)
+    |> Chrono.to_float
+    assert b == 1.0
+  end
+
+  test "From with chrono 3" do 
+    a = Chrono.hour(1)
+    b = Chrono.from(a, to: Chrono.sec)
+    |> Chrono.to_float
+    assert b == 3600.0
+  end
+
   test "for macros" do 
     import Length
     c = cm(12)
