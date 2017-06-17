@@ -7,7 +7,7 @@ defmodule MizurTest do
     use Mizur
     type m 
     type dm = m / 10 
-    type cm = dm / (2*5)
+    type cm = dm / 10
   end
 
   defmodule Temperature do 
