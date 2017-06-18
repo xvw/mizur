@@ -37,10 +37,15 @@ defmodule Mizur.System do
       end # End of Type
 
       @typedoc """
+      This type represents a subtype of a **Typed value**
+      """
+      @type subtype :: Type.t
+
+      @typedoc """
       This type represents a **Typed value**.
       """
       @type t :: %__MODULE__{
-        type: Type.t, 
+        type: subtype, 
         value: float
       }
 

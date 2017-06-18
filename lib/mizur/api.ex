@@ -25,12 +25,14 @@ defmodule Mizur.Api do
       @doc """
       Converts a `typed_value` to another subtype of its metric system.
       """
+      @spec from(t, [to: subtype]) :: t
       def from(%__MODULE__{} = basis, to: %__MODULE__.Type{} = target) do 
         from = target.from_basis
         to = basis.type.to_basis
         value = basis.value
         %__MODULE__{ type: target, value: from.(to.(value))}
       end
+
 
     end
 
