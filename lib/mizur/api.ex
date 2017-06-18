@@ -33,6 +33,15 @@ defmodule Mizur.Api do
         %__MODULE__{ type: target, value: from.(to.(value))}
       end
 
+      @doc """
+      Applies a function to the numeric value of a `typed_value` and re-packs
+      the result of the function in the same subtype.
+      """
+      @spec map(t, (number -> number)) :: t
+      def map(%__MODULE__{} = t, f) do 
+        %{ t | value: f.(t.value) }
+      end
+
 
     end
 

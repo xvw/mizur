@@ -98,37 +98,46 @@ defmodule MizurTest do
   test "Simple conversion with float 1" do 
     a = Length.m(12)
     |> Length.from(to: Length.cm)
-    |> Length.to_float
+    |> Length.to_float()
     assert a == 1200.0
   end
 
   test "From with temperatures" do 
     a = Temperature.celsius(10)
     |> Temperature.from(to: Temperature.fahrenheit)
-    |> Temperature.to_float
+    |> Temperature.to_float()
     assert a == 50.0
   end
 
   test "From with chrono 1" do 
     a = Chrono.sec(60)
     b = Chrono.from(a, to: Chrono.min)
-    |> Chrono.to_float
+    |> Chrono.to_float()
     assert b == 1.0
   end
 
   test "From with chrono 2" do 
     a = Chrono.min(60)
     b = Chrono.from(a, to: Chrono.hour)
-    |> Chrono.to_float
+    |> Chrono.to_float()
     assert b == 1.0
   end
 
   test "From with chrono 3" do 
     a = Chrono.hour(1)
     b = Chrono.from(a, to: Chrono.sec)
-    |> Chrono.to_float
+    |> Chrono.to_float()
     assert b == 3600.0
   end
+
+  test "map simple 1" do 
+    a = Chrono.hour(2)
+    |> Chrono.map(fn(x) -> x / 2 end)
+    |> Chrono.from(to: Chrono.min)
+    |> Chrono.to_float()
+    assert a == 60.0
+  end
+  
 
   test "for macros" do 
     import Length
