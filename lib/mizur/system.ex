@@ -135,11 +135,6 @@ defmodule Mizur.System do
             case elt do
               {op, _, [a, b]} when is_number(a) and is_number(b) -> 
                 apply(Kernel, op, [a, b])
-              # {:mizur_internal_value,_, __MODULE__} -> 
-              #   quote do
-              #     apply(__MODULE__, unquote(at), []).
-              #     from_basis.(mizur_internal_value)
-              #   end
               fresh -> fresh
             end
           end)
@@ -208,18 +203,6 @@ defmodule Mizur.System do
           unquote(name), 
           [String.to_integer(value)]
         )
-      end
-
-      defmacro unquote(is)(e) do
-        mod = __MODULE__
-        typ = Module.concat(mod, Type)
-        n = unquote(name)
-        quote do
-          case unquote(e) do
-            %mod{type: %typ{name: unquote(n)}} -> true
-            _ -> false
-          end
-        end
       end
 
     end

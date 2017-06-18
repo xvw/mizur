@@ -138,17 +138,6 @@ defmodule MizurTest do
     assert a == 60.0
   end
   
-
-  test "for macros" do 
-    import Length
-    c = cm(12)
-
-    #case c do 
-    #  x when is_cm(x) -> IO.inspect "lol"
-    #  _ -> IO.inspect "snif"
-    #end 
-
-    
   end
   
 

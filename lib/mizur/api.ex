@@ -42,7 +42,18 @@ defmodule Mizur.Api do
         %{ t | value: f.(t.value) }
       end
 
-
+      @doc """
+      Applies a function to the two numeric values of two `typed_values` in
+      the same metric system, and re-packages the result 
+      of the function in a `typed_value` of the subtype of the left 
+      `typed_values`.
+      """
+      @spec map2(t, t, (number, number -> number)) ::  t
+      def map2(%__MODULE__{} = a, %__MODULE{} = b, f) do 
+        x = from(b, to: a.type)
+        %{ a | value: f.(a.value, x.value)}
+      end
+      
     end
 
   end
