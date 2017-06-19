@@ -138,9 +138,15 @@ defmodule MizurTest do
     assert a == 60.0
   end
   
+
+  test "map2 simple 1" do 
+    a = Chrono.sec(1000)
+    b = Chrono.hour(1)
+    c = 
+      Chrono.map2(a, b, &(&1 + &2))
+      |> Chrono.unwrap()
+    assert c == 4600.0
   end
   
-
-
 
 end
