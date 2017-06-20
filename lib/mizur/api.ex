@@ -53,6 +53,11 @@ defmodule Mizur.Api do
         x = from(b, to: a.type)
         %{ a | value: f.(a.value, x.value)}
       end
+
+      @spec add(t, t) :: t 
+      def add(a, b) do 
+        map2(a, b, &(&1 + &2))
+      end
       
     end
 

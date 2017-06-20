@@ -6,8 +6,10 @@ defmodule MizurTest do
   defmodule Length do 
     use Mizur
     type m 
-    type dm = m / 10 
-    type cm = dm / 10
+    type dm = (1 / 10) * m
+    type cm = m / 100
+    type mm = cm / 10
+    type km = 1000 * m
   end
 
   defmodule Temperature do 
@@ -102,6 +104,20 @@ defmodule MizurTest do
     assert a == 1200.0
   end
 
+  test "Simple conversion with mm" do 
+    a = Length.m(12)
+    |> Length.from(to: Length.mm)
+    |> Length.to_float()
+    assert a == 12000.0
+  end
+
+  test "Simple conversion with km" do 
+    a = Length.km(12)
+    |> Length.from(to: Length.m)
+    |> Length.to_float()
+    assert a == 12000.0
+  end
+
   test "From with temperatures" do 
     a = Temperature.celsius(10)
     |> Temperature.from(to: Temperature.fahrenheit)
@@ -148,5 +164,6 @@ defmodule MizurTest do
     assert c == 4600.0
   end
   
+
 
 end

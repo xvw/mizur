@@ -46,12 +46,13 @@ defmodule Mizur.System do
       """
       @type t :: %__MODULE__{
         type: subtype, 
-        value: float
+        value: float, 
+        base: integer
       }
 
       # Struct to define a typed values
-      @enforce_keys [:type, :value]
-      defstruct [:type, :value]
+      @enforce_keys [:type, :value, :base]
+      defstruct [:type, :value, :base]
 
     end # End of Internal module
 
@@ -160,7 +161,6 @@ defmodule Mizur.System do
 
   @doc false 
   defmacro define_internal_type(name, expr) do
-    is = String.to_atom("is_" <> Atom.to_string(name))
     quote do 
       @metrics [unquote(name) | @metrics]
 
@@ -185,7 +185,8 @@ defmodule Mizur.System do
       def unquote(name)(value) do 
         %__MODULE__{
           type: apply(__MODULE__, unquote(name), []), 
-          value: value * 1.0
+          value: value * 1.0, 
+          base: 1
         }
       end
 
@@ -198,11 +199,7 @@ defmodule Mizur.System do
           #{__MODULE__}.#{unquote(name)}(200)
       """
       def sigil_M(value, unquote(to_charlist(name))) do 
-        apply(
-          __MODULE__, 
-          unquote(name), 
-          [String.to_integer(value)]
-        )
+        apply(__MODULE__, unquote(name), [String.to_integer(value)])
       end
       
 
