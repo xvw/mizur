@@ -1,5 +1,9 @@
 defmodule Mizur.Api do 
 
+  @moduledoc """
+  Provide the "high level API" for a Mizur Strucutre.
+  """
+
   defmacro __using__(_opts) do 
     quote do 
       import Mizur.Api 
@@ -58,6 +62,12 @@ defmodule Mizur.Api do
       def add(a, b) do 
         map2(a, b, &(&1 + &2))
       end
+
+      @spec sub(t, t) :: t 
+      def sub(a, b) do 
+        map2(a, b, &(&1 - &2))
+      end
+      
       
     end
 
