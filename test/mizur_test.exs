@@ -168,34 +168,34 @@ defmodule MizurTest do
   test "add simple 1" do 
     a = Length.cm(120)
     b = Length.m(2)
-    c = Length.add(a, b) |> Length.unwrap
+    c = Length.plus(a, b) |> Length.unwrap
     assert c == 320.0
   end
 
   test "add simple 2" do 
     a = Length.cm(120)
     b = Length.m(2)
-    c = Length.add(b, a) |> Length.unwrap
+    c = Length.plus(b, a) |> Length.unwrap
     assert c == 3.2
   end
 
   test "sub simple 1" do 
     a = Length.cm(220)
     b = Length.m(2)
-    c = Length.sub(a, b) |> Length.unwrap
+    c = Length.minus(a, b) |> Length.unwrap
     assert c == 20.0
   end
 
   test "sub simple 2" do 
     a = Length.cm(120)
     b = Length.m(2)
-    c = Length.sub(b, a) |> Length.unwrap
+    c = Length.minus(b, a) |> Length.unwrap
     assert c == 0.8
   end
 
   test "mult simple 1" do 
     a = Chrono.min(200)
-    b = Chrono.mult(a, 3) |> Chrono.unwrap
+    b = Chrono.times(a, 3) |> Chrono.unwrap
     assert b == 600.0
   end
 

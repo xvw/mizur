@@ -76,8 +76,8 @@ defmodule Mizur.Api do
       Makes the addition between two `typed_value` of the same metric system. 
       The return value will have the subtype of the left `typed_value`.
       """
-      @spec add(t, t) :: t 
-      def add(a, b) do 
+      @spec plus(t, t) :: t 
+      def plus(a, b) do 
         map2(a, b, &(&1 + &2))
       end
 
@@ -85,8 +85,8 @@ defmodule Mizur.Api do
       Makes the subtraction between two `typed_value` of the same metric system. 
       The return value will have the subtype of the left `typed_value`.
       """
-      @spec sub(t, t) :: t 
-      def sub(a, b) do 
+      @spec minus(t, t) :: t 
+      def minus(a, b) do 
         map2(a, b, &(&1 - &2))
       end
 
@@ -94,8 +94,8 @@ defmodule Mizur.Api do
       Multiplies a `typed_value` by a `number`. The subtype of the return value 
       will be the subtype of the left `typed_value`.
       """
-      @spec mult(t, number) :: t 
-      def mult(a, b) when is_number(b) do 
+      @spec times(t, number) :: t 
+      def times(a, b) when is_number(b) do 
         x = unwrap(a)
         %{ a | value: (x * b)}
       end
