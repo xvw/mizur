@@ -1,8 +1,6 @@
 defmodule Mizur.Api do 
 
-  @moduledoc """
-  Provide the "high level API" for a Mizur Strucutre.
-  """
+  @moduledoc false
 
   defmacro __using__(_opts) do 
     quote do 
