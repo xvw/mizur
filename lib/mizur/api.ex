@@ -67,8 +67,18 @@ defmodule Mizur.Api do
       def sub(a, b) do 
         map2(a, b, &(&1 - &2))
       end
+
+      @spec mult(t, number) :: t 
+      def mult(a, b) do 
+        a
+      end
+
+      @spec div(t, number) :: t 
+      def div(a, b) do 
+        a
+      end
       
-      
+       
     end
 
   end
