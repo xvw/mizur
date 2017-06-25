@@ -26,13 +26,14 @@ defmodule Mizur.System do
         @type t :: %Type{
           name: atom, 
           from_basis: (number -> float),
-          to_basis: (number -> float)
+          to_basis: (number -> float), 
+          base: number
         }
 
 
         # Struct to define a type
-        @enforce_keys [:name, :from_basis, :to_basis]
-        defstruct [:name, :from_basis, :to_basis]
+        @enforce_keys [:name, :from_basis, :to_basis, :base]
+        defstruct [:name, :from_basis, :to_basis, :base]
 
       end # End of Type
 
@@ -47,12 +48,11 @@ defmodule Mizur.System do
       @type t :: %__MODULE__{
         type: subtype, 
         value: float, 
-        base: integer
       }
 
       # Struct to define a typed values
-      @enforce_keys [:type, :value, :base]
-      defstruct [:type, :value, :base]
+      @enforce_keys [:type, :value]
+      defstruct [:type, :value]
 
     end # End of Internal module
 
@@ -173,7 +173,8 @@ defmodule Mizur.System do
         %__MODULE__.Type{
           name: unquote(name), 
           from_basis: rev_lambda(unquote(expr)),
-          to_basis:  lambda(unquote(expr))
+          to_basis:  lambda(unquote(expr)),
+          base: 1
         }
       end
 
@@ -185,8 +186,7 @@ defmodule Mizur.System do
       def unquote(name)(value) do 
         %__MODULE__{
           type: apply(__MODULE__, unquote(name), []), 
-          value: value * 1.0, 
-          base: 1
+          value: value * 1.0
         }
       end
 

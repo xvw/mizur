@@ -3,6 +3,7 @@ defmodule MizurTest do
   doctest Mizur
   #doctest Mizur.Length # To be erased
 
+
   defmodule Length do 
     use Mizur
     type m 

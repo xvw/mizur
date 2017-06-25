@@ -69,13 +69,15 @@ defmodule Mizur.Api do
       end
 
       @spec mult(t, number) :: t 
-      def mult(a, b) do 
-        a
+      def mult(a, b) when is_number(b) do 
+        x = unwrap(a)
+        %{ a | value: (x * b)}
       end
 
       @spec div(t, number) :: t 
-      def div(a, b) do 
-        a
+      def div(a, b) when is_number(b) do 
+        x = unwrap(a)
+        %{ a | value: (x / b)}
       end
       
        
