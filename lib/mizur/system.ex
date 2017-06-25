@@ -37,6 +37,7 @@ defmodule Mizur.System do
 
       end # End of Type
 
+
       @typedoc """
       This type represents a subtype of a **Typed value**
       """

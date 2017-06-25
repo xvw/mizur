@@ -164,6 +164,10 @@ defmodule MizurTest do
       |> Chrono.unwrap()
     assert c == 4600.0
   end
+
+  test "test inspection" do 
+    IO.inspect "#{Chrono.sec}"
+  end
   
 
 

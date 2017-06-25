@@ -10,7 +10,8 @@ defmodule Mizur do
 
   defmacro __using__(_opts) do 
     quote do 
-      use Mizur.System 
+      use Mizur.System
+      use Mizur.Implementation
       use Mizur.Api
     end
   end
