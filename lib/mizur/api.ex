@@ -15,6 +15,14 @@ defmodule Mizur.Api do
       def unwrap(%__MODULE__{} = t), do: t.value
 
       @doc """
+      Unwrap the value, coerced as a base.
+      """
+      @spec normalize(t) :: float 
+      def normalize(%__MODULE__{} = t) do 
+        t.type.to_basis.(t.value)
+      end
+
+      @doc """
       same of `#{__MODULE__}.unwrap/2`
       """
       @spec to_float(t) :: float
@@ -25,6 +33,7 @@ defmodule Mizur.Api do
       """
       @spec to_integer(t) :: integer
       def to_integer(%__MODULE__{} = t), do: round(t.value)
+
 
       @doc """
       Converts a `typed_value` to another subtype of its metric system.

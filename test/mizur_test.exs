@@ -205,8 +205,10 @@ defmodule MizurTest do
     assert b == 100.0
   end
   
-  
-
+  test "Simple normalization" do 
+    a = Chrono.hour(1) |> Chrono.normalize()
+    assert a == 3600.0
+  end
   
 
 
