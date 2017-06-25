@@ -58,27 +58,38 @@ defmodule Mizur.Api do
         %{ a | value: f.(a.value, x.value)}
       end
 
+      @doc """
+      Makes the addition between two `typed_value` of the same metric system. 
+      The return value will have the subtype of the left `typed_value`.
+      """
       @spec add(t, t) :: t 
       def add(a, b) do 
         map2(a, b, &(&1 + &2))
       end
 
+      @doc """
+      Makes the subtraction between two `typed_value` of the same metric system. 
+      The return value will have the subtype of the left `typed_value`.
+      """
       @spec sub(t, t) :: t 
       def sub(a, b) do 
         map2(a, b, &(&1 - &2))
       end
 
+      @doc """
+      Multiplies a `typed_value` by a `number`. The subtype of the return value 
+      will be the subtype of the left `typed_value`.
+      """
       @spec mult(t, number) :: t 
       def mult(a, b) when is_number(b) do 
         x = unwrap(a)
         %{ a | value: (x * b)}
       end
 
-      @spec mult(t, t) :: t 
-      def mult(%__MODULE__{} = a, %__MODULE__{} = b) do 
-        
-      end
-
+      @doc """
+      Divides a `typed_value` by a `number`. The subtype of the return value 
+      will be the subtype of the left `typed_value`.
+      """
       @spec div(t, number) :: t 
       def div(a, b) when is_number(b) do 
         x = unwrap(a)
