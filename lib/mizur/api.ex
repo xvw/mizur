@@ -74,6 +74,11 @@ defmodule Mizur.Api do
         %{ a | value: (x * b)}
       end
 
+      @spec mult(t, t) :: t 
+      def mult(%__MODULE__{} = a, %__MODULE__{} = b) do 
+        
+      end
+
       @spec div(t, number) :: t 
       def div(a, b) when is_number(b) do 
         x = unwrap(a)
