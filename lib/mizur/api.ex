@@ -8,6 +8,11 @@ defmodule Mizur.Api do
     quote do 
       import Mizur.Api 
 
+      @typedoc """
+      This type represents a results of a comparison
+      """
+      @type comparison_result :: :eq | :lt | :gt
+
       @doc """
       Extract the value of a **typed_value**
       """
@@ -103,6 +108,25 @@ defmodule Mizur.Api do
       def div(a, b) when is_number(b) do 
         x = unwrap(a)
         %{ a | value: (x / b)}
+      end
+
+
+      @doc """
+      Comparison between two `typed_value` of the same metric system.
+      The function returns:
+      -  `:eq` for `equals` 
+      -  `:lt` if the left-values is **lower than** the right-values
+      -  `:gt` if the left-values is **greater than** the right-values
+      """
+      @spec compare(t, [to: t]) :: comparison_result
+      def compare(%__MODULE__{} = a, to: %__MODULE__{} = b) do 
+        left = normalize(a)
+        right = normalize(b)
+        cond do 
+          left > right -> :gt 
+          right < left -> :lt
+          true -> :eq
+        end
       end
       
        
