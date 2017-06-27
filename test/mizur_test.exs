@@ -209,6 +209,15 @@ defmodule MizurTest do
     a = Chrono.hour(1) |> Chrono.normalize()
     assert a == 3600.0
   end
+
+  test "Comparison :eq 1" do 
+    x = Length.m(1)
+    y = Length.cm(100)
+    assert (Length.compare(x, to: y)) == :eq
+    assert (Length.compare(x, to: x)) == :eq
+    assert (Length.compare(y, to: y)) == :eq
+    assert (Length.compare(y, to: x)) == :eq
+end
   
 
 
