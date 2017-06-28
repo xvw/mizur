@@ -217,7 +217,14 @@ defmodule MizurTest do
     assert (Length.compare(x, to: x)) == :eq
     assert (Length.compare(y, to: y)) == :eq
     assert (Length.compare(y, to: x)) == :eq
-end
+  end
+
+  test "Comparison :lt/gt 1" do 
+    x = Length.m(23)
+    y = Length.cm(100)
+    assert (Length.compare(x, to: y)) == :gt
+    assert (Length.compare(y, to: x)) == :lt
+  end
   
 
 

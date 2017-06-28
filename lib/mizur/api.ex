@@ -124,7 +124,7 @@ defmodule Mizur.Api do
         right = normalize(b)
         cond do 
           left > right -> :gt 
-          right < left -> :lt
+          left < right -> :lt
           true -> :eq
         end
       end
