@@ -107,6 +107,12 @@ defmodule Mizur.Range do
           |> last()
         end
 
+        @doc """
+        Returns a reversed version of a `range`
+        """
+        @spec reverse(t) :: t
+        def reverse({a, b}), do: {b, a}
+
       end # End of Range
       
 

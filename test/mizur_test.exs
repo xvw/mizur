@@ -345,6 +345,13 @@ defmodule MizurTest do
     assert r == y
   end
   
+  test "Range reverse 1" do 
+    x = Length.cm(1)
+    y = Length.m(1)
+    r = Length.Range.new(y, x)
+      |> Length.Range.reverse()
+  end
+  
 
 
   
