@@ -227,35 +227,35 @@ defmodule MizurTest do
   end
 
 
-  test "Increasing 1" do 
+  test "Range Increasing 1" do 
     x = Length.cm(1)
     y = Length.m(1)
     r = Length.Range.new(x, y)
     assert Length.Range.increasing?(r)
   end
 
-  test "Increasing 2" do 
+  test "Range Increasing 2" do 
     x = Length.cm(1)
     y = Length.m(1)
     r = Length.Range.new(y, x)
     assert !Length.Range.increasing?(r)
   end
 
-  test "Decreasing 1" do 
+  test "Range Decreasing 1" do 
     x = Length.cm(1)
     y = Length.m(1)
     r = Length.Range.new(x, y)
     assert !Length.Range.decreasing?(r)
   end
 
-  test "Decreasing 2" do 
+  test "Range Decreasing 2" do 
     x = Length.cm(1)
     y = Length.m(1)
     r = Length.Range.new(y, x)
     assert Length.Range.decreasing?(r) 
   end
 
-  test "Sort 1" do 
+  test "Range Sort 1" do 
     x = Length.cm(1)
     y = Length.m(1)
     r = 
@@ -264,7 +264,7 @@ defmodule MizurTest do
     assert r == Length.Range.new(x, y)
   end
 
-  test "Sort 2" do 
+  test "Range Sort 2" do 
     x = Length.cm(1)
     y = Length.m(1)
     r = 
@@ -272,5 +272,44 @@ defmodule MizurTest do
       |> Length.Range.sort
     assert r == Length.Range.new(Length.from(x, to: Length.m), y)
   end
+
+  test "Range min 1" do 
+    x = Length.cm(1)
+    y = Length.m(1)
+    r = 
+      Length.Range.new(x, y)
+      |> Length.Range.min
+    assert r == x
+  end
+
+  test "Range min 2" do 
+    x = Length.cm(1)
+    y = Length.m(1)
+    r = 
+      Length.Range.new(y, x)
+      |> Length.Range.min
+    assert r == Length.from(x, to: Length.m)
+  end
+
+  test "Range max 1" do 
+    x = Length.cm(1)
+    y = Length.m(1)
+    r = 
+      Length.Range.new(x, y)
+      |> Length.Range.max
+    assert r == Length.from(y, to: Length.cm)
+  end
+
+  test "Range max 2" do 
+    x = Length.cm(1)
+    y = Length.m(1)
+    r = 
+      Length.Range.new(y, x)
+      |> Length.Range.max
+    assert r == y
+  end
+  
+
+
   
 end
