@@ -273,6 +273,42 @@ defmodule MizurTest do
     assert r == Length.Range.new(Length.from(x, to: Length.m), y)
   end
 
+  test "Range first 1" do 
+    x = Length.cm(1)
+    y = Length.m(1)
+    r = 
+      Length.Range.new(x, y)
+      |> Length.Range.first
+    assert r == x
+  end
+
+  test "Range first 2" do 
+    x = Length.cm(1)
+    y = Length.m(1)
+    r = 
+      Length.Range.new(y, x)
+      |> Length.Range.first
+    assert r == y
+  end
+
+  test "Range last 1" do 
+    x = Length.cm(1)
+    y = Length.m(1)
+    r = 
+      Length.Range.new(x, y)
+      |> Length.Range.last
+    assert r == Length.from(y, to: Length.cm)
+  end
+
+  test "Range last 2" do 
+    x = Length.cm(1)
+    y = Length.m(1)
+    r = 
+      Length.Range.new(y, x)
+      |> Length.Range.last
+    assert r == Length.from(x, to: Length.m)
+  end
+
   test "Range min 1" do 
     x = Length.cm(1)
     y = Length.m(1)

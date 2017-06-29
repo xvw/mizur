@@ -70,12 +70,31 @@ defmodule Mizur.Range do
         end
 
         @doc """
+        Returns the first element of the `range`
+        """
+        @spec first(t) :: @parent.t
+        def first(range) do 
+          {x, _} = range 
+          x
+        end
+
+        @doc """
+        Returns the latest element of the `range`
+        """
+        @spec last(t) :: @parent.t
+        def last(range) do 
+          {_, x} = range 
+          x
+        end
+
+        @doc """
         Returns the smallest element of the `range`
         """
         @spec min(t) :: @parent.t
         def min(range) do 
-          {x, _} = sort(range)
-          x
+          range 
+          |> sort()
+          |> first()
         end
 
         @doc """
@@ -83,8 +102,9 @@ defmodule Mizur.Range do
         """
         @spec max(t) :: @parent.t
         def max(range) do 
-          {_, x} = sort(range)
-          x
+          range 
+          |> sort()
+          |> last()
         end
 
       end # End of Range
