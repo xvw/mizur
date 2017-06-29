@@ -263,5 +263,14 @@ defmodule MizurTest do
       |> Length.Range.sort
     assert r == Length.Range.new(x, y)
   end
+
+  test "Sort 2" do 
+    x = Length.cm(1)
+    y = Length.m(1)
+    r = 
+      Length.Range.new(y, x)
+      |> Length.Range.sort
+    assert r == Length.Range.new(Length.from(x, to: Length.m), y)
+  end
   
 end
