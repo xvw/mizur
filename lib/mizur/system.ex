@@ -35,12 +35,12 @@ defmodule Mizur.System do
 
 
       @typedoc """
-      This type represents a subtype of a **Typed value**
+      This type represents a subtype of a `typed_value`.
       """
       @type subtype :: Type.t
 
       @typedoc """
-      This type represents a **Typed value**.
+      This type represents a `typed_value`.
       """
       @type t :: %__MODULE__{
         type: subtype, 
@@ -187,7 +187,7 @@ defmodule Mizur.System do
       end
 
       @doc """
-      A shortcut to write **typed values** using sigils notation. 
+      A shortcut to write `typed_value`. using sigils notation. 
       
       For example : 
           iex> import #{__MODULE__}

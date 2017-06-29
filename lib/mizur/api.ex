@@ -12,7 +12,7 @@ defmodule Mizur.Api do
       @type comparison_result :: :eq | :lt | :gt
 
       @doc """
-      Extract the value of a **typed_value**
+      Extract the value of a `typed_value`.
       """
       @spec unwrap(t) :: float
       def unwrap(%__MODULE__{} = t), do: t.value

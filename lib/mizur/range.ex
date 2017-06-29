@@ -10,7 +10,10 @@ defmodule Mizur.Range do
       @typedoc """
       This type represents a range of `typed_value`.
       """
-      @type range :: {__MODULE__.Range.t, __MODULE__.Range.t}
+      @type range :: {
+        __MODULE__.Range.t, 
+        __MODULE__.Range.t
+      }
 
 
       defmodule Range do 
@@ -36,6 +39,14 @@ defmodule Mizur.Range do
         @spec new(@parent.t, @parent.t) :: t
         def new(%@parent{} = a, %@parent{} = b) do 
           {a, @parent.from(b, to: a.type)}
+        end
+
+        @doc """
+        Checks if a `range` is increasing.
+        """
+        @spec increasing?(t) :: boolean
+        def increasing?({a, b}) do
+          @parent.compare(a, to: b) in [:lt, :eq]
         end
 
       end
