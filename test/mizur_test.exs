@@ -246,9 +246,19 @@ defmodule MizurTest do
     r = Length.Range.new(y, x)
     assert !Length.Range.increasing?(r)
   end
-  
-  
-  
 
+  test "Decreasing 1" do 
+    x = Length.cm(1)
+    y = Length.m(1)
+    r = Length.Range.new(x, y)
+    assert !Length.Range.decreasing?(r)
+  end
 
+  test "Decreasing 2" do 
+    x = Length.cm(1)
+    y = Length.m(1)
+    r = Length.Range.new(y, x)
+    assert Length.Range.decreasing?(r) 
+  end
+  
 end

@@ -49,10 +49,18 @@ defmodule Mizur.Range do
           @parent.compare(a, to: b) in [:lt, :eq]
         end
 
-      end
+        @doc """
+        Checks if a `range` is decreasing.
+        """
+        @spec decreasing?(t) :: boolean
+        def decreasing?(range) do
+          not increasing?(range)
+        end
+
+      end # End of Range
       
 
-    end
+    end # End of quote
   end
 
 end
