@@ -225,6 +225,14 @@ defmodule MizurTest do
     assert (Length.compare(x, to: y)) == :gt
     assert (Length.compare(y, to: x)) == :lt
   end
+
+  test "Range.new 1" do 
+    x = Length.cm(1)
+    y = Length.m(1)
+    r = Length.Range.new(x, y)
+    assert r == {x, Length.cm(100)}
+  end
+  
   
 
 

@@ -15,7 +15,10 @@ defmodule Mizur.Range do
 
       defmodule Range do 
 
-        @parent __MODULE__ |> Module.split |> Enum.drop(-1) |> Module.concat
+        @parent __MODULE__ 
+          |> Module.split 
+          |> Enum.drop(-1) 
+          |> Module.concat
 
         @moduledoc """
         This module provides a minimalistic approach of Range between 
