@@ -226,12 +226,6 @@ defmodule MizurTest do
     assert (Length.compare(y, to: x)) == :lt
   end
 
-  test "Range.new 1" do 
-    x = Length.cm(1)
-    y = Length.m(1)
-    r = Length.Range.new(x, y)
-    assert r == {x, Length.cm(100)}
-  end
 
   test "Increasing 1" do 
     x = Length.cm(1)
@@ -259,6 +253,15 @@ defmodule MizurTest do
     y = Length.m(1)
     r = Length.Range.new(y, x)
     assert Length.Range.decreasing?(r) 
+  end
+
+  test "Sort 1" do 
+    x = Length.cm(1)
+    y = Length.m(1)
+    r = 
+      Length.Range.new(x, y)
+      |> Length.Range.sort
+    assert r == Length.Range.new(x, y)
   end
   
 end

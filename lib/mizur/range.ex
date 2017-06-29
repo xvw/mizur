@@ -33,6 +33,7 @@ defmodule Mizur.Range do
         """
         @type t :: {@parent.t, @parent.t}
 
+
         @doc """
         Builds a range between two `typed_value`.
         """
@@ -45,7 +46,7 @@ defmodule Mizur.Range do
         Checks if a `range` is increasing.
         """
         @spec increasing?(t) :: boolean
-        def increasing?({a, b}) do
+        def increasing?({%@parent{} = a, %@parent{} = b}) do
           @parent.compare(a, to: b) in [:lt, :eq]
         end
 
@@ -55,6 +56,17 @@ defmodule Mizur.Range do
         @spec decreasing?(t) :: boolean
         def decreasing?(range) do
           not increasing?(range)
+        end
+
+        @doc """
+        Sorts a `range`.
+        """
+        @spec sort(t) :: t
+        def sort({%@parent{} = a, %@parent{} = b}) do 
+          case @parent.compare(a, to: b) do
+            :lt -> {a, b}
+            _ -> {b, a}
+          end
         end
 
       end # End of Range
