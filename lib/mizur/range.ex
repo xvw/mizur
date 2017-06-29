@@ -14,15 +14,26 @@ defmodule Mizur.Range do
 
 
       defmodule Range do 
+
+        @parent __MODULE__ |> Module.split |> Enum.drop(-1) |> Module.concat
+
         @moduledoc """
         This module provides a minimalistic approach of Range between 
-        two #{__MODULE__} types.
+        two #{@parent} types.
         """
 
         @typedoc """
         This type represents a range of `typed_value`.
         """
-        @type t :: {__MODULE__.t, __MODULE__.t}
+        @type t :: {@parent.t, @parent.t}
+
+        @doc """
+        Builds a range between two `typed_value`.
+        """
+        @spec new(@parent.t, @parent.t) :: t
+        def new(%@parent{} = a, %@parent{} = b) do 
+          {a, @parent.from(b, to: a.type)}
+        end
 
       end
       
