@@ -350,6 +350,7 @@ defmodule MizurTest do
     y = Length.m(1)
     r = Length.Range.new(y, x)
       |> Length.Range.reverse()
+    assert r == Length.Range.new
   end
   
 
