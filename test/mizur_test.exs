@@ -350,8 +350,20 @@ defmodule MizurTest do
     y = Length.m(1)
     r = Length.Range.new(y, x)
       |> Length.Range.reverse()
-    assert r == Length.Range.new
+    assert r == Length.Range.new(Length.from(x, to: Length.m), y)
   end
+
+  test "Include in 1" do 
+    a = Length.cm(1)
+    b = Length.km(10)
+    r1 = Length.Range.new(a, b)
+    r2 = Length.Range.new(b, a)
+    x = Length.m(1276)
+    f = Length.Range.include?(x, in: r1)
+    g = Length.Range.include?(x, in: r2)
+    assert {f, g} == {true, true}
+  end
+  
   
 
 

@@ -113,6 +113,17 @@ defmodule Mizur.Range do
         @spec reverse(t) :: t
         def reverse({a, b}), do: {b, a}
 
+        @doc """
+        Checks if a `typed_value` is included in a range.
+        """
+        @spec include?(@parent.t, [in: t]) :: boolean
+        def include?(value, in: range) do 
+          {a, b} = sort(range)
+          x = @parent.compare(value, to: a)
+          y = @parent.compare(value, to: b)
+          (x in [:eq, :gt]) and (y in [:eq, :lt])
+        end
+
       end # End of Range
       
 
