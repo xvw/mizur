@@ -361,7 +361,8 @@ defmodule MizurTest do
     x = Length.m(1276)
     f = Length.Range.include?(x, in: r1)
     g = Length.Range.include?(x, in: r2)
-    assert {f, g} == {true, true}
+    h = Length.Range.include?(Length.km(11), in: r1)
+    assert {f, g, h} == {true, true, false}
   end
   
   
