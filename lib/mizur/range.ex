@@ -25,7 +25,7 @@ defmodule Mizur.Range do
 
         @moduledoc """
         This module provides a minimalistic approach of Range between 
-        two #{@parent} types.
+        two #{@parent} types. A Range could be considered as a Vector2D.
         """
 
         @typedoc """
@@ -122,6 +122,18 @@ defmodule Mizur.Range do
           x = @parent.compare(value, to: a)
           y = @parent.compare(value, to: b)
           (x in [:eq, :gt]) and (y in [:eq, :lt])
+        end
+
+        @doc """
+        Checks if two ranges overlap.
+        """
+        @spec overlap?(t, t) :: boolean 
+        def overlap?(a, b) do 
+          {startA, endA} = sort(a)
+          {startB, endB} = sort(b)
+          x = @parent.compare(startA, to: endB)
+          y = @parent.compare(endA, to: startB)
+          (x in [:eq, :lt]) and (y in [:eq, :gt])
         end
 
       end # End of Range
