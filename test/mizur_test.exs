@@ -425,5 +425,12 @@ defmodule MizurTest do
     assert li == res
     
   end
+
+  test "FoldRight 1" do 
+    range = Length.Range.new(Length.cm(1), Length.cm(10))
+    li = Length.Range.foldr(range, fn(acc, x) -> [Length.to_integer(x) | acc] end, [])
+    assert Enum.to_list(1..10) == li
+  end
+  
   
 end
