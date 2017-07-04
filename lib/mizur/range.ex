@@ -173,6 +173,17 @@ defmodule Mizur.Range do
           foldl_aux(default, f, range, real_step, data)
         end
 
+        @doc """
+        Folds (reduces) the given `range` from the left with a function. 
+        Requires an accumulator.
+        """
+        @spec foldr(t, (@parent.t, any -> any), any, nil | @parent.Type.t) :: any
+        def foldr(range, f, default, step \\ nil) do 
+          range 
+          |> reverse() 
+          |> foldl(f, default, step)
+        end
+
       end # End of Range
       
 
