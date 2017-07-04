@@ -136,6 +136,15 @@ defmodule Mizur.Range do
           (x in [:eq, :lt]) and (y in [:eq, :gt])
         end
 
+        @doc """
+        Tests if a range is a subrange of another range.
+        """
+        @spec subrange?(t, of: t) :: boolean
+        def subrange?(a, of: b) do 
+          {x, y} = sort(a)
+          include?(x, in: b) and include?(y, in: b)
+        end
+
       end # End of Range
       
 
