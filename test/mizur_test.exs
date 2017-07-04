@@ -413,9 +413,17 @@ defmodule MizurTest do
   end
 
   test "Foldleft 2" do 
-    range = Length.Range.new(Length.m(10), Length.m(1))
-    li = Length.Range.foldl(range, fn(acc, x) -> [Length.unwrap(x) | acc] end, [])
-    IO.inspect li
+    range = Length.Range.new(Length.m(1), Length.cm(1))
+    li = 
+      Length.Range.foldl(
+        range, 
+        fn(acc, x) -> [Length.to_float(x, 2) | acc] end, 
+        [], 
+        Length.cm(1)
+      ) 
+    res = Enum.map((1..100), &(Float.round(&1/100.0, 2)))
+    assert li == res
+    
   end
   
 end

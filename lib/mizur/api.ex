@@ -28,8 +28,8 @@ defmodule Mizur.Api do
       @doc """
       same of `#{__MODULE__}.unwrap/2`
       """
-      @spec to_float(t) :: float
-      def to_float(%__MODULE__{} = t), do: t.value
+      @spec to_float(t, integer) :: float
+      def to_float(%__MODULE__{} = t, precision \\ 0), do: Float.round(t.value, precision)
 
       @doc """
       Extract the value into an integer

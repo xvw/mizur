@@ -25,7 +25,7 @@ defmodule Mizur.Range do
 
         @moduledoc """
         This module provides a minimalistic approach of Range between 
-        two #{@parent} types. A Range could be considered as a Vector2D.
+        two #{@parent} types.
         """
 
         @typedoc """
