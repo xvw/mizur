@@ -145,6 +145,33 @@ defmodule Mizur.Range do
           include?(x, in: b) and include?(y, in: b)
         end
 
+        @doc false 
+        defp foldl_aux(acc, f, {current, max}, step, {next, flag}) do 
+          cond do 
+            @parent.compare(current, to: max) == flag ->
+              new_acc = f.(acc, current)
+              next_step = @parent.map2(current, step, next)
+              foldl_aux(new_acc, f, {next_step, max}, step, {next, flag})
+            true -> f.(acc, max)
+          end
+        end
+
+        @doc """
+        Folds (reduces) the given `range` from the left with a function. 
+        Requires an accumulator.
+        """
+        @spec foldl(t, (@parent.t, any -> any), any, nil | @parent.Type.t) :: any
+        def foldl(range, f, default, step \\ nil) do 
+          real_step = case step do 
+            nil -> 
+              a = first(range)
+              %{a | value: 1}
+            data -> data 
+          end
+          data = if (increasing?(range)), do: {&+/2, :lt}, else: {&-/2, :gt}
+          foldl_aux(default, f, range, real_step, data)
+        end
+
       end # End of Range
       
 
