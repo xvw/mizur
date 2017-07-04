@@ -405,5 +405,17 @@ defmodule MizurTest do
     r2 = Length.Range.new(Length.km(1), Length.km(4))
     assert not Length.Range.subrange?(r1, of: r2)
   end
+
+  test "Foldleft 1" do 
+    range = Length.Range.new(Length.cm(1), Length.cm(10))
+    li = Length.Range.foldl(range, fn(acc, x) -> [Length.to_integer(x) | acc] end, [])
+    assert Enum.to_list(10..1) == li
+  end
+
+  test "Foldleft 2" do 
+    range = Length.Range.new(Length.m(10), Length.cm(1))
+    li = Length.Range.foldl(range, fn(acc, x) -> [Length.unwrap(x) | acc] end, [])
+    IO.inspect li
+  end
   
 end

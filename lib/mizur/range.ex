@@ -166,7 +166,8 @@ defmodule Mizur.Range do
             nil -> 
               a = first(range)
               %{a | value: 1}
-            data -> data 
+            %@parent.Type{} = data -> %@parent{type: data, value: 1.0}
+            data -> data
           end
           data = if (increasing?(range)), do: {&+/2, :lt}, else: {&-/2, :gt}
           foldl_aux(default, f, range, real_step, data)
