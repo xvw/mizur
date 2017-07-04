@@ -413,7 +413,7 @@ defmodule MizurTest do
   end
 
   test "Foldleft 2" do 
-    range = Length.Range.new(Length.m(10), Length.cm(1))
+    range = Length.Range.new(Length.m(10), Length.m(1))
     li = Length.Range.foldl(range, fn(acc, x) -> [Length.unwrap(x) | acc] end, [])
     IO.inspect li
   end
