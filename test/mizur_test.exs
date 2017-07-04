@@ -388,5 +388,22 @@ defmodule MizurTest do
     r2 = Length.Range.new(Length.km(11), Length.km(12))
     assert not Length.Range.overlap?(r1, r2)
   end
+
+  test "Subrange of, 1" do 
+    r1 = Length.Range.new(Length.cm(1), Length.km(10))
+    r2 = Length.Range.new(Length.km(1), Length.km(4))
+    assert Length.Range.subrange?(r2, of: r1)
+  end
+
+  test "Subrange of, 2" do 
+    r1 = Length.Range.new(Length.cm(1), Length.km(10))
+    assert Length.Range.subrange?(r1, of: r1)
+  end
+
+  test "Subrange of, 3" do 
+    r1 = Length.Range.new(Length.cm(1), Length.km(10))
+    r2 = Length.Range.new(Length.km(1), Length.km(4))
+    assert not Length.Range.subrange?(r1, of: r2)
+  end
   
 end
