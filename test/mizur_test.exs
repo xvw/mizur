@@ -365,8 +365,28 @@ defmodule MizurTest do
     assert {f, g, h} == {true, true, false}
   end
   
-  
+  test "Overlap with, 1" do 
+    r1 = Length.Range.new(Length.cm(1), Length.km(10))
+    r2 = Length.Range.new(Length.km(1), Length.km(4))
+    assert Length.Range.overlap?(r1, r2)
+  end
 
+  test "Overlap with, 2" do 
+    r1 = Length.Range.new(Length.km(1), Length.km(10))
+    r2 = Length.Range.new(Length.cm(1), Length.km(1))
+    assert Length.Range.overlap?(r1, r2)
+  end
 
+  test "Overlap with, 3" do 
+    r1 = Length.Range.new(Length.km(1), Length.km(10))
+    r2 = Length.Range.new(Length.km(9), Length.km(12))
+    assert Length.Range.overlap?(r1, r2)
+  end
+
+  test "Overlap with, 4" do 
+    r1 = Length.Range.new(Length.km(1), Length.km(10))
+    r2 = Length.Range.new(Length.km(11), Length.km(12))
+    assert not Length.Range.overlap?(r1, r2)
+  end
   
 end
