@@ -452,7 +452,7 @@ defmodule MizurTest do
     li = Enum.map((1..10), &Length.cm/1)
     assert li == range
   end
-  
+
   
   
 end

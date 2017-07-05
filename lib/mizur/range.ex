@@ -210,6 +210,14 @@ defmodule Mizur.Range do
           |> foldr(fn(acc, x) -> [ x | acc ] end, [], step)
         end
 
+        @doc """
+        Convert a `range into a string (to be inspected !)
+        """
+        @spec to_string(t) :: charlist 
+        def to_string({a, b}) do 
+          "#{@parent.to_string(a)}..#{@parent.to_string(b)}"
+        end
+
       end # End of Range
       
 
