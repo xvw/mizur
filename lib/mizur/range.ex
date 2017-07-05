@@ -162,7 +162,12 @@ defmodule Mizur.Range do
         be "one by one" of the general type of the range, but you can 
         specify a type of the module, or a `typed value` of the module.
         """
-        @spec foldl(t, (@parent.t, any -> any), any, nil | @parent.Type.t) :: any
+        @spec foldl(
+          t, 
+          (@parent.t, any -> any), 
+          any, 
+          nil | @parent.t | @parent.Type.t
+        ) :: any
         def foldl(range, f, default, step \\ nil) do 
           real_step = case step do 
             nil -> 
@@ -181,11 +186,28 @@ defmodule Mizur.Range do
         be "one by one" of the general type of the range, but you can 
         specify a type of the module, or a `typed value` of the module.
         """
-        @spec foldr(t, (@parent.t, any -> any), any, nil | @parent.Type.t) :: any
+        @spec foldr(
+          t, 
+          (@parent.t, any -> any), 
+          any, 
+          nil | @parent.t | @parent.Type.t
+        ) :: any
         def foldr(range, f, default, step \\ nil) do 
           range 
           |> reverse() 
           |> foldl(f, default, step)
+        end
+
+        @doc """
+        Converts a range to a list of `typed_value`. 
+        The step could be nil, and the step will 
+        be "one by one" of the general type of the range, but you can 
+        specify a type of the module, or a `typed value` of the module.
+        """
+        @spec to_list(t, nil | @parent.t | @parent.Type.t) :: [@parent.t]
+        def to_list(range, step \\ nil) do 
+          range 
+          |> foldr(fn(acc, x) -> [ x | acc ] end, [], step)
         end
 
       end # End of Range

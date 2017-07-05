@@ -437,6 +437,22 @@ defmodule MizurTest do
     li = Length.Range.foldr(range, fn(acc, x) -> [Length.to_integer(x) | acc] end, [])
     assert Enum.to_list(10..1) == li
   end
+
+  test "Range.to_list 1" do 
+    range = Length.Range.new(Length.cm(10), Length.cm(1))
+      |> Length.Range.to_list()
+    li = Enum.map((10..1), &Length.cm/1)
+    assert li == range
+  end
+
+  test "Range.to_list 2" do 
+    range = Length.Range.new(Length.cm(10), Length.cm(1))
+      |> Length.Range.reverse()
+      |> Length.Range.to_list()
+    li = Enum.map((1..10), &Length.cm/1)
+    assert li == range
+  end
+  
   
   
 end
