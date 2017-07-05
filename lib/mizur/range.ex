@@ -158,7 +158,9 @@ defmodule Mizur.Range do
 
         @doc """
         Folds (reduces) the given `range` from the left with a function. 
-        Requires an accumulator.
+        Requires an accumulator. The step could be nil, and the step will 
+        be "one by one" of the general type of the range, but you can 
+        specify a type of the module, or a `typed value` of the module.
         """
         @spec foldl(t, (@parent.t, any -> any), any, nil | @parent.Type.t) :: any
         def foldl(range, f, default, step \\ nil) do 
@@ -175,7 +177,9 @@ defmodule Mizur.Range do
 
         @doc """
         Folds (reduces) the given `range` from the left with a function. 
-        Requires an accumulator.
+        Requires an accumulator. The step could be nil, and the step will 
+        be "one by one" of the general type of the range, but you can 
+        specify a type of the module, or a `typed value` of the module.
         """
         @spec foldr(t, (@parent.t, any -> any), any, nil | @parent.Type.t) :: any
         def foldr(range, f, default, step \\ nil) do 
