@@ -17,7 +17,8 @@ defmodule Mizur.Mixfile do
       ],
       package: package(),
       description: description(),
-      deps: deps()
+      deps: deps(),
+      consolidate_protocols: Mix.env != :test
     ]
   end
 

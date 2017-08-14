@@ -453,6 +453,8 @@ defmodule MizurTest do
     assert li == range
   end
 
-  
-  
+  test "String.Chars protocol implementation" do
+    l = Length.cm(10)
+    assert "10.0cm" == to_string(l)
+  end
 end
