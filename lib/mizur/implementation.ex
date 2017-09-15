@@ -13,8 +13,14 @@ defmodule Mizur.Implementation do
       
       defimpl String.Chars, for: __MODULE__ do
         def to_string(element) do
-          to_string(element.value) <> "<" <> to_string(element.type.name) <> ">"
+	  "#{element.value}<#{element.type}>"
         end
+      end
+
+      defimpl String.Chars, for: __MODULE__.Range do
+	def to_string(element) do
+	  "(#{element.a} .. #{element.b})"
+	end
       end
       
     end

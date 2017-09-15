@@ -12,13 +12,6 @@ defmodule Mizur.Api do
       @type comparison_result :: :eq | :lt | :gt
 
       @doc """
-      Convert a `typed value` into a string (to be inspected !)
-      """
-      def to_string(%__MODULE__{} = t) do 
-        "#{t.value} <#{__MODULE__.Type.to_string(t.type)}>"
-      end
-
-      @doc """
       Extract the value of a `typed_value`.
       """
       @spec unwrap(t) :: float

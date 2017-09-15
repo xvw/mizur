@@ -31,12 +31,6 @@ defmodule Mizur.System do
         @enforce_keys [:name, :from_basis, :to_basis]
         defstruct [:name, :from_basis, :to_basis]
 
-        @doc """
-        Convert a `type` into a string (to be inspected !)
-        """
-        def to_string(%__MODULE__{} = t) do 
-          "#{t.name}"
-        end
 
       end # End of Type
 
