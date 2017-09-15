@@ -18,16 +18,11 @@ defmodule Mizur do
   end
 
   # Sample (to test documentation)
-  defmodule Length do 
+  defmodule APIExample do 
     use Mizur.System
     use Mizur.Implementation
     use Mizur.Api
     use Mizur.Range
-    type m 
-    type dm = (1 / 10) * m
-    type cm = m / 100
-    type mm = cm / 10
-    type km = 1000 * m
   end
 
 end

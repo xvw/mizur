@@ -453,8 +453,13 @@ defmodule MizurTest do
     assert li == range
   end
 
-  test "String.Chars protocol implementation" do
+  test "String.Chars protocol implementation for litteral types" do
+    l = Length.cm
+    assert "cm" == "#{l}"
+  end
+
+  test "String.Chars protocol implementation for litteral value" do
     l = Length.cm(10)
-    assert "10.0cm" == to_string(l)
+    assert "10.0<cm>" == "#{l}"
   end
 end

@@ -29,7 +29,7 @@ defmodule Mizur.Range do
         """
 
         @typedoc """
-        This type represents a range of `typed_value`.
+        This type represents a range of typed_value.
         """
         @type t :: {@parent.t, @parent.t}
 
@@ -43,7 +43,7 @@ defmodule Mizur.Range do
         end
 
         @doc """
-        Checks if a `range` is increasing.
+        Checks if a range is increasing.
         """
         @spec increasing?(t) :: boolean
         def increasing?({%@parent{} = a, %@parent{} = b}) do
@@ -51,7 +51,7 @@ defmodule Mizur.Range do
         end
 
         @doc """
-        Checks if a `range` is decreasing.
+        Checks if a range is decreasing.
         """
         @spec decreasing?(t) :: boolean
         def decreasing?(range) do
@@ -59,7 +59,7 @@ defmodule Mizur.Range do
         end
 
         @doc """
-        Sorts a `range`.
+        Sorts a range
         """
         @spec sort(t) :: t
         def sort({%@parent{} = a, %@parent{} = b}) do 
@@ -70,7 +70,7 @@ defmodule Mizur.Range do
         end
 
         @doc """
-        Returns the first element of the `range`
+        Returns the first element of the range
         """
         @spec first(t) :: @parent.t
         def first(range) do 
@@ -79,7 +79,7 @@ defmodule Mizur.Range do
         end
 
         @doc """
-        Returns the latest element of the `range`
+        Returns the latest element of the range
         """
         @spec last(t) :: @parent.t
         def last(range) do 
@@ -98,7 +98,7 @@ defmodule Mizur.Range do
         end
 
         @doc """
-        Returns the biggest element of the `range`
+        Returns the biggest element of the range
         """
         @spec max(t) :: @parent.t
         def max(range) do 
@@ -108,7 +108,7 @@ defmodule Mizur.Range do
         end
 
         @doc """
-        Returns a reversed version of a `range`
+        Returns a reversed version of a range
         """
         @spec reverse(t) :: t
         def reverse({a, b}), do: {b, a}
@@ -157,10 +157,10 @@ defmodule Mizur.Range do
         end
 
         @doc """
-        Folds (reduces) the given `range` from the left with a function. 
+        Folds (reduces) the given range from the left with a function. 
         Requires an accumulator. The step could be nil, and the step will 
         be "one by one" of the general type of the range, but you can 
-        specify a type of the module, or a `typed value` of the module.
+        specify a type of the module, or a typed value of the module.
         """
         @spec foldl(
           t, 
@@ -181,10 +181,10 @@ defmodule Mizur.Range do
         end
 
         @doc """
-        Folds (reduces) the given `range` from the left with a function. 
+        Folds (reduces) the given range from the left with a function. 
         Requires an accumulator. The step could be nil, and the step will 
         be "one by one" of the general type of the range, but you can 
-        specify a type of the module, or a `typed value` of the module.
+        specify a type of the module, or a typed value of the module.
         """
         @spec foldr(
           t, 
@@ -202,7 +202,7 @@ defmodule Mizur.Range do
         Converts a range to a list of `typed_value`. 
         The step could be nil, and the step will 
         be "one by one" of the general type of the range, but you can 
-        specify a type of the module, or a `typed value` of the module.
+        specify a type of the module, or a typed value of the module.
         """
         @spec to_list(t, nil | @parent.t | @parent.Type.t) :: [@parent.t]
         def to_list(range, step \\ nil) do 
@@ -211,7 +211,7 @@ defmodule Mizur.Range do
         end
 
         @doc """
-        Convert a `range into a string (to be inspected !)
+        Convert a range into a string (to be inspected !)
         """
         @spec to_string(t) :: charlist 
         def to_string({a, b}) do 
