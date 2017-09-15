@@ -58,7 +58,7 @@ defmodule Mizur.Mixfile do
      name: :mizur,
      files: ["lib", "mix.exs", "README*", "LICENSE*"],
      maintainers: ["Xavier Van de Woestyne"],
-     licenses: ["MIT"],
+     licenses: ["Beerware"],
      links: %{"GitHub" => "https://github.com/xvw/mizur",
               "Docs" => "http://xvw.github.io/mizur/doc/readme.html"}]
   end
