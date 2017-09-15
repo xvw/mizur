@@ -462,4 +462,11 @@ defmodule MizurTest do
     l = Length.cm(10)
     assert "10.0<cm>" == "#{l}"
   end
+
+  # test "String.Chars protocol implementation for ranges" do
+  #   l = Length.Range.new(Length.cm(10), Length.cm(1))
+  #   assert "(10.0 .. 1.0)<cm>" == "#{l}"
+  # end
+
+  
 end

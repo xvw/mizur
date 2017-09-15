@@ -34,9 +34,8 @@ defmodule Mizur.System do
         @doc """
         Convert a `type` into a string (to be inspected !)
         """
-        @spec to_string(t) :: charlist 
         def to_string(%__MODULE__{} = t) do 
-          "<#{t.name}>"
+          "#{t.name}"
         end
 
       end # End of Type

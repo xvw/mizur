@@ -11,8 +11,8 @@ defmodule Mizur.Range do
       This type represents a range of `typed_value`.
       """
       @type range :: {
-        __MODULE__.Range.t, 
-        __MODULE__.Range.t
+        __MODULE__.Type.t, 
+        __MODULE__.Type.t
       }
 
 
@@ -213,9 +213,8 @@ defmodule Mizur.Range do
         @doc """
         Convert a range into a string (to be inspected !)
         """
-        @spec to_string(t) :: charlist 
         def to_string({a, b}) do 
-          "#{@parent.to_string(a)}..#{@parent.to_string(b)}"
+          "(#{@parent.to_string(a)} .. #{@parent.to_string(b)})"
         end
 
       end # End of Range
