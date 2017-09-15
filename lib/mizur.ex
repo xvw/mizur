@@ -6,6 +6,23 @@ defmodule Mizur do
 
   The manipulation of units of measurement try (at best) 
   to be typesafe.
+
+  ## Example 
+  For example, let's write a System for the length
+
+  ```elixir
+  module Length do
+    use Mizur
+
+    type m
+    type dm = m / 10
+    type cm = m / 100
+    type mm = cm / 10 
+    type km = 1000 * m
+
+  end
+  ```
+
   """
 
   defmacro __using__(_opts) do 
