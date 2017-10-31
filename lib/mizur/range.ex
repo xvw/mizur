@@ -1,9 +1,9 @@
-defmodule Mizur.Range do 
+defmodule Mizur.Range do
 
   @moduledoc false
 
-  defmacro __using__(_opts) do 
-    quote do 
+  defmacro __using__(_opts) do
+    quote do
       import Mizur.Range
 
 
@@ -13,15 +13,15 @@ defmodule Mizur.Range do
       @type range :: __MODULE__.Range.t
 
 
-      defmodule Range do 
+      defmodule Range do
 
-        @parent __MODULE__ 
-          |> Module.split 
-          |> Enum.drop(-1) 
+        @parent __MODULE__
+          |> Module.split
+          |> Enum.drop(-1)
           |> Module.concat
 
         @moduledoc """
-        This module provides a minimalistic approach of Range between 
+        This module provides a minimalistic approach of Range between
         two #{@parent} types.
         """
 
@@ -29,19 +29,19 @@ defmodule Mizur.Range do
         This type represents a range of typed_value.
         """
         @type t :: %__MODULE__{
-	  a: @parent.t,
-	  b: @parent.t
-	}
+    a: @parent.t,
+    b: @parent.t
+  }
 
-	@enforce_keys [:a, :b]
-	defstruct [:a, :b]
+  @enforce_keys [:a, :b]
+  defstruct [:a, :b]
 
 
         @doc """
         Builds a range between two `typed_value`.
         """
         @spec new(@parent.t, @parent.t) :: t
-        def new(%@parent{} = a, %@parent{} = b) do 
+        def new(%@parent{} = a, %@parent{} = b) do
           %__MODULE__{a: a, b: @parent.from(b, to: a.type)}
         end
 
@@ -65,7 +65,7 @@ defmodule Mizur.Range do
         Sorts a range
         """
         @spec sort(t) :: t
-        def sort(%__MODULE__{} = t) do 
+        def sort(%__MODULE__{} = t) do
           case @parent.compare(t.a, to: t.b) do
             :lt -> t
             _ -> new(t.b, t.a)
@@ -76,24 +76,24 @@ defmodule Mizur.Range do
         Returns the first element of the range
         """
         @spec first(t) :: @parent.t
-        def first(%__MODULE__{} = t) do 
-	  t.a
+        def first(%__MODULE__{} = t) do
+    t.a
         end
 
         @doc """
-        Returns the latest element of the range
+        Returns the last element of the range
         """
         @spec last(t) :: @parent.t
-        def last(%__MODULE__{} = t) do 
-	  t.b
+        def last(%__MODULE__{} = t) do
+    t.b
         end
 
         @doc """
         Returns the smallest element of the `range`
         """
         @spec min(t) :: @parent.t
-        def min(%__MODULE__{} = range) do 
-          range 
+        def min(%__MODULE__{} = range) do
+          range
           |> sort()
           |> first()
         end
@@ -102,8 +102,8 @@ defmodule Mizur.Range do
         Returns the biggest element of the range
         """
         @spec max(t) :: @parent.t
-        def max(%__MODULE__{} = range) do 
-          range 
+        def max(%__MODULE__{} = range) do
+          range
           |> sort()
           |> last()
         end
@@ -118,7 +118,7 @@ defmodule Mizur.Range do
         Checks if a `typed_value` is included in a range.
         """
         @spec include?(@parent.t, [in: t]) :: boolean
-        def include?(value, in: %__MODULE__{} = t) do 
+        def include?(value, in: %__MODULE__{} = t) do
           real = sort(t)
           x = @parent.compare(value, to: real.a)
           y = @parent.compare(value, to: real.b)
@@ -128,8 +128,8 @@ defmodule Mizur.Range do
         @doc """
         Checks if two ranges overlap.
         """
-        @spec overlap?(t, t) :: boolean 
-        def overlap?(%__MODULE__{} = a, %__MODULE__{} = b) do 
+        @spec overlap?(t, t) :: boolean
+        def overlap?(%__MODULE__{} = a, %__MODULE__{} = b) do
           %__MODULE__{a: startA, b: endA} = sort(a)
           %__MODULE__{a: startB, b: endB} = sort(b)
           x = @parent.compare(startA, to: endB)
@@ -141,14 +141,14 @@ defmodule Mizur.Range do
         Tests if a range is a subrange of another range.
         """
         @spec subrange?(t, of: t) :: boolean
-        def subrange?(%__MODULE__{} = a, of: %__MODULE__{} = b) do 
+        def subrange?(%__MODULE__{} = a, of: %__MODULE__{} = b) do
           %__MODULE__{a: x, b: y} = sort(a)
           include?(x, in: b) and include?(y, in: b)
         end
 
-        @doc false 
-        defp foldl_aux(acc, f, %__MODULE__{a: current, b: max}, step, {next, flag}) do 
-          cond do 
+        @doc false
+        defp foldl_aux(acc, f, %__MODULE__{a: current, b: max}, step, {next, flag}) do
+          cond do
             @parent.compare(current, to: max) == flag ->
               new_acc = f.(acc, current)
               next_step = @parent.map2(current, step, next)
@@ -158,20 +158,20 @@ defmodule Mizur.Range do
         end
 
         @doc """
-        Folds (reduces) the given range from the left with a function. 
-        Requires an accumulator. The step could be nil, and the step will 
-        be "one by one" of the general type of the range, but you can 
-        specify a type of the module, or a typed value of the module.
+        Folds (reduces) the given range from the left with a function.
+        Requires an accumulator. The step can be nil, and the step will
+        be "one by one" of the general type of the range, but you can
+        specify a module, or a typed value.
         """
         @spec foldl(
-          t, 
-          (@parent.t, any -> any), 
-          any, 
+          t,
+          (@parent.t, any -> any),
+          any,
           nil | @parent.t | @parent.Type.t
         ) :: any
-        def foldl(%__MODULE__{} = range, f, default, step \\ nil) do 
-          real_step = case step do 
-            nil -> 
+        def foldl(%__MODULE__{} = range, f, default, step \\ nil) do
+          real_step = case step do
+            nil ->
               a = first(range)
               %{a | value: 1}
             %@parent.Type{} = data -> %@parent{type: data, value: 1.0}
@@ -182,37 +182,37 @@ defmodule Mizur.Range do
         end
 
         @doc """
-        Folds (reduces) the given range from the left with a function. 
-        Requires an accumulator. The step could be nil, and the step will 
-        be "one by one" of the general type of the range, but you can 
-        specify a type of the module, or a typed value of the module.
+        Folds (reduces) the given range from the left with a function.
+        Requires an accumulator. The step could be nil, and the step will
+        be "one by one" of the general type of the range, but you can
+        specify a module, or a typed value.
         """
         @spec foldr(
-          t, 
-          (@parent.t, any -> any), 
-          any, 
+          t,
+          (@parent.t, any -> any),
+          any,
           nil | @parent.t | @parent.Type.t
         ) :: any
-        def foldr(%__MODULE__{} = range, f, default, step \\ nil) do 
-          range 
-          |> reverse() 
+        def foldr(%__MODULE__{} = range, f, default, step \\ nil) do
+          range
+          |> reverse()
           |> foldl(f, default, step)
         end
 
         @doc """
-        Converts a range to a list of `typed_value`. 
-        The step could be nil, and the step will 
-        be "one by one" of the general type of the range, but you can 
+        Converts a range to a list of `typed_value`.
+        The step can be nil, and the step will
+        be "one by one" of the general type of the range, but you can
         specify a type of the module, or a typed value of the module.
         """
         @spec to_list(t, nil | @parent.t | @parent.Type.t) :: [@parent.t]
-        def to_list(%__MODULE__{} = range, step \\ nil) do 
-          range 
+        def to_list(%__MODULE__{} = range, step \\ nil) do
+          range
           |> foldr(fn(acc, x) -> [ x | acc ] end, [], step)
         end
 
       end # End of Range
-      
+
 
     end # End of quote
   end
