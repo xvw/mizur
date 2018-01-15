@@ -1,24 +1,20 @@
 defmodule Mizur.Range do
-
   @moduledoc false
 
   defmacro __using__(_opts) do
     quote do
       import Mizur.Range
 
-
       @typedoc """
       This type represents a range of `typed_value`.
       """
-      @type range :: __MODULE__.Range.t
-
+      @type range :: __MODULE__.Range.t()
 
       defmodule Range do
-
         @parent __MODULE__
-          |> Module.split
-          |> Enum.drop(-1)
-          |> Module.concat
+                |> Module.split()
+                |> Enum.drop(-1)
+                |> Module.concat()
 
         @moduledoc """
         This module provides a minimalistic approach of Range between
@@ -29,13 +25,12 @@ defmodule Mizur.Range do
         This type represents a range of typed_value.
         """
         @type t :: %__MODULE__{
-    a: @parent.t,
-    b: @parent.t
-  }
+                a: @parent.t,
+                b: @parent.t
+              }
 
-  @enforce_keys [:a, :b]
-  defstruct [:a, :b]
-
+        @enforce_keys [:a, :b]
+        defstruct [:a, :b]
 
         @doc """
         Builds a range between two `typed_value`.
@@ -77,7 +72,7 @@ defmodule Mizur.Range do
         """
         @spec first(t) :: @parent.t
         def first(%__MODULE__{} = t) do
-    t.a
+          t.a
         end
 
         @doc """
@@ -85,7 +80,7 @@ defmodule Mizur.Range do
         """
         @spec last(t) :: @parent.t
         def last(%__MODULE__{} = t) do
-    t.b
+          t.b
         end
 
         @doc """
@@ -117,12 +112,12 @@ defmodule Mizur.Range do
         @doc """
         Checks if a `typed_value` is included in a range.
         """
-        @spec include?(@parent.t, [in: t]) :: boolean
+        @spec include?(@parent.t, in: t) :: boolean
         def include?(value, in: %__MODULE__{} = t) do
           real = sort(t)
           x = @parent.compare(value, to: real.a)
           y = @parent.compare(value, to: real.b)
-          (x in [:eq, :gt]) and (y in [:eq, :lt])
+          x in [:eq, :gt] and y in [:eq, :lt]
         end
 
         @doc """
@@ -134,7 +129,7 @@ defmodule Mizur.Range do
           %__MODULE__{a: startB, b: endB} = sort(b)
           x = @parent.compare(startA, to: endB)
           y = @parent.compare(endA, to: startB)
-          (x in [:eq, :lt]) and (y in [:eq, :gt])
+          x in [:eq, :lt] and y in [:eq, :gt]
         end
 
         @doc """
@@ -153,7 +148,9 @@ defmodule Mizur.Range do
               new_acc = f.(acc, current)
               next_step = @parent.map2(current, step, next)
               foldl_aux(new_acc, f, new(next_step, max), step, {next, flag})
-            true -> f.(acc, max)
+
+            true ->
+              f.(acc, max)
           end
         end
 
@@ -164,20 +161,26 @@ defmodule Mizur.Range do
         specify a module, or a typed value.
         """
         @spec foldl(
-          t,
-          (@parent.t, any -> any),
-          any,
-          nil | @parent.t | @parent.Type.t
-        ) :: any
+                t,
+                (@parent.t, any -> any),
+                any,
+                nil | @parent.t | @parent.Type.t()
+              ) :: any
         def foldl(%__MODULE__{} = range, f, default, step \\ nil) do
-          real_step = case step do
-            nil ->
-              a = first(range)
-              %{a | value: 1}
-            %@parent.Type{} = data -> %@parent{type: data, value: 1.0}
-            data -> data
-          end
-          data = if (increasing?(range)), do: {&+/2, :lt}, else: {&-/2, :gt}
+          real_step =
+            case step do
+              nil ->
+                a = first(range)
+                %{a | value: 1}
+
+              %@parent.Type{} = data ->
+                %@parent{type: data, value: 1.0}
+
+              data ->
+                data
+            end
+
+          data = if increasing?(range), do: {&+/2, :lt}, else: {&-/2, :gt}
           foldl_aux(default, f, range, real_step, data)
         end
 
@@ -188,11 +191,11 @@ defmodule Mizur.Range do
         specify a module, or a typed value.
         """
         @spec foldr(
-          t,
-          (@parent.t, any -> any),
-          any,
-          nil | @parent.t | @parent.Type.t
-        ) :: any
+                t,
+                (@parent.t, any -> any),
+                any,
+                nil | @parent.t | @parent.Type.t()
+              ) :: any
         def foldr(%__MODULE__{} = range, f, default, step \\ nil) do
           range
           |> reverse()
@@ -205,16 +208,16 @@ defmodule Mizur.Range do
         be "one by one" of the general type of the range, but you can
         specify a type of the module, or a typed value of the module.
         """
-        @spec to_list(t, nil | @parent.t | @parent.Type.t) :: [@parent.t]
+        @spec to_list(t, nil | @parent.t | @parent.Type.t()) :: [@parent.t]
         def to_list(%__MODULE__{} = range, step \\ nil) do
           range
-          |> foldr(fn(acc, x) -> [ x | acc ] end, [], step)
+          |> foldr(fn acc, x -> [x | acc] end, [], step)
         end
+      end
 
-      end # End of Range
+      # End of Range
+    end
 
-
-    end # End of quote
+    # End of quote
   end
-
 end

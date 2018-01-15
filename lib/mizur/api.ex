@@ -1,5 +1,4 @@
 defmodule Mizur.Api do
-
   @moduledoc false
 
   defmacro __using__(_opts) do
@@ -37,16 +36,15 @@ defmodule Mizur.Api do
       @spec to_integer(t) :: integer
       def to_integer(%__MODULE__{} = t), do: round(t.value)
 
-
       @doc """
       Converts a `typed_value` to another subtype of its measure system.
       """
-      @spec from(t, [to: subtype]) :: t
+      @spec from(t, to: subtype) :: t
       def from(%__MODULE__{} = basis, to: %__MODULE__.Type{} = target) do
         from = target.from_basis
         to = basis.type.to_basis
         value = basis.value
-        %__MODULE__{ type: target, value: from.(to.(value))}
+        %__MODULE__{type: target, value: from.(to.(value))}
       end
 
       @doc """
@@ -55,7 +53,7 @@ defmodule Mizur.Api do
       """
       @spec map(t, (number -> number)) :: t
       def map(%__MODULE__{} = t, f) do
-        %{ t | value: f.(t.value) }
+        %{t | value: f.(t.value)}
       end
 
       @doc """
@@ -64,10 +62,10 @@ defmodule Mizur.Api do
       of the function in a `typed_value` of the subtype of the left
       `typed_values`.
       """
-      @spec map2(t, t, (number, number -> number)) ::  t
+      @spec map2(t, t, (number, number -> number)) :: t
       def map2(%__MODULE__{} = a, %__MODULE{} = b, f) do
         x = from(b, to: a.type)
-        %{ a | value: f.(a.value, x.value)}
+        %{a | value: f.(a.value, x.value)}
       end
 
       @doc """
@@ -95,7 +93,7 @@ defmodule Mizur.Api do
       @spec times(t, number) :: t
       def times(a, b) when is_number(b) do
         x = unwrap(a)
-        %{ a | value: (x * b)}
+        %{a | value: x * b}
       end
 
       @doc """
@@ -105,9 +103,8 @@ defmodule Mizur.Api do
       @spec div(t, number) :: t
       def div(a, b) when is_number(b) do
         x = unwrap(a)
-        %{ a | value: (x / b)}
+        %{a | value: x / b}
       end
-
 
       @doc """
       Comparison between two `typed_value` of the same measure system.
@@ -116,21 +113,17 @@ defmodule Mizur.Api do
       -  `:lt` if the left-values is **lower than** the right-values
       -  `:gt` if the left-values is **greater than** the right-values
       """
-      @spec compare(t, [to: t]) :: comparison_result
+      @spec compare(t, to: t) :: comparison_result
       def compare(%__MODULE__{} = a, to: %__MODULE__{} = b) do
         left = normalize(a)
         right = normalize(b)
+
         cond do
           left > right -> :gt
           left < right -> :lt
           true -> :eq
         end
       end
-
-
     end
-
   end
-
-
 end

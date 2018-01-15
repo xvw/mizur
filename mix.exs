@@ -6,8 +6,8 @@ defmodule Mizur.Mixfile do
       app: :mizur,
       version: "2.0.0",
       elixir: "~> 1.5",
-      build_embedded: Mix.env == :prod,
-      start_permanent: Mix.env == :prod,
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
       name: "Mizur",
       source_url: "https://github.com/xvw/mizur",
       homepage_url: "https://xvw.github.io/xvw/mizur/doc",
@@ -18,7 +18,7 @@ defmodule Mizur.Mixfile do
       package: package(),
       description: description(),
       deps: deps(),
-      consolidate_protocols: Mix.env != :test
+      consolidate_protocols: Mix.env() != :test
     ]
   end
 
@@ -45,21 +45,25 @@ defmodule Mizur.Mixfile do
       {:ex_doc, "~> 0.16", only: :dev, runtime: false}
     ]
   end
-  defp description do 
+
+  defp description do
     """
     Mizur is a module for transforming other modules into metric systems.
-    These modules (metric systems) make it possible to use functions to create values enclosed 
+    These modules (metric systems) make it possible to use functions to create values enclosed
     in a metric system and functions to manipulate these values.
     """
   end
 
   defp package do
     [
-     name: :mizur,
-     files: ["lib", "mix.exs", "README*", "LICENSE*"],
-     maintainers: ["Xavier Van de Woestyne"],
-     licenses: ["Beerware"],
-     links: %{"GitHub" => "https://github.com/xvw/mizur",
-              "Docs" => "http://xvw.github.io/mizur/doc/readme.html"}]
+      name: :mizur,
+      files: ["lib", "mix.exs", "README*", "LICENSE*"],
+      maintainers: ["Xavier Van de Woestyne"],
+      licenses: ["Beerware"],
+      links: %{
+        "GitHub" => "https://github.com/xvw/mizur",
+        "Docs" => "http://xvw.github.io/mizur/doc/readme.html"
+      }
+    ]
   end
 end
