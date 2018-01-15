@@ -20,12 +20,13 @@ defmodule Mizur.System do
         @type t :: %Type{
                 name: atom,
                 from_basis: (number -> float),
-                to_basis: (number -> float)
+                to_basis: (number -> float),
+                e: Integer.t
               }
 
         # Struct to define a type
-        @enforce_keys [:name, :from_basis, :to_basis]
-        defstruct [:name, :from_basis, :to_basis]
+        @enforce_keys [:name, :from_basis, :to_basis, :e]
+        defstruct [:name, :from_basis, :to_basis, :e]
       end
 
       # End of Type
@@ -193,7 +194,8 @@ defmodule Mizur.System do
         %__MODULE__.Type{
           name: unquote(name),
           from_basis: rev_lambda(unquote(expr)),
-          to_basis: lambda(unquote(expr))
+          to_basis: lambda(unquote(expr)),
+          e: 1
         }
       end
 
