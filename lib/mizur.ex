@@ -40,4 +40,5 @@ defmodule Mizur do
     use Mizur.Api
     use Mizur.Range
   end
+
 end

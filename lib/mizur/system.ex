@@ -40,7 +40,7 @@ defmodule Mizur.System do
       """
       @type t :: %__MODULE__{
               type: subtype,
-              value: float
+              value: Float.t
             }
 
       # Struct to define a typed values
@@ -130,7 +130,6 @@ defmodule Mizur.System do
         {revert_operator(op), [], [acc, left]}
 
       _ ->
-        IO.inspect(b: expr)
         acc
     end
   end
